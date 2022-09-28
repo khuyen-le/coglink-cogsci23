@@ -1,4 +1,5 @@
 *.Rproj
+*.DS_store
 experiment/*test*
 experiment/old_experiment
 analysis/test*

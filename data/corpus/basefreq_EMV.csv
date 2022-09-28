@@ -1,0 +1,106 @@
+triad,cue_M,cue_basefreq_M,tax_M,tax_basefreq_M,theme_M,theme_basefreq_M,cue_tax_M,cue_tax_freq_M,cue_theme_M,cue_theme_freq_M,cue_E,cue_basefreq_E,tax_E,tax_basefreq_E,theme_E,theme_basefreq_E,cue_tax_E,cue_tax_freq_E,cue_theme_E,cue_theme_freq_E,cue_V,cue_basefreq_V,tax_V,tax_basefreq_V,theme_V,theme_basefreq_V,cue_tax_V,cue_tax_freq_V,cue_theme_V,cue_theme_freq_V
+teacup,茶杯,2224,玻璃杯,1115,水壺,1862,茶杯 - 玻璃杯,13,茶杯 - 水壺,14,teacup,985,glass,94803,kettle,2849,teacup - glass,3,teacup - kettle,0,cốc trà,,ly,,ấm đun nước,,cốc trà - ly,0,cốc trà - ấm đun nước,0
+airplane1,飛機,34257,輪船,2773,飛行員,2741,飛機 - 輪船,117,飛機 - 飛行員,528,airplane,15512,ship,79715,pilot,39272,airplane - ship,34,airplane - pilot,186,máy bay,,tàu thuỷ,,phi công,,máy bay - tàu thuỷ,0,máy bay - phi công,65
+sailor,水手,5392,飛行員,2741,輪船,2773,水手 - 飛行員,0,水手 - 輪船,19,sailor,10469,pilot,39272,ship,79715,sailor - pilot,13,sailor - ship,123,thuỷ thủ,,phi công,,tàu thuỷ,,thuỷ thủ - phi công,0,thuỷ thủ - tàu thuỷ,0
+airplane2,飛機,34257,直升機,10032,天空,22263,飛機 - 直升機,461,飛機 - 天空,395,airplane,15512,helicopter,18430,sky,69285,airplane - helicopter,80,airplane - sky,94,máy bay,,trực thăng,,trời,,máy bay - trực thăng,87,máy bay - trời,22
+seagull,海鷗,1826,蝙蝠,3001,天空,22263,海鷗 - 蝙蝠,0,海鷗 - 天空,30,seagull,943,bat,18132,sky,69285,seagull - bat,0,seagull - sky,6,hải âu,,dơi,,trời,,hải âu - dơi,0,hải âu - trời,0
+apple1,蘋果,13303,草莓,6840,樹,34621,蘋果 - 草莓,172,蘋果 - 樹,385,apple,72273,strawberry,8177,tree,135666,apple - strawberry,39,apple - tree,1036,táo,,dâu,,cây,,táo - dâu,8,táo - cây,23
+apple2,蘋果,13303,橙子,868,籃子,2928,蘋果 - 橙子,91,蘋果 - 籃子,29,apple,72273,orange,23088,basket,17488,apple - orange,286,apple - basket,20,táo,,cam,,giỏ,,táo - cam,23,táo - giỏ,0
+axe,斧子,515,剪刀,3211,樹樁,398,斧子 - 剪刀,0,斧子 - 樹樁,0,axe,3373,scissors,4277,stump,4818,axe - scissors,1,axe - stump,10,rìu,,kéo,,gốc cây,,rìu - kéo,0,rìu - gốc cây,0
+baby,寶寶,13247,成人,10776,奶瓶,1068,寶寶 - 成人,22,寶寶 - 奶瓶,64,baby,207577,adult,94547,bottle,46801,baby - adult,241,baby - bottle,457,em bé,,người lớn,,bình,,em bé - người lớn,5,em bé - bình,0
+monkey,猴,11113,驢,5137,叢林,5366,猴 - 驢,45,猴 - 叢林,70,monkey,17334,donkey,3786,jungle,12210,monkey - donkey,18,monkey - jungle,44,khỉ,,lừa,,rừng,,khỉ - lừa,0,khỉ - rừng,4
+bed,床,48057,長沙發,0,枕頭,5510,床 - 長沙發,0,床 - 枕頭,864,bed,127232,couch,21942,pillow,14004,bed - couch,509,bed - pillow,571,giường,,ghế bành,,gối,,giường - ghế bành,0,giường - gối,50
+crib,嬰兒床,0,床,48057,寶寶,13247,嬰兒床 - 床,0,嬰兒床 - 寶寶,0,crib,3806,bed,127232,baby,207577,crib - bed,171,crib - baby,490,nôi,,giường,,em bé,,nôi - giường,7,nôi - em bé,3
+bee1,蜜蜂,5481,瓢蟲,671,花園,25210,蜜蜂 - 瓢蟲,30,蜜蜂 - 花園,59,bee,15760,ladybug,438,garden,71243,bee - ladybug,1,bee - garden,35,ong,,bọ rùa,,vườn,,ong - bọ rùa,0,ong - vườn,0
+bee2,蜜蜂,5481,蝴蝶,11735,蜂蜜,4300,蜜蜂 - 蝴蝶,364,蜜蜂 - 蜂蜜,277,bee,15760,butterfly,10292,honey,54912,bee - butterfly,83,bee - honey,582,ong,,bướm,,mật,,ong - bướm,4,ong - mật,60
+beer,啤酒,9545,果汁,3961,派對,9099,啤酒 - 果汁,110,啤酒 - 派對,49,beer,50024,juice,30156,party,304325,beer - juice,115,beer - party,341,bia,,nước ép,,tiệc,,bia - nước ép,0,bia - tiệc,4
+chicken,雞,18500,天鵝,2909,蛋,8757,雞 - 天鵝,30,雞 - 蛋,1009,chicken,53916,swan,3036,egg,58198,chicken - swan,3,chicken - egg,888,gà,,thiên nga,,trứng,,gà - thiên nga,0,gà - trứng,100
+pigeon,鴿子,5044,鴨,10686,鳥巢,1463,鴿子 - 鴨,50,鴿子 - 鳥巢,6,pigeon,5008,duck,19968,nest,12951,pigeon - duck,15,pigeon - nest,3,bồ câu,,vịt,,tổ,,bồ câu - vịt,0,bồ câu - tổ,0
+cake,蛋糕,15941,曲奇,0,生日,21925,蛋糕 - 曲奇,0,蛋糕 - 生日,2193,cake,33519,cookie,26809,birthday,42727,cake - cookie,99,cake - birthday,1535,bánh kem,,bánh quy,,sinh nhật,,bánh kem - bánh quy,0,bánh kem - sinh nhật,4
+ball,球,21339,骰子,694,兒童,57805,球 - 骰子,0,球 - 兒童,529,ball,110770,dice,8174,child,685426,ball - dice,3,ball - child,181,bóng,,xúc xắc,,đứa trẻ,,bóng - xúc xắc,0,bóng - đứa trẻ,0
+boot,靴子,2418,拖鞋,3679,腳,65541,靴子 - 拖鞋,12,靴子 - 腳,329,boot,30566,slipper,3884,foot ,209334,boot - slipper,8,boot - foot ,306,ủng,,dép,,bàn chân,,ủng - dép,0,ủng - bàn chân,0
+legs,腿,28143,手臂,16013,褲子,7338,腿 - 手臂,957,腿 - 褲子,369,legs,95185,arms,161185,pants,30810,legs - arms,5320,legs - pants,360,chân,,tay,,quần,,chân - tay,688,chân - quần,65
+bowl,碗,19167,盤子,4384,湯,11698,碗 - 盤子,116,碗 - 湯,2152,bowl,60234,plate,50934,soup,21273,bowl - plate,264,bowl - soup,858,chén,,đĩa,,súp,,chén - đĩa,20,chén - súp,0
+bread,麵包,16418,米飯,2191,烤箱,2252,麵包 - 米飯,89,麵包 - 烤箱,131,bread,34840,rice,33676,oven,21721,bread - rice,421,bread - oven,481,bánh mì,,cơm,,lò nướng,,bánh mì - cơm,10,bánh mì - lò nướng,0
+spoon2,勺,1353,叉子,830,湯,11698,勺 - 叉子,8,勺 - 湯,59,spoon,11385,fork,13767,sugar,49230,spoon - fork,251,spoon - sugar,178,muỗng,,nĩa,,đường,,muỗng - nĩa,9,muỗng - đường,29
+hair,頭發,32686,鬍子,8186,梳子,1271,頭發 - 鬍子,545,頭發 - 梳子,234,hair,143875,beard,11768,comb,3222,hair - beard,1090,hair - comb,951,tóc,,râu,,lược,,tóc - râu,31,tóc - lược,24
+bullet,子彈,12192,箭,6641,手槍,12308,子彈 - 箭,11,子彈 - 手槍,2944,bullet,29277,arrow,13796,gun,132572,bullet - arrow,22,bullet - gun,552,đạn,,mũi tên,,súng,,đạn - mũi tên,0,đạn - súng,101
+cactus,仙人掌,1329,灌木,1716,沙子,2147,仙人掌 - 灌木,0,仙人掌 - 沙子,0,cactus,3216,bush,15262,sand,32307,cactus - bush,9,cactus - sand,23,xương rồng,,bụi rậm,,cát,,xương rồng - bụi rậm,0,xương rồng - cát,0
+car2,汽車,53714,自行車,18889,輪胎,5034,汽車 - 自行車,407,汽車 - 輪胎,536,car,313437,bicycle,12317,tire,21067,car - bicycle,230,car - tire,525,xe hơi,,xe đạp,,lốp,,xe hơi - xe đạp,9,xe hơi - lốp,0
+car1,汽車,53714,摩托車,6088,紅綠燈,3664,汽車 - 摩托車,259,汽車 - 紅綠燈,94,car,313437,motorcycle,8463,traffic lights,725,car - motorcycle,238,car - traffic lights,20,xe hơi,,xe máy,,đèn giao thông,,xe hơi - xe máy,13,xe hơi - đèn giao thông,0
+carrot,胡蘿蔔,2122,豌豆,1103,兔子,8711,胡蘿蔔 - 豌豆,23,胡蘿蔔 - 兔子,50,carrot,11033,peas,9118,rabbit,14099,carrot - peas,26,carrot - rabbit,33,cà rốt ,,đậu,,thỏ,,cà rốt  - đậu,8,cà rốt  - thỏ,0
+dog1,狗,54910,貓,24876,狗鏈,0,狗 - 貓,3051,狗 - 狗鏈,0,dog,144648,cat,58763,leash,3369,dog - cat,1900,dog - leash,591,chó,,mèo,,dây xích,,chó - mèo,70,chó - dây xích,0
+dog2,狗,54910,貓,24876,骨頭,8343,狗 - 貓,3051,狗 - 骨頭,483,dog,144648,cat,58763,bone,54911,dog - cat,1900,dog - bone,398,chó,,mèo,,xương,,chó - mèo,70,chó - xương,5
+chain,鏈條,507,繩子,7229,鎖,8188,鏈條 - 繩子,0,鏈條 - 鎖,13,chain,43156,rope,19405,lock,17526,chain - rope,59,chain - lock,137,xích,,dây thừng,,khoá,,xích - dây thừng,0,xích - khoá,0
+chair,椅,19997,凳,2363,桌,44578,椅 - 凳,78,椅 - 桌,1791,chair,80186,stool,6798,desk,46133,chair - stool,82,chair - desk,1629,ghế,,ghế đẩu,,bàn,,ghế - ghế đẩu,0,ghế - bàn,133
+chalk,粉筆,1058,馬克筆,0,黑板,2230,粉筆 - 馬克筆,0,粉筆 - 黑板,225,chalk,4187,marker,13409,blackboard,1447,chalk - marker,10,chalk - blackboard,103,phấn,,bút lông,,bảng đen,,phấn - bút lông,0,phấn - bảng đen,5
+chimney,煙囪,2254,牆,32634,火,27830,煙囪 - 牆,36,煙囪 - 火,123,chimney,3829,wall,143389,fire,144750,chimney - wall,47,chimney - fire,106,ống khói,,tường,,lửa,,ống khói - tường,0,ống khói - lửa,0
+coat,大衣,4993,運動衫,0,傘,3954,大衣 - 運動衫,0,大衣 - 傘,16,coat,31266,sweatshirt,2811,umbrella,8083,coat - sweatshirt,18,coat - umbrella,69,áo khoác,,áo len,,dù,,áo khoác - áo len,18,áo khoác - dù,0
+dress,連衣裙,339,褲子,7338,衣架,883,連衣裙 - 褲子,0,連衣裙 - 衣架,0,dress,47994,pants,30810,hanger,2409,dress - pants,409,dress - hanger,37,đầm,,quần,,móc quần áo,,đầm - quần,8,đầm - móc quần áo,0
+jacket,夾克,2440,毛衣,3202,冬天,17552,夾克 - 毛衣,79,夾克 - 冬天,23,jacket,30995,sweater,10935,winter,61394,jacket - sweater,268,jacket - winter,129,áo khoác,,áo len,,mùa đông,,áo khoác - áo len,18,áo khoác - mùa đông,17
+coconut,椰子,2185,芒果,5629,樹,34621,椰子 - 芒果,83,椰子 - 樹,321,coconut,6587,mango,3334,tree,135666,coconut - mango,68,coconut - tree,109,dừa,,xoài,,cây,,dừa - xoài,13,dừa - cây,64
+onion1,洋蔥,4345,番茄,7473,農民,42243,洋蔥 - 番茄,429,洋蔥 - 農民,162,onion,24049,tomato,25826,farmer,44255,onion - tomato,433,onion - farmer,11,hành,,cà chua,,nông dân,,hành - cà chua,29,hành - nông dân,0
+farmer,農民,42243,屠夫,1890,拖拉機,610,農民 - 屠夫,0,農民 - 拖拉機,13,farmer,44255,butcher,4542,tractor,5770,farmer - butcher,9,farmer - tractor,50,nông dân,,người bán thịt,,máy kéo,,nông dân - người bán thịt,0,nông dân - máy kéo,0
+goat,山羊,2706,鹿,3111,草地,8473,山羊 - 鹿,98,山羊 - 草地,21,goat,12944,deer,19597,field,190489,goat - deer,19,goat - field,28,dê,,0i,,đồng cỏ,,dê - 0i,0,dê - đồng cỏ,0
+cow2,牛,20433,雞,18500,草,11431,牛 - 雞,583,牛 - 草,923,cow,22660,chicken,53916,grass,32880,cow - chicken,86,cow - grass,101,bò,,gà,,cỏ,,bò - gà,80,bò - cỏ,44
+squirrel,松鼠,2770,老鼠,15455,橡實,0,松鼠 - 老鼠,59,松鼠 - 橡實,0,squirrel,6358,mouse,28329,acorn,3180,squirrel - mouse,22,squirrel - acorn,20,sóc,,chuột,,hạt dẻ,,sóc - chuột,3,sóc - hạt dẻ,3
+cow1,牛,20433,豬,17639,牛奶,11907,牛 - 豬,1104,牛 - 牛奶,435,cow,22660,pig,22965,milk,39204,cow - pig,145,cow - milk,1141,bò,,lợn,,sữa,,bò - lợn,76,bò - sữa,130
+sheep,綿羊,1882,山羊,2706,羊毛,2513,綿羊 - 山羊,193,綿羊 - 羊毛,42,sheep,14430,goat,12944,wool,7573,sheep - goat,224,sheep - wool,323,cừu,,dê,,len,,cừu - dê,11,cừu - len,0
+grass,草,11431,葉子,6957,馬,57724,草 - 葉子,275,草 - 馬,493,grass,32880,leaf,43674,horse,68883,grass - leaf,80,grass - horse,94,cỏ,,lá,,ngựa,,cỏ - lá,70,cỏ - ngựa,15
+crayon,蠟筆,865,油漆刷,0,圖畫,3750,蠟筆 - 油漆刷,0,蠟筆 - 圖畫,10,crayon,2087,paintbrush,752,drawing,23549,crayon - paintbrush,1,crayon - drawing,66,bút sáp,,cọ,,tranh vẽ,,bút sáp - cọ,0,bút sáp - tranh vẽ,0
+crown,皇冠,2407,帽子,13638,女王,6614,皇冠 - 帽子,8,皇冠 - 女王,26,crown,16806,hat,43629,queen,38445,crown - hat,102,crown - queen,226,vương miện,,mũ,,hoàng hậu,,vương miện - mũ,0,vương miện - hoàng hậu,0
+cup,杯子,5349,茶碟,0,咖啡,33381,杯子 - 茶碟,0,杯子 - 咖啡,232,cup,109915,saucer,2428,coffee,70366,cup - saucer,289,cup - coffee,8536,cốc,,đĩa lót tách,,cà phê,,cốc - đĩa lót tách,0,cốc - cà phê,24
+teacher,老師,149505,警察,41861,桌子,14994,老師 - 警察,398,老師 - 桌子,277,teacher,234642,policeman,9407,desk,46133,teacher - policeman,22,teacher - desk,264,giáo viên,,cảnh sát,,bàn,,giáo viên - cảnh sát,0,giáo viên - bàn,5
+door,門,90301,窗戶,12061,鑰匙,11405,門 - 窗戶,1142,門 - 鑰匙,3216,door,252623,window,136043,key,67404,door - window,2413,door - key,1715,cửa ra vào,,cửa sổ,,chìa khoá,,cửa ra vào - cửa sổ,18,cửa ra vào - chìa khoá,0
+house,房子,44779,小屋,5511,花園,25210,房子 - 小屋,102,房子 - 花園,478,house,537037,hut,8969,garden,71243,house - hut,63,house - garden,1885,nhà,,chòi,,vườn,,nhà - chòi,9,nhà - vườn,505
+piano,鋼琴,12376,長笛,1184,歌,46763,鋼琴 - 長笛,295,鋼琴 - 歌,928,piano,17786,flute,3344,song,129648,piano - flute,69,piano - song,249,đàn pi-a-nô,,sáo,,bài hát,,đàn pi-a-nô - sáo,0,đàn pi-a-nô - bài hát,0
+trumpet,小號,1099,小提琴,5260,管弦樂隊,0,小號 - 小提琴,21,小號 - 管弦樂隊,0,trumpet,3722,violin,5601,orchestra,11709,trumpet - violin,50,trumpet - orchestra,25,kèn,,đàn vi-ô-lông,,dàn nhạc,,kèn - đàn vi-ô-lông,0,kèn - dàn nhạc,3
+frog,青蛙,5723,烏龜,4309,池塘,3847,青蛙 - 烏龜,53,青蛙 - 池塘,163,frog,10789,turtle,13267,pond,13934,frog - turtle,25,frog - pond,98,ếch,,rùa,,ao,,ếch - rùa,3,ếch - ao,0
+lilypad,睡蓮,695,玫瑰花,4614,池塘,3847,睡蓮 - 玫瑰花,6,睡蓮 - 池塘,37,lilypad,0,rose,28398,pond,13934,lilypad - rose,0,lilypad - pond,0,bèo,,hoa hồng,,ao,,bèo - hoa hồng,0,bèo - ao,8
+dust,灰塵,4548,灰燼,2060,掃帚,1881,灰塵 - 灰燼,0,灰塵 - 掃帚,15,dust,30376,ash,12427,broom,3689,dust - ash,142,dust - broom,63,bụi,,tro,,chổi,,bụi - tro,18,bụi - chổi,7
+elephant,大象,5296,長頸鹿,1414,花生,5418,大象 - 長頸鹿,102,大象 - 花生,0,elephant,14238,giraffe,1560,zoo,11536,elephant - giraffe,47,elephant - zoo,93,voi,,hươu cao cổ,,vườn thú,,voi - hươu cao cổ,0,voi - vườn thú,0
+ring,戒指,7244,項鏈,7794,手,224433,戒指 - 項鏈,852,戒指 - 手,1352,ring,52405,necklace,7796,hand,481332,ring - necklace,174,ring - hand,992,nhẫn ,,dây chuyền,,tay,,nhẫn  - dây chuyền,13,nhẫn  - tay,43
+hand,手,224433,腳,65541,手镯,623,手 - 腳,6961,手 - 手镯,57,hand,481332,foot,209334,bracelet,6449,hand - foot,1297,hand - bracelet,71,bàn tay,,bàn chân,,vòng tay,,bàn tay - bàn chân,46,bàn tay - vòng tay,0
+pencil,鉛筆,3182,鋼筆,1452,橡皮,1399,鉛筆 - 鋼筆,77,鉛筆 - 橡皮,238,pencil,11283,pen,19160,eraser,1047,pencil - pen,304,pencil - eraser,179,bút chì,,bút bi,,cục tẩy,,bút chì - bút bi,0,bút chì - cục tẩy,0
+pen,鋼筆,1452,鉛筆,3182,紙,22567,鋼筆 - 鉛筆,77,鋼筆 - 紙,107,pen,19160,pencil,11283,paper,165070,pen - pencil,304,pen - paper,1465,bút chì,,bút bi,,giấy,,bút chì - bút bi,0,bút chì - giấy,6
+net,網,16296,繩子,7229,魚,45911,網 - 繩子,35,網 - 魚,2116,net,24355,rope,19405,fish,78114,net - rope,37,net - fish,367,lưới,,dây thừng,,cá,,lưới - dây thừng,0,lưới - cá,59
+lake,湖,17972,溪流,5833,魚,45911,湖 - 溪流,172,湖 - 魚,870,lake,70940,stream,31393,fish,78114,lake - stream,229,lake - fish,898,hồ,,suối,,cá,,hồ - suối,44,hồ - cá,111
+ocean2,海洋,28921,溪流,5833,船,51905,海洋 - 溪流,74,海洋 - 船,2046,ocean,47773,stream,31393,boat,64026,ocean - stream,89,ocean - boat,280,biển,,suối,,thuyền,,biển - suối,0,biển - thuyền,198
+flower,花朵,10011,灌木,1716,花瓶,3210,花朵 - 灌木,39,花朵 - 花瓶,39,flower,48912,bush,15262,vase,4642,flower - bush,33,flower - vase,95,hoa,,bụi rậm,,lọ,,hoa - bụi rậm,0,hoa - lọ,52
+can,罐,6609,瓶,23995,吸管,1330,罐 - 瓶,537,罐 - 吸管,24,can,23201,bottle,46801,straw,11861,can - bottle,175,can - straw,19,lon,,chai,,ống hút,,lon - chai,3,lon - ống hút,0
+hammer,錘子,566,鋸子,633,釘子,2005,錘子 - 鋸子,13,錘子 - 釘子,32,hammer,11886,saw,5722,nail,19206,hammer - saw,147,hammer - nail,283,búa,,cưa,,đinh,,búa - cưa,3,búa - đinh,5
+hat,帽子,13638,皇冠,2407,頭,201838,帽子 - 皇冠,8,帽子 - 頭,138,hat,43629,crown,16806,head,348664,hat - crown,102,hat - head,1391,mũ,,vương miện,,đầu,,mũ - vương miện,0,mũ - đầu,54
+helmet,頭盔,2186,便帽,175,摩托車,6088,頭盔 - 便帽,0,頭盔 - 摩托車,47,helmet,13668,cap,32115,motorcycle ,8463,helmet - cap,48,helmet - motorcycle ,208,mũ bảo hiểm,,nón,,xe máy,,mũ bảo hiểm - nón,0,mũ bảo hiểm - xe máy,0
+soccer,足球,8359,網球,3674,球門,441,足球 - 網球,136,足球 - 球門,62,soccer,20295,tennis,16863,goal,138693,soccer - tennis,298,soccer - goal,147,bóng đá,,quần vợt,,khung thành,,bóng đá - quần vợt,3,bóng đá - khung thành,0
+horse,馬,57724,驢,5137,鞍,569,馬 - 驢,361,馬 - 鞍,64,horse,68883,donkey,3786,saddle,6022,horse - donkey,97,horse - saddle,444,ngựa,,lừa,,yên ngựa,,ngựa - lừa,0,ngựa - yên ngựa,0
+school,學校,172736,教堂,13150,學生,258414,學校 - 教堂,189,學校 - 學生,44510,school,660191,church,191872,student,530196,school - church,2249,school - student,11386,trường,,nhà thờ,,học sinh,,trường - nhà thờ,12,trường - học sinh,2270
+snow,雪,17517,冰,13090,山峰,2535,雪 - 冰,401,雪 - 山峰,173,snow,42027,ice,78316,mountain,88984,snow - ice,2221,snow - mountain,662,tuyết,,băng,,núi,,tuyết - băng,25,tuyết - núi,42
+kitchen,廚房,23506,臥室,7776,冰箱,7646,廚房 - 臥室,456,廚房 - 冰箱,346,kitchen,75167,bedroom,37979,refrigerator,11247,kitchen - bedroom,780,kitchen - refrigerator,395,nhà bếp,,phòng ngủ,,tủ lạnh,,nhà bếp - phòng ngủ,17,nhà bếp - tủ lạnh,4
+knight,騎士,15621,士兵,11473,盔甲,1534,騎士 - 士兵,67,騎士 - 盔甲,94,knight,7266,soldier,78276,armor,8514,knight - soldier,16,knight - armor,381,hiệp sĩ,,người lính,,áo giáp,,hiệp sĩ - người lính,0,hiệp sĩ - áo giáp,0
+lamp,燈,15421,手電筒,3684,桌子,14994,燈 - 手電筒,175,燈 - 桌子,211,lamp,14028,flashlight,6885,desk,46133,lamp - flashlight,16,lamp - desk,385,đèn,,đèn pin,,bàn,,đèn - đèn pin,5,đèn - bàn,26
+gloves,手套,7333,短褲,3130,滑雪,1956,手套 - 短褲,15,手套 - 滑雪,12,gloves,20469,shorts,10839,ski,17185,gloves - shorts,29,gloves - ski,79,găng tay,,quần đùi,,ván trượt tuyết,,găng tay - quần đùi,0,găng tay - ván trượt tuyết,0
+mountain,山峰,2535,懸崖,3527,雪,17517,山峰 - 懸崖,25,山峰 - 雪,179,mountain,88984,cliff,17891,snow,42027,mountain - cliff,94,mountain - snow,661,núi,,vách đá,,băng,,núi - vách đá,9,núi - băng,7
+mouth,嘴,63603,鼻,24909,牙刷,1613,嘴 - 鼻,1648,嘴 - 牙刷,33,mouth,86406,nose,45433,toothbrush,2635,mouth - nose,1937,mouth - toothbrush,55,miệng,,mũi,,bàn chải đánh răng,,miệng - mũi,55,miệng - bàn chải đánh răng,0
+movie,電影,86154,卡通片,321,導演,39122,電影 - 卡通片,64,電影 - 導演,8603,movie,190773,cartoon,13928,director,158028,movie - cartoon,126,movie - director,1308,phim,,hoạt hình,,đạo diễn,,phim - hoạt hình,50,phim - đạo diễn,423
+notepad,筆記本,3350,書本,4802,雙肩包,0,筆記本 - 書本,16,筆記本 - 雙肩包,0,notepad,1142,book,435387,backpack,7908,notepad - book,13,notepad - backpack,3,tập,,sách,,cặp,,tập - sách,140,tập - cặp,0
+ocean1,海洋,28921,河流,5511,鯨,5431,海洋 - 河流,177,海洋 - 鯨,846,ocean,47773,river,100270,whale,14947,ocean - river,387,ocean - whale,115,biển,,sông,,cá voi,,biển - sông,250,biển - cá voi,12
+onion2,洋蔥,4345,胡椒,2375,炒鍋,233,洋蔥 - 胡椒,166,洋蔥 - 炒鍋,5,onion,24049,peppers,34195,frying pan,1551,onion - peppers,306,onion - frying pan,42,hành,,ớt,,chảo,,hành - ớt,60,hành - chảo,20
+oyster,蚌,356,蛤蜊,764,珍珠,9618,蚌 - 蛤蜊,0,蚌 - 珍珠,35,oyster,7923,clam,3025,pearl,7742,oyster - clam,38,oyster - pearl,79,con trai,,con sò,,ngọc trai,,con trai - con sò,0,con trai - ngọc trai,0
+watering can,灑水壺,0,桶,8263,花朵,10011,灑水壺 - 桶,0,灑水壺 - 花朵,0,watering can,167,bucket,12920,flowers,48912,watering can - bucket,0,watering can - flowers,5,bình tưới,,xô,,hoa,,bình tưới - xô,0,bình tưới - hoa,0
+pastry,蝴蝶酥,0,蛋糕,15941,烘焙師,0,蝴蝶酥 - 蛋糕,0,蝴蝶酥 - 烘焙師,0,pastry,6059,cake,33519,baker,3579,pastry - cake,92,pastry - baker,19,bánh ngọt,,bánh kem,,thợ làm bánh,,bánh ngọt - bánh kem,0,bánh ngọt - thợ làm bánh,0
+penguin,企鵝,2794,鵝,3090,雪,17517,企鵝 - 鵝,7,企鵝 - 雪,17,penguin,3024,goose,8296,snow,42027,penguin - goose,0,penguin - snow,11,chim cánh cụt,,ngỗng,,tuyết,,chim cánh cụt - ngỗng,0,chim cánh cụt - tuyết,0
+policeman,警察,41861,老師,149505,監獄,10709,警察 - 老師,398,警察 - 監獄,88,policeman,9407,teacher,234642,jail,33453,policeman - teacher,22,policeman - jail,17,cảnh sát,,giáo viên,,nhà tù,,cảnh sát - giáo viên,0,cảnh sát - nhà tù,5
+mailman,快遞員,0,消防員,1500,包裹,6463,快遞員 - 消防員,0,快遞員 - 包裹,0,mailman,1198,firefighter,9843,package,43448,mailman - firefighter,0,mailman - package,13,người đưa thư,,lính cứu hoả,,bưu kiện,,người đưa thư - lính cứu hoả,0,người đưa thư - bưu kiện,0
+pot1,湯鍋,327,平底鍋,593,長柄勺,0,湯鍋 - 平底鍋,22,湯鍋 - 長柄勺,0,pot,31864,pan,24011,ladle,506,pot - pan,167,pot - ladle,37,nồi,,chảo,,muôi,,nồi - chảo,27,nồi - muôi,0
+pot2,湯鍋,327,平底鍋,593,爐灶,1190,湯鍋 - 平底鍋,22,湯鍋 - 爐灶,0,pot,31864,pan,24011,stove,10567,pot - pan,167,pot - stove,438,nồi ,,chảo,,bếp,,nồi  - chảo,27,nồi  - bếp,77
+saw,鋸子,633,錘子,566,木板,5347,鋸子 - 錘子,13,鋸子 - 木板,13,saw,5722,hammer,11886,plank,4390,saw - hammer,147,saw - plank,15,cưa,,búa,,tấm ván,,cưa - búa,3,cưa - tấm ván,0
+sink,洗臉盆,388,浴缸,2293,肥皂,2602,洗臉盆 - 浴缸,30,洗臉盆 - 肥皂,0,sink,13890,bathtub,3729,soap,13244,sink - bathtub,78,sink - soap,102,chậu rửa tay,,bồn tắm,,xà phòng,,chậu rửa tay - bồn tắm,0,chậu rửa tay - xà phòng,0
+spider,蜘蛛,4286,蚱蜢,437,網,16296,蜘蛛 - 蚱蜢,9,蜘蛛 - 網,732,spider,10153,grasshopper,1549,web,85868,spider - grasshopper,6,spider - web,786,nhện,,châu chấu,,mạng nhện,,nhện - châu chấu,7,nhện - mạng nhện,0
+spoon1,勺,1353,長柄勺,0,碗,19167,勺 - 長柄勺,0,勺 - 碗,92,spoon,11385,ladle,506,bowl,60234,spoon - ladle,45,spoon - bowl,712,muỗng,,muôi,,chén,,muỗng - muôi,0,muỗng - chén,17
+sword,彎刀,549,匕首,2987,海盜,4479,彎刀 - 匕首,0,彎刀 - 海盜,5,sword,19580,dagger,3482,pirate,13368,sword - dagger,76,sword - pirate,34,kiếm,,dao găm,,cướp biển,,kiếm - dao găm,0,kiếm - cướp biển,0
+tent,帳篷,5797,小木屋,284,篝火,948,帳篷 - 小木屋,0,帳篷 - 篝火,23,tent,20170,cabin,19019,campfire,2372,tent - cabin,74,tent - campfire,21,lều trại,,chòi,,lửa trại,,lều trại - chòi,0,lều trại - lửa trại,0
+towel,毛巾,5682,手帕,3764,浴室,7658,毛巾 - 手帕,43,毛巾 - 浴室,198,towel,17122,handkerchief,3655,shower,24876,towel - handkerchief,3,towel - shower,165,khăn tắm,,khăn tay,,phòng tắm,,khăn tắm - khăn tay,0,khăn tắm - phòng tắm,0
+train,火車,23544,公交車,130,軌道,6610,火車 - 公交車,0,火車 - 軌道,277,train,50975,bus,58707,tracks,78828,train - bus,863,train - tracks,1213,tàu hoả,,xe buýt,,đường ray,,tàu hoả - xe buýt,0,tàu hoả - đường ray,0
+university,大學,185617,學校,172736,教授,62515,大學 - 學校,12386,大學 - 教授,21403,university,279132,school,660191,professor,102741,university - school,17898,university - professor,28433,đại học,,nhà trường,,giáo sư,,đại học - nhà trường,24,đại học - giáo sư,61
+doctor,醫生,44465,工程師,9773,醫院,187457,醫生 - 工程師,86,醫生 - 醫院,4223,doctor,163129,engineer,37679,hospital,127317,doctor - engineer,117,doctor - hospital,1802,bác sĩ,,kỹ sư,,bệnh viện,,bác sĩ - kỹ sư,9,bác sĩ - bệnh viện,212
+peach,桃,3886,李子,1029,果核,308,桃 - 李子,170,桃 - 果核,0,peach,8668,plum,4516,pit,17033,peach - plum,84,peach - pit,263,đào ,,mận,,hạt,,đào  - mận,16,đào  - hạt,0
