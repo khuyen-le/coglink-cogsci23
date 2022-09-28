@@ -10,13 +10,9 @@ author:
 
 affiliation:
   - id            : "1"
-    institution   : "Symbolic Systems Program"
+    institution   : "Psychology Department"
   - id            : "2"
-    institution   : "Stanford University"
-
-authornote: |
-    An honors thesis submitted to the program of Symbolic Systems of Stanford University in partial fulfillment of the requirements for the degree in Symbolic Systems. 
-    Honors Student: Khuyen Le. Honors Advisor: Mike Frank. Second Reader: Alex Carstensen
+    institution   : "University of California, San Diego"
 
 abstract: |
   Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce variation in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related whereas Western cultures may bias similarity judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are equivalent across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and observing or hearing about cows and grass or cows and chickens more often could induce preferences for the relevant grouping and account for apparent differences in notions of similarity across contexts. 
@@ -44,33 +40,6 @@ output            : papaja::apa6_pdf
 
 ---
 
-\newpage
-To the Directors of the Program on Symbolic Systems:
-
-I certify that I have read the thesis of Khuyen Le in its final form for submission and have found it to be satisfactory for the degree of Bachelor of Science with Honors.
-
-Signed electronically
-
-06/04/2021
-
-Michael C. Frank
-
-Department of Psychology
-
-To the Directors of the Program on Symbolic Systems:
-
-I certify that I have read the thesis of Khuyen Le in its final form for submission and have found it to be satisfactory for the degree of Bachelor of Science with Honors.
-
-Signed electronically
-
-06/04/2021
-
-Alex Carstensen
-
-Department of Psychology
-
-\newpage
-  
 ```{r setup, echo = FALSE, include = FALSE}
 library("papaja")
 library("knitr") # for knitting things
@@ -317,7 +286,8 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 
 # Results
 ```{r combine corpus and behavior data, include = F}
-source("../2_combine/2_combine.Rmd")
+#source("../2_combine/2_combine.Rmd")
+df <- read.csv("../../data/data_USCNVN_ENZHVI.csv")
 ```
 
 ## Do we extend previous work reporting a preference for taxonomic matching in the US and thematic matching in Asia?
