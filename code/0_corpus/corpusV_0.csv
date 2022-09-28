@@ -1,0 +1,106 @@
+,Cue_renamed,Cue,Tax.match,Theme.match,tax.frequency,theme.frequency
+1,teacup,cốc trà,ly,ấm đun nước,0,0
+2,airplane1,máy bay,tàu thuỷ,phi công,0,65
+3,sailor,thuỷ thủ,phi công ,tàu thuỷ,0,0
+4,airplane2,máy bay,trực thăng ,trời,87,22
+5,seagull,hải âu,dơi,trời,0,0
+6,apple1,táo,dâu,cây,8,23
+7,apple2,táo,cam,giỏ,23,0
+8,axe,rìu,kéo,gốc cây,0,0
+9,baby,em bé,người lớn,bình,5,0
+10,monkey,khỉ,lừa,rừng,0,4
+11,bed,giường,ghế bành,gối,0,50
+12,crib,nôi,giường,em bé,7,3
+13,bee1,ong,bọ rùa,vườn,0,0
+14,bee2,ong,bướm,mật,4,60
+15,beer,bia,nước ép,tiệc,0,4
+16,chicken,gà,thiên nga,trứng,0,100
+17,pigeon,bồ câu,vịt,tổ,0,0
+18,cake,bánh kem,bánh quy,sinh nhật,0,4
+19,ball,bóng,xúc xắc,đứa trẻ,0,0
+20,boot,ủng,dép,bàn chân,0,0
+21,legs,chân,tay,quần,688,65
+22,bowl,chén,đĩa,súp,20,0
+23,bread,bánh mì,cơm,lò nướng,10,0
+24,spoon2,muỗng,nĩa,đường,9,29
+25,hair,tóc,râu,lược,31,24
+26,bullet,đạn,mũi tên,súng,0,101
+27,cactus,xương rồng,bụi rậm,cát,0,0
+28,car2,xe hơi,xe đạp,lốp,9,0
+29,car1,xe hơi,xe máy,đèn giao thông,13,0
+30,carrot,cà rốt,đậu,thỏ,8,0
+31,dog1,chó,mèo,dây xích,70,0
+32,dog2,chó,mèo,xương,70,5
+33,chain,xích,dây thừng,khoá,0,0
+34,chair,ghế,ghế đẩu,bàn,0,133
+35,chalk,phấn,bút lông,bảng đen,0,5
+36,chimney,ống khói,tường,lửa,0,0
+37,coat,áo khoác,áo len,dù,18,0
+38,dress,đầm,quần,móc quần áo,8,0
+39,jacket,áo khoác,áo len,mùa đông,18,17
+40,coconut,dừa,xoài,cây,13,64
+41,onion1,hành,cà chua,nông dân,29,0
+42,farmer,nông dân,người bán thịt,máy kéo,0,0
+43,goat,dê,nai,đồng cỏ,0,0
+44,cow2,bò,gà,cỏ,80,44
+45,squirrel,sóc,chuột,hạt dẻ ,3,3
+46,cow1,bò,lợn ,sữa,76,130
+47,sheep,cừu,dê,len,11,0
+48,grass,cỏ,lá,ngựa,70,15
+49,crayon,bút sáp,cọ,tranh vẽ,0,0
+50,crown,vương miện,mũ,hoàng hậu,0,0
+51,cup,cốc,đĩa lót tách ,cà phê,0,24
+52,teacher,giáo viên,cảnh sát,bàn,0,5
+53,door,cửa ra vào,cửa sổ,chìa khoá,18,0
+54,house,nhà,chòi,vườn,9,505
+55,piano,đàn pi-a-nô,sáo,bài hát,0,0
+56,trumpet,kèn,đàn vi-ô-lông,dàn nhạc,0,3
+57,frog,ếch,rùa,ao,3,0
+58,lilypad,bèo,hoa hồng,ao,0,8
+59,dust,bụi,tro,chổi,18,7
+60,elephant,voi,hươu cao cổ,vườn thú,0,0
+61,ring,nhẫn,dây chuyền,tay,13,43
+62,hand,bàn tay,bàn chân,vòng tay,46,0
+63,pencil,bút chì,bút bi,cục tẩy,0,0
+64,pen,bút chì,bút bi,giấy,0,6
+65,net,lưới,dây thừng,cá,0,59
+66,lake,hồ,suối,cá,44,111
+67,ocean2,biển,suối,thuyền,0,198
+68,flower,hoa,bụi rậm,lọ,0,52
+69,can,lon,chai,ống hút,3,0
+70,hammer,búa,cưa,đinh,3,5
+71,hat,mũ,vương miện,đầu,0,54
+72,helmet,mũ bảo hiểm,nón,xe máy,0,0
+73,soccer,bóng đá,quần vợt,khung thành,3,0
+74,horse,ngựa,lừa,yên ngựa,0,0
+75,school,trường,nhà thờ,học sinh,12,2270
+76,snow,tuyết,băng,núi,25,42
+77,kitchen,nhà bếp,phòng ngủ,tủ lạnh,17,4
+78,knight,hiệp sĩ,người lính,áo giáp,0,0
+79,lamp,đèn,đèn pin,bàn,5,26
+80,gloves,găng tay,quần đùi,ván trượt tuyết,0,0
+81,mountain,núi,vách đá,băng,9,7
+82,mouth,miệng,mũi,bàn chải đánh răng,55,0
+83,movie,phim,hoạt hình,đạo diễn,50,423
+84,notepad,tập,sách,cặp,140,0
+85,ocean1,biển,sông,cá voi,250,12
+86,onion2,hành,ớt,chảo,60,20
+87,oyster,con trai,con sò,ngọc trai,0,0
+88,watering can,bình tưới,xô,hoa,0,0
+89,pastry,bánh ngọt,bánh kem,thợ làm bánh,0,0
+90,penguin,chim cánh cụt,ngỗng,tuyết,0,0
+91,policeman,cảnh sát,giáo viên,nhà tù,0,5
+92,mailman,người đưa thư,lính cứu hoả,bưu kiện,0,0
+93,pot1,nồi,chảo,muôi,27,0
+94,pot2,nồi,chảo,bếp,27,77
+95,saw,cưa,búa,tấm ván,3,0
+96,sink,chậu rửa tay,bồn tắm,xà phòng,0,0
+97,spider,nhện,châu chấu,mạng nhện,7,0
+98,spoon1,muỗng,muôi,chén,0,17
+99,sword,kiếm,dao găm,cướp biển,0,0
+100,tent,lều trại,chòi,lửa trại,0,0
+101,towel,khăn tắm,khăn tay,phòng tắm,0,0
+102,train,tàu hoả,xe buýt,đường ray,0,0
+103,university,đại học,nhà trường,giáo sư,24,61
+104,doctor,bác sĩ,kỹ sư,bệnh viện,9,212
+105,peach,đào,mận,hạt,16,0

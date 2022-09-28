@@ -1,0 +1,91 @@
+---
+title: "preprocessing"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("ggplot2")
+library("tidyjson")
+library("gtools")
+library("dplyr")
+library(lme4)
+library(digest)
+library(lmerTest)
+```
+### Getting CN data
+```{r import data, warning=FALSE, eval=F}
+# read in raw data files
+#folder_path = "~/Triad/data_expt/data_M/"
+all_files <- list.files(path=folder_path, pattern="")
+
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(2, length(response_list), 2)]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+colnames <- c("subject", "trial_index", "rt", "trial_type", "stim_type", "cue", "top_opt", "bottom_opt", "responses", "variable_type")
+
+df <- data.frame()
+#reading each file within the range and append them to create one file
+for (f in all_files){
+  file_path = paste(folder_path, f, sep="")
+  result <- read_json(path = file_path, format = "infer")     # read the file
+  temp <- data.frame()
+  for (page in result[[2]][[1]]) { #iterating through each trial
+    #if (page["subject"] %in% exclude_subjects) { next }
+    if (page["trial_type"] == "survey-multi-choice") { #only triads
+
+       trials <- matrix(NA, nrow = length(page["options"][[1]]), ncol = length(colnames), 
+                        dimnames = list(NULL, colnames))
+       trials <- as.data.frame(trials)
+       
+       trials$top_opt <- lapply(page["options"][[1]], `[[`, 1)
+       trials$bottom_opt <- lapply(page["options"][[1]], `[[`, 2)
+       trials$stim_type <- page["stimulus_type"][[1]]
+       trials$cue <- page["prompt"][[1]]
+       
+       trials$responses <- split_responses(page["responses"])
+       
+       trials$subject <- page["subject"]
+       trials$trial_index <- page["trial_index"]
+       trials$rt <- page["rt"]
+       trials$trial_type <- page["trial_type"]
+       
+    } else {
+      trials <- as.data.frame(page)
+    }
+    temp <- smartbind(temp, select(trials, one_of(colnames)))
+  }
+  df <- smartbind(df, select(temp, one_of(colnames)))
+}
+
+anonymise <- function(data, cols_to_anon, algo = "sha256")
+{
+  if(!require(digest)) stop("digest package is required")
+  to_anon <- subset(data, select = cols_to_anon)
+  unname(apply(to_anon, 1, digest, algo = algo))
+}
+
+cols_to_anon <- c("subject")
+df$subject <- anonymise(df, cols_to_anon)
+
+#write.csv(df, "data_anon0115_full.csv")
+
+```
+
+```{r recoded a cue due to typo}
+df_raw <- df
+
+df <- df_raw %>%
+  mutate(responses = ifelse(responses == "锤子 ", "锤子", responses)) %>%
+  mutate(top_opt = ifelse(top_opt == "锤子 ", "锤子", top_opt)) %>%
+  mutate(bottom_opt = ifelse(bottom_opt == "锤子 ", "锤子", bottom_opt))
+
+write.csv(df, "data_M_0530.csv")
+
+```

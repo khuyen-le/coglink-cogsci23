@@ -1,0 +1,7 @@
+*.Rproj
+experiment/*test*
+experiment/old_experiment
+analysis/test*
+analysis/expt/raw_data
+.Rproj.user
+analysis/.Rproj.user/shared/notebooks/paths
