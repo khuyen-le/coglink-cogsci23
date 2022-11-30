@@ -1,0 +1,144 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+library("dplyr")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+
+```{r incorporate base freq}
+df <- read.csv("../../data/data_filler_USCNVN_ENZHVI.csv")
+```
+
+```{r correlation across China and US}
+df.resp_by_country <- df %>%
+  group_by(cue_id, country) %>%
+  summarize(emp_theme_prop = mean(responses_word1))
+
+df.resp_by_country <- pivot_wider(data = df.resp_by_country, 
+                                  names_from = country, 
+                                  values_from = emp_theme_prop)
+plotUSCN = ggplot(data = df.resp_by_country,
+                  mapping = aes(x = US, 
+                                y = China, 
+                                label = cue_id)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (US)", 
+        y = "Proportion Word1 Chosen (China)") + 
+   xlim(0, 1) + 
+   ylim(0, 1) + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+plotUSVN = ggplot(data = df.resp_by_country,
+                  mapping = aes(x = US, 
+                                y = Vietnam, 
+                                label = cue_id)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (US)", 
+        y = "Proportion Word1 Chosen (Vietnam)") + 
+   xlim(0, 1) + 
+   ylim(0, 1)  + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+plotCNVN = ggplot(data = df.resp_by_country,
+                  mapping = aes(x = Vietnam,
+                                y = China, 
+                                label = cue_id)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (Vietnam)", 
+        y = "Proportion Word1 Chosen (China)") + 
+   xlim(0, 1) + 
+   ylim(0, 1)  + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+corr.USCN = apa_print(cor.test(df.resp_by_country$US, 
+                  df.resp_by_country$China, na.rm=T))
+
+corr.USVN = apa_print(cor.test(df.resp_by_country$US, 
+                  df.resp_by_country$Vietnam, na.rm=T))
+
+corr.CNVN = apa_print(cor.test(df.resp_by_country$China, 
+                  df.resp_by_country$Vietnam, na.rm=T))
+```
+
+```{r warning = F, fig.width = 8, fig.cap="Correlation between proportion thematic chosen by US-China participants, US-Vietnam participants, and China-Vietnam participants. All three comparisons show strong correlation, suggesting a strong signal of universality across cultural contexts regarding similarity judgments"}
+plotUSCN + plotUSVN + plotCNVN +
+  plot_layout(ncol = 3)
+```
+
+```{r}
+df.cue_country_freq <- df %>%
+  group_by(cue_id, country, word1_match_frequency_prop_E, word1_match_frequency_prop_M, word1_match_frequency_prop_V) %>%
+  summarize(emp_word1_prop = mean(responses_word1))
+ggplot(data = df.cue_country_freq %>% filter(country == "US"), 
+        mapping = aes(x = emp_word1_prop, 
+                     y = word1_match_frequency_prop_E,
+                     label = cue_id)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (US)", 
+        y = "Proportion Word1 Predicted (English)") + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+ggplot(data = df.cue_country_freq %>% filter(country == "Vietnam"), 
+        mapping = aes(x = emp_word1_prop, 
+                     y = word1_match_frequency_prop_V,
+                     label = cue_id)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (VN)", 
+        y = "Proportion Word1 Predicted (Vietnamese)") + 
+  theme(axis.title = element_text(size=rel(0.75)))
+```
+# Does lexical co-occurrences for fillers in English predict US responding? 
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_word1 ~ word1_match_frequency_prop_E + (1 | subject) + (1 | cue), 
+          data = df %>% filter(country == "US", 
+                               !(near(word1_match_frequency_E, .Machine$double.eps) & 
+                                  near(word2_match_frequency_E, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+
+fit.EN_US.anova
+```
+# Does lexical co-occurrences for fillers in Vietnamese predict VN responding? 
+```{r VN responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# Vietnamese
+fit.VI_VN = glmer(responses_word1 ~ word1_match_frequency_prop_V + (1 | subject) + (1 | cue), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(near(word1_match_frequency_V, .Machine$double.eps) & 
+                                  near(word2_match_frequency_V, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.VI_VN, type = 3)
+
+fit.VI_VN.anova
+```

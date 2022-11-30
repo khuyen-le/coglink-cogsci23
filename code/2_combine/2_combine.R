@@ -5,6 +5,7 @@ library("car")
 library("lme4")
 library("patchwork")
 library("effsize")
+library("here")
 
 # Seed for random number generation-----
 set.seed(42)
@@ -12,17 +13,17 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 
 #loading responding data --------
-df.resp_E <- read.csv("../../data/dataUS_excl.csv") %>%
+df.resp_E <- read.csv(paste(here(), "/data/responding/dataUS_excl.csv", sep = "")) %>%
   select(-X)
 
-df.resp_V <- read.csv("../../data/dataVN_excl.csv") %>%
+df.resp_V <- read.csv(paste(here(), "/data/responding/dataVN_excl.csv", sep = "")) %>%
   select(-X)
 
-df.resp_M <- read.csv("../../data/dataCN_excl.csv") %>%
+df.resp_M <- read.csv(paste(here(), "/data/responding/dataCN_excl.csv", sep = "")) %>%
   select(-X)
 
 #loading corpus data ---------
-df.corpus_E <- read.csv("../../data/corpus/corpusE.csv") %>%
+df.corpus_E <- read.csv(paste(here(), "/data/corpus/corpusE.csv", sep = "")) %>%
   rename(tax_frequency_E = tax.frequency,
          theme_frequency_E = theme.frequency,
          tax_cosine_E = Tax.cosine_dist, 
@@ -33,7 +34,7 @@ df.corpus_E <- read.csv("../../data/corpus/corpusE.csv") %>%
          theme_match_E = Theme.match, 
          cue_E = Cue)
 
-df.corpus_V <- read.csv("../../data/corpus/corpusV.csv") %>%
+df.corpus_V <- read.csv(paste(here(), "/data/corpus/corpusV.csv", sep = "")) %>%
   rename(tax_frequency_V = tax.frequency,
          theme_frequency_V = theme.frequency,
          tax_cosine_V = Tax.cosine_dist, 
@@ -44,7 +45,7 @@ df.corpus_V <- read.csv("../../data/corpus/corpusV.csv") %>%
          theme_match_V = Theme.match, 
          cue_V = Cue)
 
-df.corpus_M <- read.csv("../../data/corpus/corpusM.csv") %>%
+df.corpus_M <- read.csv(paste(here(), "/data/corpus/corpusM.csv", sep = "")) %>%
   rename(tax_frequency_M = tax.frequency,
          theme_frequency_M = theme.frequency,
          tax_cosine_M = Tax.cosine_dist, 
@@ -187,3 +188,4 @@ df <- rbind(df, df.triad_M) %>%
 # write csv file -------
 df_main_analysis <- df #keep a copy of df in case exploratory analysis changes it
 write.csv(df_main_analysis, "../../data/data_USCNVN_ENZHVI.csv")
+write.csv(triads_omit, "../../data/triads_omit.csv")

@@ -1,0 +1,59 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+```
+
+```{r get association strengths and triad information}
+df.assoc = read_delim("../../data/assoc_strengths.csv",delim='\t',quote = '',escape_backslash = F,escape_double = F) %>%
+  select(cue, response, R123.Strength) %>%
+  rename(assoc_strength = R123.Strength)
+df.triad_E = read.csv("../../data/corpus/corpusE.csv") %>% 
+  select(Cue_renamed, Cue, Tax.match, Theme.match) %>%
+  rename(triad = Cue_renamed, 
+         cue = Cue, 
+         tax_match_E = Tax.match, 
+         theme_match_E = Theme.match)
+
+df.filler_E = read.csv("../../data/corpus/corpusEMV_filler.csv") %>% 
+  select(Cue_renamed, Cue, Tax.match, Theme.match) %>%
+  rename(triad = Cue_renamed, 
+         cue = Cue, 
+         tax_match_E = Tax.match, 
+         theme_match_E = Theme.match)
+```
+
+```{r combine association strength and triad information}
+df.triad_assoc <- left_join(df.triad_E, df.assoc,
+                            by = c('cue'='cue', 'tax_match_E'='response')) %>%
+  rename(tax_match_assoc_strength_E = assoc_strength)
+
+df.triad_assoc <- left_join(df.triad_assoc, df.assoc,
+                            by = c('cue'='cue', 'theme_match_E'='response')) %>%
+  rename(theme_match_assoc_strength_E = assoc_strength)
+
+#write.csv(df.triad_assoc, "../../data/corpus/corpusE_assoc_strength.csv", row.names = FALSE)
+```
+
+```{r}
+triad_omit <- df.triad_assoc %>%
+  filter(is.na(tax_match_assoc_strength_E) & is.na(theme_match_assoc_strength_E))
+#write.csv(triad_omit$triad, "../../data/triads_omit_assoc.csv", row.names = FALSE)
+```
+
+```{r combine association strength data with responding data}
+df = read.csv("../../data/data_USCNVN_ENZHVI.csv") %>%
+  select(-X)
+
+#df.triad_assoc <- read.csv("../../data/corpus/corpusE_assoc_strength.csv") %>%
+#  select(-X)
+
+df <- left_join(df, df.triad_assoc, 
+                by = c("cue", "triad", "tax_match_E", "theme_match_E"))
+
+write.csv(df, "../../data/data_USCNVN_ENZHVI_assoc_strength.csv", row.names = F)
+```

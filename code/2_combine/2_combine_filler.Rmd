@@ -1,0 +1,122 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r loading data E, warning=FALSE, include=F}
+df.resp_E <- read.csv("../../data/responding/dataUS_excl.csv") %>%
+  select(-X)
+```
+
+```{r loading data V, include=F}
+df.resp_V <- read.csv("../../data/responding/dataVN_excl.csv") %>%
+  select(-X)
+```
+
+```{r loading data M, warning=FALSE, include=F}
+df.resp_M <- read.csv("../../data/responding/dataCN_excl.csv") %>%
+  select(-X)
+```
+ 
+```{r corpus filler just English, include = F}
+df.corpus_filler <- read.csv("../../data/corpus/corpusEMV_filler.csv") %>%
+  select(ends_with("_E") | ends_with("_M") | ends_with("_V")) %>%
+  mutate(cue_id = cue_E)
+```
+
+```{r corpus - frequency, include = F}
+#find triads_omit, used whenever analysis uses raw collocates 
+corpus_E_omit <- df.corpus_filler %>% 
+  filter(word1_match_frequency_E == 0 & word2_match_frequency_E == 0) # = 0 so no need to do this.
+```
+
+```{r full corpus, include=F}
+#replacing any 0 raw counts with epsilon
+df.corpus_filler <- df.corpus_filler %>%
+    mutate(across(contains("frequency") , 
+                  ~ ifelse(. == 0, .Machine$double.eps, .)))
+```
+
+```{r getting triads from the 3 languages, include = F}
+#combine response and corpus data
+df.filler_E <- df.resp_E %>%
+  filter(stim_type == "filler",
+         responses != "NA") %>%
+  select(-variable_type, -trial_index, -trial_type, -stim_type) %>%
+  mutate(language = "English", 
+         country = "US")
+
+df.filler_E <- left_join(df.filler_E, df.corpus_filler, 
+                         by = c("cue" = "cue_E"), 
+                         keep = TRUE)
+
+df.filler_E <- df.filler_E %>%
+  mutate(responses_word1 = ifelse(responses == word1_E, 1, 0))
+
+
+```
+
+```{r}
+df.filler_M <- df.resp_M %>%
+  filter(stim_type == "filler",
+         responses != "NA") %>%
+  select(-variable_type, -trial_index, -trial_type, -stim_type) %>%
+  mutate(language = "Mandarin", 
+         country = "China")
+
+df.filler_M <- inner_join(df.filler_M, df.corpus_filler, 
+                          by = c("cue" = "cue_M"), keep = TRUE)
+
+df.filler_M <- df.filler_M %>%
+  mutate(responses_word1 = ifelse(responses == word1_M, 1, 0))
+```
+
+```{r}
+df.filler_V <- df.resp_V %>%
+  filter(stim_type == "filler",
+         responses != "NA") %>%
+  select(-variable_type, -trial_index, -trial_type, -stim_type) %>%
+  mutate(language = "Vietnamese", 
+         country = "Vietnam")
+
+df.filler_V <- inner_join(df.filler_V, df.corpus_filler, 
+                          by = c("cue" = "cue_V"), keep = TRUE)
+
+df.filler_V <- df.filler_V %>%
+  mutate(responses_word1 = ifelse(responses == word1_V, 1, 0))
+```
+
+```{r}
+df <- rbind(df.filler_E, df.filler_M)
+df <- rbind(df, df.filler_V)
+
+df <- df %>%
+  mutate(word1_match_frequency_prop_E = 
+           word1_match_frequency_E / (word1_match_frequency_E + word2_match_frequency_E),
+         word1_match_frequency_prop_M = 
+           word1_match_frequency_M / (word1_match_frequency_M + word2_match_frequency_M),
+         word1_match_frequency_prop_V = 
+           word1_match_frequency_V / (word1_match_frequency_V + word2_match_frequency_V))
+
+write.csv(df, "../../data/data_filler_USCNVN_ENZHVI.csv")
+```

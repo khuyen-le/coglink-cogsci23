@@ -1,0 +1,434 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+library("emmeans")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r combine corpus and behavior data, include = F}
+source("../2_combine/2_combine.R") # include triad_omits. TODO: Find a way to also save this.
+```
+
+```{r loading in the csv with direction so we dont need to go through the previous section, include =F}
+df <- read.csv("../../data/data_USCNVN_ENZHVI_direction.csv")
+```
+
+```{r loading in the csv with semantic coding, include =F}
+df.sem_code <- read.csv("../../data/corpus/corpus_sem_coding.csv")
+
+df <- df %>%
+  left_join(df.sem_code, by = "triad")
+```
+
+## Do people make more thematic matches for certain semantic groups of cue?
+
+Plotting mean response theme by country, by type of triad
+```{r plotting thematic responses by cue_genre}
+
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = cue_genre, 
+                          y = responses_theme)) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = cue_genre, 
+                          y = responses_theme))
+
+```
+
+```{r plotting thematic response by cue_genre and country}
+ggplot(data = df,
+       mapping = aes(x = cue_genre, 
+                     y = responses_theme,
+                     color = country, 
+                     fill = country)) + 
+   stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") 
+#color code by cue genre, spatial sep by country, plotting all triads (mean response)
+
+```
+
+```{r plotting thematic response by cue_genre, country and triad}
+ggplot(data = df, 
+       mapping = aes(x = country, 
+                     y = responses_theme, 
+                     label = triad, 
+                     group = triad,
+                     color = cue_genre)) + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "point", 
+               alpha = .5, 
+               position = position_dodge(width = .2)) + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "text", 
+               position = position_dodge(width = .2), size = 2)
+```
+
+There seems to be a clear preference for more thematic matches in the 'living things' cues in comparison to the 'moveable artifacts' cue. (need to omit cue_genre = "other")
+
+Comparing some models:
+Q: SHOULD we look at a model where responses theme is predicted by genre?
+
+### English
+Base line model:
+
+```{r US responding predicted by corpus co-occurrences, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+```
+
+Adding cue genre: significant
+
+```{r US responding, co-occurrence and cue_genre}
+fit.EN_US_cue_genre = glmer(responses_theme ~ theme_freq_prop_E + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.EN_US_cue_genre)
+Anova(fit.EN_US_cue_genre, type = 3)
+```
+
+Anova comparison: including cue genre is a better model
+```{r US anova comparison, cue_genre}
+fit.EN_US_cue_genre_compare = anova(fit.EN_US, fit.EN_US_cue_genre, type = 3)
+fit.EN_US_cue_genre_compare
+```
+### Vietnamese
+
+```{r VN responding predicted by VN corpus model, warning=FALSE}
+
+#Vietnamese
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.VI_VN, type = 3)
+```
+
+Adding cue genre: NOT significant
+
+```{r VN responding, co-occurrence + cue_genre}
+fit.VI_VN_cue_genre = glmer(responses_theme ~ theme_freq_prop_V + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.VI_VN_cue_genre)
+Anova(fit.VI_VN_cue_genre, type = 3)
+```
+
+Anova comparison (also not significant)
+```{r VN anova comparison, cue_genre}
+fit.VI_VN_cue_genre_compare = anova(fit.VI_VN, fit.VI_VN_cue_genre, type = 3)
+fit.VI_VN_cue_genre_compare
+```
+
+### Mandarin
+```{r CN responding predicted by co-occurrences, warning=FALSE}
+#Mandarin
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.ZH_CN)
+fit.ZH_CN.anova = Anova(fit.ZH_CN, type = 3)
+```
+
+Adding cue genre: significant
+
+```{r CN responding, co-occurrences + cue_genre}
+fit.ZH_CN_cue_genre = glmer(responses_theme ~ theme_freq_prop_M + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.ZH_CN_cue_genre)
+Anova(fit.ZH_CN_cue_genre, type = 3)
+```
+Anova comparison: including cue genre is a better model
+```{r CN anova comparison,cue_genre}
+fit.ZH_CN_cue_genre_compare = anova(fit.ZH_CN, fit.ZH_CN_cue_genre, type = 3)
+fit.ZH_CN_cue_genre_compare
+```
+
+When added to the baseline model, cue genre is a significant predictor for US and China responses. But not for Vietnam.
+
+### More general models that predict thematic response based on cue genre
+NOT significant when just predicted by cue_genre.
+```{r responding predicted only on cue genre, warning=FALSE}
+fit.cue_genre = glmer(responses_theme ~ cue_genre + (1 | subject) + (1 | triad),
+          data = df %>% filter(!(cue_genre == "other")),  
+          # no need to pull out triads_omit because we're not using the raw coocurrences
+          family="binomial")
+summary(fit.cue_genre)
+fit.cue_genre.anova = Anova(fit.cue_genre, type = 3)
+fit.cue_genre.anova
+```
+
+NOT significant when predicted by country and cue_genre (only country is significant)
+```{r responding predicted on cue genre and country, warning=FALSE}
+fit.cue_genre_country = glmer(responses_theme ~ country + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(cue_genre == "other")),  
+          # no need to pull out triads_omit because we're not using the raw coocurrences
+          family="binomial")
+summary(fit.cue_genre_country)
+fit.cue_genre_country.anova = Anova(fit.cue_genre_country, type = 3)
+fit.cue_genre_country.anova
+```
+
+NO interaction between country and cue genre either. 
+```{r responding predicted on cue genre and country, with interaction, warning=FALSE}
+fit.cue_genre_country_int = glmer(responses_theme ~ country + cue_genre + country * cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(cue_genre == "other")),  
+          # no need to pull out triads_omit because we're not using the raw coocurrences
+          family="binomial")
+summary(fit.cue_genre_country_int)
+fit.cue_genre_country_int.anova = Anova(fit.cue_genre_country_int, type = 3)
+fit.cue_genre_country_int.anova
+```
+
+NOT significance even with country having random slope and intercept for cue_genre. 
+
+```{r responding predicted on cue genre and country, with random intercept and slope by country, warning=FALSE}
+fit.cue_genre_country_slope = glmer(responses_theme ~ country + cue_genre + (cue_genre | country) + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(cue_genre == "other")),  
+          # no need to pull out triads_omit because we're not using the raw co-ocurrences
+          family="binomial")
+summary(fit.cue_genre_country_slope)
+fit.cue_genre_country_slope.anova = Anova(fit.cue_genre_country_slope, type = 3)
+fit.cue_genre_country_slope.anova
+```
+
+## Do people make more thematic matches for certain semantic groups of thematic relationships?
+
+Plotting mean response theme by country, by type of thematic match
+```{r plotting thematic responses by theme_genre}
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme)) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme)) +
+  geom_hline(yintercept = 0.5)
+
+```
+```{r plotting thematic responses by theme_genre and country}
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme, 
+                          fill = country), 
+            position = position_dodge(width = .7), width = .7) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme,
+                          group = country), 
+            position = position_dodge(width = .7)) +
+  geom_hline(yintercept = 0.5)
+#color code by cue genre, spatial sep by country, plotting all triads (mean response)
+
+```
+
+```{r plotting thematic response by country, triad and theme_genre}
+ggplot(data = df, 
+       mapping = aes(x = country, 
+                     y = responses_theme, 
+                     label = triad, 
+                     group = triad)) + 
+  geom_point(stat = "summary", 
+             fun.data = "mean_cl_boot", 
+             position = position_dodge(width = .7)) +
+  geom_text(stat = "summary", 
+            fun.data = "mean_cl_boot", 
+            color = alpha('black'),
+            position = position_dodge(width = .7), size = 2) +
+  geom_violin(data = df %>% 
+                group_by(country, theme_genre, triad) %>%
+                summarize(theme_resp_triad = mean(responses_theme, na.rm = T)), 
+                mapping = aes(x = country,
+                              y = theme_resp_triad, 
+                              group = country,
+                              fill = country,
+                              color = country), 
+                alpha = .5) + 
+  facet_grid(~theme_genre)
+
+
+
+# geom_point(data = df %>% filter(theme_genre == 'ecology'),
+#            mapping = aes(x = country,
+#                    y = responses_theme,
+#                    label = triad,
+#                    group = triad,
+#                    color = theme_genre),
+#            stat = "summary",
+#            fun.data = "mean_cl_boot",
+#            position = position_dodge(width =.7))
+  
+  
+
+```
+
+1. All theme match semantic categories prefer thematic, except for association.
+2. China is always the most thematic in all theme match semantic categories. Only country that prefers thematic across all categories. 
+3. Only US & Vietnam + association prefer taxonomic. Overall, association seems to be least thematic preferring.
+4. Vietnam is not significantly different from US except for ecology. 
+5. Most thematic: causal (but might be driven by strong China response) and occupation (most consistent across countries to be thematic).
+
+
+### English
+Base line model:
+
+```{r US responding predicted by corpus co-occurrences re-run for theme_genre, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+```
+
+Adding theme genre: NOT significant (p = 0.08)
+
+```{r US responding, co-occurrence and theme_genre}
+fit.EN_US_theme_genre = glmer(responses_theme ~ theme_freq_prop_E + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.EN_US_theme_genre)
+Anova(fit.EN_US_theme_genre, type = 3)
+```
+
+Anova comparison: including theme genre is NOT a better model
+```{r US anova comparison, theme_genre}
+fit.EN_US_theme_genre_compare = anova(fit.EN_US, fit.EN_US_theme_genre, type = 3)
+fit.EN_US_theme_genre_compare
+```
+### Vietnamese
+
+```{r VN responding predicted by VN corpus model re-run for theme_genre, warning=FALSE}
+
+#Vietnamese
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.VI_VN, type = 3)
+```
+
+Adding theme genre: significant (p < 0.05)
+
+```{r VN responding, co-occurrence + theme_genre}
+fit.VI_VN_theme_genre = glmer(responses_theme ~ theme_freq_prop_V + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.VI_VN_theme_genre)
+Anova(fit.VI_VN_theme_genre, type = 3)
+```
+
+Anova comparison: significant
+```{r VN anova comparison, theme_genre}
+fit.VI_VN_theme_genre_compare = anova(fit.VI_VN, fit.VI_VN_theme_genre, type = 3)
+fit.VI_VN_theme_genre_compare
+```
+
+### Mandarin
+```{r CN responding predicted by co-occurrences re-run for theme_genre, warning=FALSE}
+#Mandarin
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.ZH_CN)
+fit.ZH_CN.anova = Anova(fit.ZH_CN, type = 3)
+```
+
+Adding theme genre: NOT significant (p = 0.12)
+
+```{r CN responding, co-occurrences + theme_genre}
+fit.ZH_CN_theme_genre = glmer(responses_theme ~ theme_freq_prop_M + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.ZH_CN_theme_genre)
+Anova(fit.ZH_CN_theme_genre, type = 3)
+```
+Anova comparison: including theme genre is a better model
+```{r CN anova comparison, theme_genre}
+fit.ZH_CN_theme_genre_compare = anova(fit.ZH_CN, fit.ZH_CN_theme_genre, type = 3)
+fit.ZH_CN_theme_genre_compare
+```
+
+When added to the baseline model, theme genre is a significant predictor for Vietnam response, but not for US and China!
+
+```{r summary of semantic coding result}
+text_tbl <- data.frame(
+  Country = c("US", "China", "Vietnam"),
+  Add_Cue_Genre = c(
+    "significant", "significant", "not significant"
+  ), 
+  Add_Theme_Genre = c(
+    "not significant", "not significant", "significant"
+  )
+)
+kable(text_tbl)
+```
+

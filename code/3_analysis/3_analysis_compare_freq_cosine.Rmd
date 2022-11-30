@@ -1,0 +1,95 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+library("Hmisc")
+library("dplyr")
+
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r read in data}
+df <- read.csv("../../data/data_USCNVN_ENZHVI.csv")
+triads_omit_freq <- read.csv("../../data/triads_omit.csv") %>%
+  pull(x)
+```
+
+# Comparing between 2 models for US repsonding
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(near(theme_frequency_E, .Machine$double.eps) & 
+                                  near(tax_frequency_E, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+
+fit.EN_US.anova
+
+fit.EN_US_cos = glmer(responses_theme ~ theme_cosine_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(near(theme_match_frequency_E, .Machine$double.eps) & 
+                                  near(tax_match_frequency_E, .Machine$double.eps))), 
+          
+          family="binomial")
+summary(fit.EN_US_cos)
+fit.EN_US_cos.anova = Anova(fit.EN_US_cos, type = 3)
+fit.EN_US_cos.anova
+
+fit.EN_US_compare_freq_cos = anova(fit.EN_US, fit.EN_US_cos, type = 3)
+fit.EN_US_compare_freq_cos
+
+```
+
+
+# Comparing between 2 models for VN responding
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# Vietnamese 
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(near(theme_frequency_V, .Machine$double.eps) & 
+                                  near(tax_frequency_V, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.EN_US, type = 3)
+
+fit.VI_VN.anova
+
+fit.VI_VN_cos = glmer(responses_theme ~ theme_cosine_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(near(theme_frequency_V, .Machine$double.eps) & 
+                                  near(tax_frequency_V, .Machine$double.eps))),  
+          
+          family="binomial")
+summary(fit.VI_VN_cos)
+fit.VI_VN_cos.anova = Anova(fit.VI_VN_cos, type = 3)
+fit.VI_VN_cos.anova
+
+fit.VI_VN_compare_freq_cos = anova(fit.VI_VN, fit.VI_VN_cos, type = 3)
+fit.VI_VN_compare_freq_cos
+
+```
+

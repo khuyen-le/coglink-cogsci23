@@ -1,0 +1,468 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+
+```{r get responses and demographics, eval=F, include = F}
+df.response <- read.csv("../../data/data_USCNVN_ENZHVI.csv") %>%
+  select(-X, -country)
+df.demog <- read.csv("../../data/responding/data_demog.csv") %>%
+  select(-X) %>%
+  mutate(country = case_when(
+    country == "CN" ~ "China",
+    country == "VN" ~ "Vietnam", 
+    country == "US" ~ "US",
+    TRUE ~ country
+  ))
+```
+
+```{r get cleaned demographics}
+us_regions <- read_csv("../../data/us_regions.csv")
+cn_regions <- read_csv("../../data/cn_regions.csv")
+
+df.demog_cleaned <- df.demog %>%
+  mutate(demog_response = case_when(
+    demog_response %in% c("男性", "Nam") ~ "Male",
+    demog_response %in% c("女性", "Nữ") ~ "Female",
+    demog_response %in% c("非二元性别者", "Phi nhị nguyên giới / Phi nhị giới") ~ "Non-binary",
+    demog_response %in% c("拒绝回答", "Từ chối trả lời ") ~ "Decline to answer",
+    TRUE ~ demog_response
+  )) %>% 
+  mutate(demog_response = case_when(
+    demog_response %in% c("是", "Đúng") ~ "Yes",
+    demog_response %in% c("否", "Không") ~ "No",
+    TRUE ~ demog_response
+  )) %>% 
+  #oversea experiences
+  mutate(demog_response = case_when(
+    demog_response %in% c("没有国际经历", "Chưa lần nào") ~ "No experiences",
+    demog_response %in% c("一段国际经历", "1 lần") ~ "One experience",
+    demog_response %in% c("两段国际经历", "2 lần") ~ "Two experiences",
+    demog_response %in% c("三到五段国际经历", "3-5 lần") ~ "Three to five experiences",
+    demog_response %in% c("六段或更多国际经历", "6 lần trở lên") ~ "Six or more experiences", 
+    TRUE ~ demog_response
+  )) %>% 
+  mutate(demog_response = case_when(
+    demog_response == "No experiences" ~ "0", 
+    demog_response ==  "One experience" ~ "1",
+    demog_response == "Two experiences" ~ "2",
+    demog_response ==  "Three to five experiences" ~ "3",
+    demog_response ==  "Six or more experiences" ~ "4", 
+    
+    demog_response %in% c('8th grade/junior high or less', 
+                          "九年级/初中及以下", 
+                          "Lớp 9 / Trung học Cơ sở trở xuống") ~ "0",
+      
+    demog_response %in% c('Some high school', 
+                           "上过一部分高中", 
+                          "Một phần Trung học Phổ thông") ~ "1",
+      
+    demog_response %in% c('High school graduate/GED', 
+                          "普通高中或职业高中毕业/高中等级学历", 
+                          "Tốt nghiệp Trung học Phổ thông") ~"2",
+    
+    demog_response %in% c('One or more years of college, no degree', 
+                          "一年或多年大学教育，无学位", 
+                          "Một hoặc nhiều năm học Đại học, chưa tốt nghiệp") ~ "3",
+    
+    demog_response %in% c('Two-year college degree/vocational school', 
+                          "大专学历") ~ "4", # not asked in vietnamese because not applicable.
+    
+    demog_response %in% c("Four-/Five-year college Bachelor's degree", 
+                          "四年/五年制大学本科学位", 
+                          "Tốt nghiệp Đại học") ~ "5", 
+    
+     demog_response %in% c("At least some graduate school", 
+                          "有过一些研究生经历", 
+                          "Có kinh nghiệm học cao học") ~ "6", 
+    
+    TRUE ~ demog_response
+  )) 
+toneless_dict <- pinyin::pydic("toneless")
+df.demog_cleaned <- df.demog_cleaned %>%
+  mutate(demog_response = case_when(
+    country == "China" & demog_question == "state_grewup" ~ 
+      as.character(pinyin::py(demog_response, toneless_dict, sep = "", other_replace = NULL)), 
+    TRUE ~ demog_response
+  )) %>% 
+  mutate(demog_response = case_when(
+    demog_response == "hena" ~ "Henan",
+    demog_response == "jita" ~ "Others",
+    demog_response == "haina" ~ "Hainan",
+    demog_response == "huna" ~ "Hunan",
+    demog_response == "andong" ~ "Guangdong",
+    demog_response == "namenggu" ~ "Inner Mongolia",
+    demog_response == "jinghai" ~ "Qinghai",
+    demog_response == "angxi" ~ "Guangxi",
+    demog_response == "anxi" ~ "Guangxi",
+    demog_response == "yunna" ~ "Yunnan",
+    demog_response == "山西" ~ "Shanxi",
+    demog_response == "宁夏" ~ "Ningxia",
+    demog_response == "陕西" ~ "Shaanxi",
+    TRUE ~ str_to_title(demog_response)
+  )) %>%
+  pivot_wider(names_from = "demog_question", values_from = "demog_response")
+
+df.demog_cleaned <- df.demog_cleaned %>%
+  left_join(us_regions %>% 
+              select(Region, Coast, State), by = c("state_grewup" = "State")
+            ) %>% 
+  left_join(cn_regions %>% 
+              select(PercentPaddy, RiceCat, Province), 
+            by = c("state_grewup" = "Province")) %>% 
+    janitor::clean_names() %>% 
+   mutate(rice_cat = case_when(rice_cat == 1 ~ "wheat", 
+                              rice_cat == 2 ~ "rice"))
+```
+
+
+```{r}
+df <- left_join(df.response, df.demog_cleaned, by = "subject") %>%
+  mutate(age = as.numeric(as.character(age))) %>%
+  mutate(objectiveses = as.numeric(as.character(objectiveses))) %>%
+  mutate(subjectiveses = as.numeric(as.character(subjectiveses)))
+  
+
+triads_omit <- read.csv("../../data/triads_omit.csv")
+```
+
+# Age Effect
+```{r age effect}
+ggplot(df %>%
+         group_by(subject, age, country) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = age, y = responses_theme_mean, color = country)) +
+  geom_point() + 
+  facet_grid(~country)
+```
+
+### English
+```{r US responding predicted by age, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.EN_US_age = glmer(responses_theme ~ theme_freq_prop_E + age + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US_age)
+fit.EN_US_age.anova = Anova(fit.EN_US_age, type = 3)
+fit.EN_US_age.anova
+
+anova(fit.EN_US, fit.EN_US_age)
+```
+
+### Mandarin
+```{r CN responding predicted by age, warning=FALSE}
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.ZH_CN_age = glmer(responses_theme ~ theme_freq_prop_M + age + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_age)
+fit.ZH_CN_age.anova = Anova(fit.ZH_CN_age, type = 3)
+fit.ZH_CN_age.anova
+
+anova(fit.ZH_CN, fit.ZH_CN_age)
+```
+
+### Vietnamese
+```{r VN responding predicted by age, warning=FALSE}
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.VI_VN_age = glmer(responses_theme ~ theme_freq_prop_V + age + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN_age)
+fit.VI_VN_age.anova = Anova(fit.VI_VN_age, type = 3)
+fit.VI_VN_age.anova
+
+anova(fit.VI_VN, fit.VI_VN_age)
+```
+No effect of age when added to the base model of all cultures.
+
+# Gender Effect
+```{r gender effect}
+ggplot(df %>%
+         group_by(subject, gender, country) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = gender, y = responses_theme_mean, fill = country)) +
+  stat_summary(fun.y = mean, geom = "bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5) + 
+  facet_grid(~country)
+```
+
+### English
+```{r US responding predicted by gender, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit), 
+                               gender != "Decline to answer"), 
+          family="binomial")
+
+fit.EN_US_gender = glmer(responses_theme ~ theme_freq_prop_E + gender + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit),
+                               gender != "Decline to answer"), 
+          family="binomial")
+summary(fit.EN_US_gender)
+fit.EN_US_gender.anova = Anova(fit.EN_US_gender, type = 3)
+fit.EN_US_gender.anova
+
+anova(fit.EN_US, fit.EN_US_gender)
+```
+
+### Mandarin
+```{r CN responding predicted by gender, warning=FALSE}
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit),
+                               gender != "Decline to answer"), 
+          family="binomial")
+
+fit.ZH_CN_gender = glmer(responses_theme ~ theme_freq_prop_M + gender + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit),
+                               gender != "Decline to answer"), 
+          family="binomial")
+summary(fit.ZH_CN_gender)
+fit.ZH_CN_gender.anova = Anova(fit.ZH_CN_gender, type = 3)
+fit.ZH_CN_gender.anova
+
+
+anova(fit.ZH_CN, fit.ZH_CN_gender)
+```
+
+### Vietnamese
+```{r VN responding predicted by gender, warning=FALSE}
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit),
+                               gender != "Decline to answer"), 
+          family="binomial")
+
+fit.VI_VN_gender = glmer(responses_theme ~ theme_freq_prop_V + gender + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit),
+                               gender != "Decline to answer"), 
+          family="binomial")
+summary(fit.VI_VN_gender)
+fit.VI_VN_gender.anova = Anova(fit.VI_VN_gender, type = 3)
+fit.VI_VN_gender.anova
+
+anova(fit.VI_VN, fit.VI_VN_gender)
+```
+
+No effects of gender either.
+
+# Rice / wheat areas
+
+```{r, warning = FALSE}
+ggplot(df %>%
+         filter(country == "China") %>%
+         group_by(subject, rice_cat) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = rice_cat, y = responses_theme_mean, fill = rice_cat)) +
+  stat_summary(fun.y = mean, geom = "bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5)
+```
+```{r CN responding predicted by rice/wheat, warning=FALSE}
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.ZH_CN_ricewheat = glmer(responses_theme ~ theme_freq_prop_M + rice_cat + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_ricewheat)
+fit.ZH_CN_ricewheat.anova = Anova(fit.ZH_CN_ricewheat, type = 3)
+fit.ZH_CN_ricewheat.anova
+anova(fit.ZH_CN, fit.ZH_CN_ricewheat)
+
+fit.ZH_CN_paddy = glmer(responses_theme ~ theme_freq_prop_M + percent_paddy + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_paddy)
+fit.ZH_CN_paddy.anova = Anova(fit.ZH_CN_paddy, type = 3)
+fit.ZH_CN_paddy.anova
+anova(fit.ZH_CN, fit.ZH_CN_paddy)
+```
+
+No effect of rice/wheat, or percentage paddy.
+
+# US Regions
+```{r, warning = FALSE}
+ggplot(df %>%
+         filter(country == "US") %>%
+         group_by(subject, region, coast) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = region, y = responses_theme_mean, fill = region)) +
+  stat_summary(fun.y = mean, geom = "bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5)
+
+ggplot(df %>%
+         filter(country == "US") %>%
+         group_by(subject, region, coast) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = coast, y = responses_theme_mean, fill = coast)) +
+  stat_summary(fun.y = mean, geom = "bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5)
+```
+
+```{r US responding predicted by region, warning=FALSE}
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit),
+                               !is.na(region)), 
+          family="binomial")
+
+fit.EN_US_region = glmer(responses_theme ~ theme_freq_prop_E + region + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit), 
+                               !is.na(region)), 
+          family="binomial")
+summary(fit.EN_US_region)
+fit.EN_US_region.anova = Anova(fit.EN_US_region, type = 3)
+fit.EN_US_region.anova
+
+anova(fit.EN_US, fit.EN_US_region)
+
+fit.EN_US_coast = glmer(responses_theme ~ theme_freq_prop_E + coast + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit), 
+                               !is.na(region)), 
+          family="binomial")
+summary(fit.EN_US_coast)
+fit.EN_US_coast.anova = Anova(fit.EN_US_coast, type = 3)
+fit.EN_US_coast.anova
+
+anova(fit.EN_US, fit.EN_US_coast)
+```
+
+No effect of region.
+
+# SES Effect
+
+```{r ses effect}
+ggplot(df %>%
+         group_by(subject, objectiveses, country) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = objectiveses, y = responses_theme_mean, fill = objectiveses)) +
+  stat_summary(fun.y = mean, geom="bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5) + 
+  facet_grid(~country)
+```
+```{r}
+ggplot(df %>%
+         group_by(subject, subjectiveses, country) %>%
+         summarise(responses_theme_mean = mean(responses_theme)),
+       aes(x = subjectiveses, y = responses_theme_mean, fill = subjectiveses)) +
+  stat_summary(fun.y = mean, geom="bar") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar") + 
+  geom_jitter(alpha = .5) + 
+  facet_grid(~country)
+```
+# English
+```{r US responding predicted by ses, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.EN_US_subjses = glmer(responses_theme ~ theme_freq_prop_E + subjectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US_subjses)
+fit.EN_US_subjses.anova = Anova(fit.EN_US_subjses, type = 3)
+fit.EN_US_subjses.anova
+
+anova(fit.EN_US, fit.EN_US_subjses)
+
+fit.EN_US_objses = glmer(responses_theme ~ theme_freq_prop_E + objectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US_objses)
+fit.EN_US_objses.anova = Anova(fit.EN_US_objses, type = 3)
+fit.EN_US_objses.anova
+
+anova(fit.EN_US, fit.EN_US_objses)
+```
+NO effect of subjective ses, 
+YES effect of objective ses! (higher objective ses --> more taxonomic)
+
+### Mandarin
+```{r CN responding predicted by ses, warning=FALSE}
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.ZH_CN_subjses = glmer(responses_theme ~ theme_freq_prop_M + subjectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_subjses)
+fit.ZH_CN_subjses.anova = Anova(fit.ZH_CN_subjses, type = 3)
+fit.ZH_CN_subjses.anova
+anova(fit.ZH_CN, fit.ZH_CN_subjses)
+
+fit.ZH_CN_objses = glmer(responses_theme ~ theme_freq_prop_M + objectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_objses)
+fit.ZH_CN_objses.anova = Anova(fit.ZH_CN_objses, type = 3)
+fit.ZH_CN_objses.anova
+anova(fit.ZH_CN, fit.ZH_CN_objses)
+```
+No effect.
+
+### Vietnamese
+```{r VN responding predicted by ses, warning=FALSE}
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+
+fit.VI_VN_subjses = glmer(responses_theme ~ theme_freq_prop_V + subjectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN_subjses)
+fit.VI_VN_subjses.anova = Anova(fit.VI_VN_subjses, type = 3)
+fit.VI_VN_subjses.anova
+
+anova(fit.VI_VN, fit.VI_VN_subjses)
+
+fit.VI_VN_objses = glmer(responses_theme ~ theme_freq_prop_V + objectiveses + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN_objses)
+fit.VI_VN_objses.anova = Anova(fit.VI_VN_objses, type = 3)
+fit.VI_VN_objses.anova
+
+anova(fit.VI_VN, fit.VI_VN_objses)
+```
+No effect.

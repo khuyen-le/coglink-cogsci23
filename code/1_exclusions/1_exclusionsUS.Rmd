@@ -195,6 +195,6 @@ length(unique(df.resp_E$subject)) #132
 ```
 
 ```{r}
-write.csv(df.resp_E, "../../data/dataUS_excl.csv")
+write.csv(df.resp_E, "../../data/responding/dataUS_excl.csv")
 ```
 

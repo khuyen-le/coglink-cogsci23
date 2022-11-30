@@ -1,0 +1,40 @@
+---
+title: "Demographics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("ggplot2")
+library("tidyjson")
+library("gtools")
+library("dplyr")
+library(lme4)
+library(digest)
+library(lmerTest)
+```
+
+```{r}
+source("extract_demog.r")
+```
+### Getting raw data
+
+```{r}
+df.US <- read.csv("../../data/responding/data_US.csv") %>%
+  select(-X)
+
+df.CN <- read.csv("../../data/responding/data_CN.csv") %>%
+  select(-X)
+
+df.VN <- read.csv("../../data/responding/data_VN.csv") %>%
+  select(-X)
+```
+
+```{r warning=F}
+df.US_demog <- extract_demog(df.US, "US")
+df.VN_demog <- extract_demog(df.VN, "VN")
+df.CN_demog <- extract_demog(df.CN, "CN")
+df.demog <- full_join(df.US_demog, df.VN_demog) %>%
+  full_join(df.CN_demog)
+write.csv(df.demog, "../../data/responding/data_demog.csv")
+```

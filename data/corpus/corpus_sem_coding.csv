@@ -1,0 +1,106 @@
+triad,cue_genre,theme_genre
+teacup,moveable artifacts,design
+airplane1,other,occupation
+sailor,living things,occupation
+airplane2,other,design
+seagull,living things,ecology
+apple1,living things,causal
+apple2,living things,assoc
+axe,moveable artifacts,causal
+baby,living things,design
+monkey,living things,ecology
+bed,moveable artifacts,design
+crib,moveable artifacts,design
+bee1,living things,ecology
+bee2,living things,causal
+beer,moveable artifacts,assoc
+chicken,living things,causal
+pigeon,living things,causal
+cake,moveable artifacts,assoc
+ball,moveable artifacts,assoc
+boot,moveable artifacts,design
+legs,living things,design
+bowl,moveable artifacts,design
+bread,moveable artifacts,causal
+spoon2,moveable artifacts,assoc
+hair,living things,design
+bullet,moveable artifacts,design
+cactus,living things,ecology
+car2,other,design
+car1,other,design
+carrot,living things,ecology
+dog1,living things,design
+dog2,living things,assoc
+chain,moveable artifacts,design
+chair,moveable artifacts,design
+chalk,moveable artifacts,design
+chimney,other,design
+coat,moveable artifacts,assoc
+dress,moveable artifacts,design
+jacket,moveable artifacts,design
+coconut,living things,causal
+onion1,living things,occupation
+farmer,living things,occupation
+goat,living things,ecology
+cow2,living things,ecology
+squirrel,living things,ecology
+cow1,living things,causal
+sheep,living things,causal
+grass,living things,ecology
+crayon,moveable artifacts,causal
+crown,moveable artifacts,occupation
+cup,moveable artifacts,design
+teacher,living things,occupation
+door,moveable artifacts,design
+house,other,assoc
+piano,moveable artifacts,causal
+trumpet,moveable artifacts,assoc
+frog,living things,ecology
+lilypad,living things,ecology
+dust,other,design
+elephant,living things,design
+ring,moveable artifacts,design
+hand,living things,design
+pencil,moveable artifacts,design
+pen,moveable artifacts,design
+net,moveable artifacts,design
+lake,other,ecology
+ocean2,other,design
+flower,living things,design
+can,moveable artifacts,design
+hammer,moveable artifacts,design
+hat,moveable artifacts,design
+helmet,moveable artifacts,design
+soccer,other,design
+horse,living things,design
+school,other,occupation
+snow,other,ecology
+kitchen,other,design
+knight,living things,occupation
+lamp,moveable artifacts,assoc
+gloves,moveable artifacts,design
+mountain,other,ecology
+mouth,living things,design
+movie,other,occupation
+notepad,moveable artifacts,assoc
+ocean1,other,ecology
+onion2,living things,design
+oyster,living things,causal
+watering can,moveable artifacts,design
+pastry,moveable artifacts,occupation
+penguin,living things,ecology
+policeman,living things,occupation
+mailman,living things,occupation
+pot1,moveable artifacts,design
+pot2,moveable artifacts,design
+saw,moveable artifacts,design
+sink,other,assoc
+spider,living things,causal
+spoon1,moveable artifacts,assoc
+sword,moveable artifacts,occupation
+tent,moveable artifacts,assoc
+towel,moveable artifacts,design
+train,other,design
+university,other,occupation
+doctor,living things,occupation
+peach,living things,ecology
