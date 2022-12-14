@@ -6,7 +6,7 @@ library("car")
 library("lme4")
 library("patchwork")
 library("effsize")
-library("Hmisc")
+#library("Hmisc")
 library("dplyr")
 
 
@@ -51,8 +51,8 @@ fit.EN_US.anova
 
 fit.EN_US_cos = glmer(responses_theme ~ theme_cosine_prop_E + (1 | subject) + (1 | triad), 
           data = df %>% filter(country == "US", 
-                               !(near(theme_match_frequency_E, .Machine$double.eps) & 
-                                  near(tax_match_frequency_E, .Machine$double.eps))), 
+                               !(near(theme_frequency_E, .Machine$double.eps) & 
+                                  near(tax_frequency_E, .Machine$double.eps))), 
           
           family="binomial")
 summary(fit.EN_US_cos)
@@ -92,4 +92,58 @@ fit.VI_VN_compare_freq_cos = anova(fit.VI_VN, fit.VI_VN_cos, type = 3)
 fit.VI_VN_compare_freq_cos
 
 ```
+
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# Mandarin 
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(near(theme_frequency_M, .Machine$double.eps) & 
+                                  near(tax_frequency_M, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.ZH_CN)
+fit.ZH_CN.anova = Anova(fit.ZH_CN, type = 3)
+
+fit.ZH_CN.anova
+
+fit.ZH_CN_cos = glmer(responses_theme ~ theme_cosine_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(near(theme_frequency_M, .Machine$double.eps) & 
+                                  near(tax_frequency_M, .Machine$double.eps))),  
+          
+          family="binomial")
+summary(fit.ZH_CN_cos)
+fit.ZH_CN_cos.anova = Anova(fit.ZH_CN_cos, type = 3)
+fit.ZH_CN_cos.anova
+
+fit.ZH_CN_compare_freq_cos = anova(fit.ZH_CN, fit.ZH_CN_cos, type = 3)
+fit.ZH_CN_compare_freq_cos
+
+```
+# Does adding country help with the model (compared to with just English co-occurrence)? 
+```{r}
+fit.language = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(near(theme_frequency_E, .Machine$double.eps) & 
+                                  near(tax_frequency_E, .Machine$double.eps))),  
+          
+          family="binomial")
+summary(fit.language)
+fit.language.anova = Anova(fit.language, type = 3)
+fit.language.anova
+
+fit.country_language = glmer(responses_theme ~ theme_freq_prop_E * country + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(near(theme_frequency_E, .Machine$double.eps) & 
+                                  near(tax_frequency_E, .Machine$double.eps))),  
+          
+          family="binomial")
+summary(fit.country_language)
+
+fit.country_language.anova = Anova(fit.country_language, type = 3)
+fit.country_language.anova
+
+fit.country_language_compare = anova(fit.language, fit.country_language, type = 3)
+fit.country_language_compare
+```
+
+Adding country improves the model (thematic proportion of lexical co-occurrence, country, and their interaction were all significant predictors).
+
 

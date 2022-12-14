@@ -1,0 +1,1955 @@
+---
+title             : "Is It Language or Is It Culture? Re-examining Cross-Cultural Similarity Judgments Using Lexical Co-Occurrence"
+shorttitle        : "Re-examining Cross-Cultural Similarity Judgments Using Lexical Co-Occurrence"
+
+author: 
+  - name          : "Khuyen Le"
+    affiliation   : "1,2"
+    corresponding : yes    # Define only one corresponding author
+    email         : "khuyenle@stanford.edu"
+
+affiliation:
+  - id            : "1"
+    institution   : "Psychology Department"
+  - id            : "2"
+    institution   : "University of California, San Diego"
+
+abstract: |
+  Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce variation in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related whereas Western cultures may bias similarity judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are equivalent across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and observing or hearing about cows and grass or cows and chickens more often could induce preferences for the relevant grouping and account for apparent differences in notions of similarity across contexts. 
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "similarity, culture, language, semantics, lexical co-occurrence, variation"
+wordcount         : "150"
+
+bibliography      : ["r-references.bib", "references/references.bib"]
+
+floatsintext      : yes
+figurelist        : no
+tablelist         : yes
+footnotelist      : no
+linenumbers       : no
+mask              : no
+draft             : no
+header-includes:
+  - \raggedbottom
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+
+---
+
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+# Introduction 
+By virtue of discrete words and grammatical features, language provides a categorical partition of our continuous experiences. Previous research has observed variation in the cognition of speakers of different languages corresponding to variation within semantic domains in these languages. This language-aligned variation has been observed in the domains of color [@Winawer2007], number [@Frank2008], and gender [@Boroditsky2003], among many others [@Wolff2011]. Differences in cognition between speakers of different languages have often been used to suggest, explain, or exemplify cultural differences between speakers of those languages. Findings in studies of both language and of culture provide convergent evidence suggesting that variation across languages and cultures may shape broad variation in how people think about similarity between, for instance, different colors or objects. 
+
+Looking beyond this domain-specific variation, we can also consider broader notions of similarity and relatedness between concepts across domains. The Free Association Norms [@FreeAssoc], for example, measures human judgment in semantic relatedness across domains and contexts. With the availability of large linguistic corpora, we can examine the similarity of concepts that are not circumscribed in individual domains (as color, number, and gender are), allowing us to answer more general questions about variation in cognition between speakers of different languages. By measuring the similarity between arbitrary words (as commonly done with lexical co-occurrence models), it may be possible to model the shape of similarity space in order to capture cross-linguistic and cross-cultural variation and provide a more general answer to the question of how language influences our conception of the world.
+
+Taxonomic and thematic similarity provide a convenient entry point to broader debates about cross-linguistic and cross-cultural variation in notions of similarity. Taxonomic categorization is based on the similarity of attributes, for example, similar perceptual properties, like shared color or shape, among objects. In contrast, thematic categorization is based on causal, spatial, and temporal relationships among objects [@Markman1984]. To illustrate this point, if a participant is given the words “chicken” and “grass”, and asked which of those words are more closely related to the word “cow”, the pairing “chicken” - “cow” indicates a taxonomic match, whereas “grass” - “cow” indicates a thematic match.
+
+@Ji2004 found that preferences for taxonomic and thematic matches differ across culture, even when controlling for testing language and fluency. Specifically, Chinese participants made more thematic matches than taxonomic, while the converse was true for European Americans. This difference held even for Chinese participants tested in English (rather than Mandarin), suggesting that culture has an effect on the categorization strategy independent of the test language. However, the study also found an effect of language within Chinese participants from mainland China (when tested both in China and in the US): their preference for thematic categorization was significantly lower when tested in English compared to Mandarin Chinese. This suggests that test language also influences categorization strategies. Ji et al. characterize these results as demonstrating that culture (independent of language) leads to different styles of reasoning about similarity, whereas language serves as a “tuning” mechanism operating within a culturally-specific style, by activating representations corresponding to the language being used.
+
+## Cross-cultural variation in similarity
+The account that culture drives differences in categorization style has been one favored by other non-linguistic studies that use taxonomic vs thematic categorization to probe similarity judgment. A similar study to the aforementioned shows that when shown pictorial triads that represent words (i.e. pictures of an ant, a bee, and honey), Chinese children (9-10 years old) scored higher on thematic categorization compared to American children of the same age range, and vice versa for taxonomic categorization [@Chiu1972]. Additionally, the cross-cultural differences in similarity judgment seem to persist even when the stimuli are more perceptual and less conceptual. @Norenzayan2002 conducted a study where participants are shown a target stimulus beneath two groups of 4 similar objects. The target shares a common feature with all the objects in one group, and only shares another one feature with each member of that group. Meanwhile, the target shares many features with 3 out of 4 members of the other group, but does not share any 1 feature in common with the entire group. The study showed that American participants judged the target to be more similar with the former group more often, and vice versa for Chinese participants. Since differences in categorization style persist with novel stimuli (as opposed to previously seen words or pictures of concepts), this suggests that participants from different cultural backgrounds are utilizing different reasoning strategies when making similarity judgments. 
+
+Most commonly, researchers account for the differences in similarity judgment described above by differences in analytic vs holistic processing and in attention between Eastern and Western cultures. According to this framework, East Asians attend more to relationships between objects and context and reason more holistically, whereas Westerners attend more to objects and their properties, and reason analytically [@Nisbett2003]. The analytic-holistic cultural difference in reasoning style has been observed in other non-linguistic tasks. For example, in a rod-and-frame test [@Witkin1954], East Asian (Taiwanese Chinese) participants are more influenced by the position of the surrounding frame than European Americans [@Ji2000], suggesting a higher level of sensitivity to context. East Asians (Koreans) have also been demonstrated to make more situational attributions for behaviors than European Americans, who make more dispositional attributions [@Choi1999], again suggesting higher sensitivity to context. When shown a complex scene with foreground and background information, Japanese participants made more statements about contextual information and relationships between objects than Americans did [@Masuda2001]. Non-linguistic tasks have also shown that participants from Eastern and Western cultures differ in where they focus their visual attention. Another study presented American and Chinese participants with photographs of an object on a complex background [@Chua2005]. They found that Chinese participants made more eye saccades to the background compared to American participants, and that American participants looked at the object more quickly. These cross-cultural differences in attention and analytic vs holistic processing are seen to map onto the cross-cultural differences in similarity judgment: because East Asian participants attend more to the context between objects and reason more holistically, it stands to reason that they would consider words that appear in the same context (i.e. thematically similar) to be more similar than taxonomically-similar words. 
+
+Studies that explain these cross-cultural differences in reasoning and similarity judgment with a cultural framework often draw on social and historical contexts as the distal cause for these differences. For example, social structure and social practice can explain why different cultures develop different reasoning habits. To demonstrate this, researchers have looked at regions that are geographically close but with different social structures. @Kitayama2006 showed that Hokkaido Japanese demonstrated greater dispositional bias in attribution of behaviors compared to non-Hokkaido Japanese. The study suggested that this difference is correlated to the fact that Hokkaido was settled quite recently (mid-19th century) by pioneers from southern Japan, and thus its social practices (e.g. daily routines, child-rearing practices, and explicit education) would be influenced by the independent, goal-oriented characteristic of pioneer life. Another study showed that Northern Italians (more independent) categorized objects in a more taxonomic manner than Southern Italians (more interdependent) [@Knight2007]. These studies, however, stopped short of providing a mechanism for the nature of the relationship between differences in social structures and differences in reasoning and similarity judgments.
+
+Another component of the social context explanation seems to be more tenable regarding the causal connection between cross-cultural differences in social practice and those in similarity judgments: that different patterns of attention are passed on by caregivers to children. @Fernald1993 found that American mothers labeled toys and pointed out their attributes more often than do Japanese mothers, while Japanese mothers tended to use the toys to engage their infants in social routines more often than American mothers. @Tardif1997 found that English-speaking caregivers produced more nouns than verbs in child-directed speech, while Mandarin-speaking caregivers emphasized verbs over nouns.  Emphasis on labeling objects and focus on nouns over verbs might lead infants to attend to objects and their taxonomic categorizations, while emphasis on social practices and producing more verbs might direct infants' attention to the relationship between objects. Such differences in early-childhood environments could tune children’s attention to either object or context, and result in cross-cultural differences in similarity judgments (preferring either taxonomic or thematic, respectively) in adulthood. 
+
+The above view explains cross-cultural differences in similarity judgment tasks as variation in the conceptualization of similarity itself. Alternatively, these judgments could be shaped by cross-cultural differences in the statistics of the environment, and accordingly the content of everyday experiences. Perhaps when confronted with the triad task, participants from all cultures follow the same process for reasoning about similarity, but rely on language or culture-specific inputs to this process. For example, it may be that Vietnamese participants are more likely to have knowledge of farming practices than Americans, and may associate cows and grass more strongly (as grass is the typical feed for cows in the small-scale family farming contexts common in Vietnam). Americans, on the other hand, may have strong associations between cows and chickens as a result of encountering them together in children’s books or petting zoo contexts. If we observe a difference in categorization between, say Vietnamese and US participants, perhaps they use the same procedure (considering similarity that is influenced by both taxonomic and thematic relations), but the inputs to this procedure differ between cultures, with Vietnamese participants exposed to more instances of “cow” and “grass” occurring together, compared to US participants. 
+
+A study by @Miyamoto2006 lends support to this theory. The study randomly sampled scenes from different-sized cities in Japan and the US. Both subjective (judgment by American and East Asian college students) and objective (number of objects as counted by an automated program) showed that Japanese scenes were more complex and contained a larger number of objects than American scenes. This suggests that people living in Japan would more frequently encounter perceptual environments that contain more relationships between objects compared to those who live in the US. Japanese scenes therefore might encourage focus on the overall context, while American scenes might encourage focus on a few salient objects.
+
+Differences in environmental statistics extend beyond the immediate environment to cultural artifacts. @Tsai2007 showed that best-selling storybooks in the US contain more pictures of excited states (e.g. open-mouthed smiles, wide-open eyes) compared to best-selling storybooks in Taiwan, which contain more pictures of calm states. European American preschoolers also perceived excited states as happier and more desirable compared to calm states, and vice versa for Taiwanese Chinese preschoolers. The study also showed that there is a causal link between exposure to environmental statistics and personal preference: regardless of culture, exposure to exciting (vs. calm) storybooks increased children’s preference for the  corresponding activities. Broadly, this suggests that cultural artifacts or information in language (rather than direct, first-hand lived experiences) could be crucial factors in driving cross-cultural variation.
+
+## Language as a proxy of variation in experience
+While co-occurrences in experience are difficult to measure, co-occurrence in language can provide a rough proxy--and indeed, language may afford many of the “experiences” that people have with infrequently encountered items, like cows or helicopters. In the planned analyses, we will use co-occurrence in language as a proxy of cultural experience. This is a generalizing assumption, and while no linguistic corpus can be expected to fully capture a culture, and different linguistic corpora may capture different variables of a culture, using this proxy as a model of culture provides a conservative test of the hypothesis that differences in the input, rather than the process, of reasoning produces cultural variation in this task. This means that if such a model does work -- if linguistic co-occurrence can predict cultural variation in this similarity task without building differences in the decision process into the model -- it is relatively strong evidence that language alone (perhaps as a more easily observed source of information on broader cultural and ecological variation) may account for these cross-cultural differences in reasoning.[^footnote]
+
+Indeed, previous work suggests that using lexical co-occurrence as a proxy can be useful in thinking about similarity judgments. Natural language processing tasks have found that lexical co-occurrence is a good predictor for performance in similarity judgment tasks. @Griffiths2007 showed that a model that takes word-document co-occurrence as input can be used to predict word association and the effects of semantic association on a variety of linguistic tasks. Additionally, lexical semantic models that are constructed using lexical co-occurrence (as opposed to annotated relations) have been shown to perform well on predicting human judgments about similarity between word pairs that are either thematically or taxonomically related [@Rohde2006].
+
+Our current study will be using 2 measures of lexical co-occurrence: 1) raw lexical co-occurrences and 2) cosined distances of fastText word vectors. fastText is a system that uses lexical co-occurrence information to generate a vector representing each word in its lexicon [@Mikolov2018]. fastText uses a continuous bag-of-words model, which takes into account a symmetric window of words surrounding the word in question and maximizes the log-likelihood of the probability of the word given its context. Calculating the cosine-similarity between word vectors from fastText gives us a score of how similar the contexts of these words are. Therefore, words that occur in the same context (high lexical co-occurrence) would have a larger cosine-similarity score. 
+
+It must be noted that fastText supplements the lexical co-occurrence information by simultaneously training weight vectors for each position relative to the word in question, as well as adding sub-word information (bag-of-character n-gram vectors for each character forming the words). The similarity judgment prediction given by fastText may be more higher than a model using purely lexical co-occurrence information. However, models that use only lexical co-occurrence information (with or without a simple position weight system that gives more weight to words that are closer to the word in question) also perform well in similarity prediction tasks. For this study, due to the lack of large cleaned corpora for Mandarin and Vietnamese, we are leveraging fastText pre-trained models on the languages we are interested in @Grave2018.
+
+Systems like fastText and word2vec have been demonstrated to be good predictors for similarity judgments. @Liu2019 showed that fastText performed well as the data for a system matching responses in a knowledge base by how similar they are to a customer’s query. A study by @Jatnika2019 tested a word2vec model trained on the English wikipedia corpus against 353 word pairs labeled with similarity values based on human judgment. The word2vec model correlates moderately with human judgment. fastText has also been shown to be sensitive towards cultural effects on word meanings: @Thompson2020 applied fastText to language-specific Wikipedia corpus (among others) to generate a “semantic neighborhood” of 1010 meanings in different languages. The study showed that languages that are spoken by more similar cultures, more geographically proximate and/or historically related had more semantic neighborhoods that aligned. This is a proof of concept for our use of fastText in different languages with varying levels of relatedness. 
+
+## The present study
+@Ji2004 showed the difference in similarity judgment between Chinese and European Americans (the former prefers thematic categorization while the latter prefers taxonomic). However, their evidence is not sufficient to conclude that it is culture that drives this difference, as their cross-cultural data is correlational. Furthermore, they have yet to rule out all mechanisms by which language could be relevant to the task. For example, their language manipulation (bilingual speakers from Mainland China making more taxonomic categorizations when tested in language) only points to an offline effect of language because it does not prevent participants from accessing linguistic representations. A stronger claim could have been made if verbal interference had been conducted, and if cross-cultural differences had remained. This would have been stronger in eliminating online effect of language as a potential cause for cross-cultural differences in similarity judgment. 
+
+Additionally, outside of language, cross-cultural differences could come from a couple different mechanisms: @Ji2004 suggested that the notion of similarity is what varies across cultural groups, but it’s quite possible that similarity is regarded in the same way and it’s actually the input to this similarity judgment that varies across culture contexts. It might be possible to gain traction on possible mechanisms by examining whether variation in similarity judgments co-varies with environmental statistics that differ across the cultural and linguistic contexts.
+
+In this study, we ask whether variation in lexical co-occurrence can account for the cross-context (culture and language) differences observed in how people evaluate similarity. Firstly, we attempt to replicate @Ji2004 by running a study comparing English speakers in the US and Mandarin speakers in mainland China. Secondly, we evaluate whether the differences observed between English and Mandarin speakers’ similarity judgments also extend to comparisons between English and Vietnamese, by running a similar study between English speakers in the US and Vietnamese speakers in Vietnam. Vietnam is a Southeast Asian country that borders China and is historically greatly influenced by Chinese culture [@Hui2002]. Therefore, it serves as a suitable cultural context to investigate whether the claim made by @Ji2004 and previous studies, that Eastern and Western cultures have different notions of similarity, extends beyond mainland China. 
+
+We then ask to what extent similarity judgments show cross-context differences that align with co-occurrence patterns in participants’ languages. We would only see a main effect of cultural context if the notion of differing notions of similarity is driving these cross-cultural differences. Meanwhile, if we do see variation in responding trial-to-trial that tracks with lexical co-occurrence statistics (as a rough proxy combining both linguistic and cultural context), this would give traction to the view that cross-cultural notions of similarity might be similar, and it is environmental statistics that guide the differences in similarity judgments. To preview our results, we find that, while we do not see overall group differences (between the East Asian contexts and the US) in similarity, we do find language-specific co-occurrence can indeed explain cross-context differences in similarity judgments. In contrast to previous accounts, by which culture induces differing conceptions of similarity (varying between taxonomic and thematic), these findings provide an alternative, and more specific, account by which language may explain these cross-cultural differences without invoking variation in notions of similarity. 
+
+# Methods 
+```{r get exclusion results from 1_exclusions.Rmd}
+source("../1_exclusions/1_exclusionsCN.Rmd")
+source("../1_exclusions/1_exclusionsUS.Rmd")
+source("../1_exclusions/1_exclusionsVN.Rmd")
+```
+
+```{r demog_E, TODO: move outside, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_E <- df.resp_E %>%
+  filter(trial_type %in% demog) 
+#write.csv(data_demog, "data_anon_demog_0201.csv")
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_E <- df.demog_E %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_E_summ <- df.age_gender_E %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+
+```{r demog_V, TODO: move outside, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_V <- df.resp_V %>%
+  filter(trial_type %in% demog)
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_V <- df.demog_V %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_V_summ <- df.age_gender_V %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+
+```{r demog_M, TODO: MOVE outside, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_M <- df.resp_M %>%
+  filter(trial_type %in% demog) 
+#write.csv(data_demog, "data_anon_demog_0201.csv")
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_M <- df.demog_M %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_M_summ <- df.age_gender_M %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+## Participants
+We recruited `r length(unique(df.ppts_finished_E$subject))` participants from the US, `r length(unique(df.ppts_finished_V$subject))` participants from Vietnam, and `r length(unique(df.ppts_finished_M$subject))` participants from mainland China. US participants were recruited through snowball sampling seeded with Stanford email lists, Vietnam participants were recruited through snowball sampling seeded with Vietnam-based student groups on Facebook, and mainland China participants were recruited through snowball smapling seeded with group chats on WeChat. US participants were compensated with $5 gift certificates (USD), VN participants received 50,000₫ (VND) in phone credit, and mainland China participants received 25CNY through WeChat credit transfer.
+
+We excluded `r length(unique(df.ppts_finished_E$subject)) - length(unique(df.ppts_att_E$subject))` US participants, `r length(unique(df.ppts_finished_V$subject)) - length(unique(df.ppts_att_V$subject))` Vietnam participants, and `r length(unique(df.ppts_finished_M$subject)) - length(unique(df.ppts_att_M$subject))` China participants who did not answer all attention checks correctly. We followed 4 exclusion criteria that aim to retain only participants who are influenced by one culture: (1) non-native speakers of English and Vietnamese, respectively, (2) fluent in at least one of the other two study languages (Vietnamese for US participants, English for Vietnamese participants and Chinese participants), (3) have lived outside of the test country (US, Vietnam, or China) for more than two years, and (4) have significant international experience (more than 6 international experiences of 2 days or longer.) We did not use a particular criterion for a language if it would exclude 25% or more of any one sample. In this round of exclusion, we excluded `r length(unique(df.ppts_att_E$subject)) - length(unique(df.resp_E$subject))` US, `r length(unique(df.ppts_att_V$subject)) - length(unique(df.resp_V$subject))` Vietnam participants, and `r length(unique(df.ppts_att_M$subject)) - length(unique(df.resp_M$subject))` China participants. After these exclusions, the US sample included `r length(unique(df.resp_E$subject))` participants (`r df.age_gender_E %>% filter(gender == "Male") %>% count()`M, `r df.age_gender_E %>% filter(gender == "Female") %>% count()`F, `r df.age_gender_E %>% filter(gender == "Non-binary") %>% count()` non-binary, `r df.age_gender_E %>% filter(gender == "Decline to answer") %>% count()` other), with mean age = `r round(df.age_gender_E_summ$mean_age, 2)` (SD = `r round(df.age_gender_E_summ$sd_age, 2)`) and median age = `r df.age_gender_E_summ$median_age`. The Vietnam sample included `r length(unique(df.resp_V$subject))` participants (`r df.age_gender_V %>% filter(gender == "Nam") %>% count()`M, `r df.age_gender_V %>% filter(gender == "Nữ") %>% count()`F), with mean age = `r round(df.age_gender_V_summ$mean_age, 2)` (SD = `r round(df.age_gender_V_summ$sd_age, 2)`) and median age = `r df.age_gender_V_summ$median_age`. The China sample included `r length(unique(df.resp_M$subject))` participants (`r df.age_gender_M %>% filter(gender == "男性") %>% count()`M, `r df.age_gender_M %>% filter(gender == "女性") %>% count()`F), with mean age = `r round(df.age_gender_M_summ$mean_age, 2)` (SD = `r round(df.age_gender_M_summ$sd_age, 2)`) and median age = `r df.age_gender_M_summ$median_age`.
+
+Notably, we lost a majority of our Vietnam participants (more than 60%) in the attention check exclusion. One reason we suspect why this might have happened is because our Vietnam participants are less familiar with research surveys and attention check questions, and thus might have thought too much about the attention check questions. We carried out an exploratory analysis where we used a less stringent attention check exclusion (covered in the final part of the Results & Analysis section). To preview our findings for this analysis, we did not find any difference in significant results when compared with the main analysis. 
+
+## Stimuli
+We adapted stimuli from previous studies to create a set of test triads consisting of a cue, with one thematic and one taxonomic match option. For example, “cow,” “grass,” and “chicken,” where “cow” is the cue, “grass” is the thematic match, and “chicken” the taxonomic match. We included 105 such triads, a superset including triads pulled from supplemental information and in-text examples across the literature, and others that we adapted or created (see SI for the full list of stimuli and sources). We selected triads on the basis of cultural familiarity in the US, Vietnam, and China. The triads were originally in English; they were translated to Vietnamese and Mandarin by a fluent bilingual speaker in each language. The translations were then checked for accuracy after backtranslation to English by another fluent bilingual in each language who was naive to the original English versions.
+
+Each participant completed all 105 triads in sets of 21 trials at a time (10 test triads, 10 filler triads, and 1 attention check per page), by selecting the match most related to the cue (“Which thing is most closely related to the bolded item?” or "Thu nào liên quan nhat voi thu đuoc in đam?"). The test triads were presented with 105 filler triads mixed in, to obscure the taxonomic-thematic two-answer forced choice structure of the test stimuli and reduce the likelihood that participants would become aware of the design. The filler triads were groups of three semantically related words, but where the match options were not distinguished by thematic vs. taxonomic similarity, e.g., cue “bird” with match options “lizard” and “toad.” Additionally, we included 10 attention check trials, which were formatted like the test and filler triads but included an instruction instead of a cue item, e.g., “Choose wife” with match options “wife” and “husband.” In total, each participant completed 210 similarity judgments and 10 attention check questions, with triads presented in randomized orders that varied between subjects. 
+
+## Corpus model 
+Our general approach is to build a model of similarity that is based on collocation counts in each language. 
+
+### Raw lexical co-occurrences
+To give an intuition for our model, consider the cow-grass-chicken triad: we counted how many times “cow” and “grass” co-occur within a window of text in each corpus, and compare this to how many times “cow” and “chicken” co-occur. Our similarity prediction is then proportional to the relative frequency of these pairs. For example, if the thematic cow-grass match accounts for 30% of collocations for this triad (with cow-chicken making up the other 70%), then our model predicts, correspondingly, that 30% of responses to the triad will be grass, and the other 70% chicken. We then use a mixed-effects regression to evaluate how well each corpus collocate model predicts participants’ similarity judgments, across triads and languages.
+
+#### Collocate retrieval and coding
+For our English co-occurrence metric, we used the online interface of the Corpus of Contemporary American English [@COCA] to retrieve collocation counts. We recorded the raw count of times that any cue-match pair (e.g., cow-grass or cow-chicken) co-occur in a window of 19 words, which is the maximum window size in the online interface, and closest to the sentence co-occurrence metric in our VI corpus collocation counts. 
+
+To determine Vietnamese co-occurrence, we used the raw frequency of sentence co-occurrences from a subset of the Vietnamese corpus in the Leipzig Corpora Collection [@VICorpus]; this corpus includes 70 million Vietnamese sentences, but our corpus data comes from a 1 million sentence subset for which co-occurrence counts are available for download. Vietnamese makes very frequent use of compositional morphology but the written language  uses spacing to delineate syllable boundaries rather than word boundaries. Accordingly, collocate searches returned instances of both target terms and many morphologically related, but distinct, words. We included in our counts any instances of the target term or close semantic neighbors containing the same morpheme(s) as long as they entailed a likely literal reference to the target term. For example, our search for collocates of the term “gà” (chicken) also returned “gà mái,” a distinct word for female chickens. Despite being a different word, “gà mái” both includes the morpheme for “chicken” and entails reference to a chicken. Accordingly, instances of both “gà” and “gà mái” were included in our collocate count for “chicken.” Some compounds do not meet this criteria, and were excluded from collocate counts. For example “trái cây” (tree.fruits) includes the same syllable as the word “cây” (tree), but refers to fruit that comes from trees, not the trees themselves, and was therefore excluded from our collocate counts for “tree.”
+
+We were unable to obtain a Mandarin corpus with similar number of sentences as the aforementioned English and Vietnamese corpora, hence we did not include any analysis based on raw lexical co-occurrences with Mandarin.
+
+#### Collocate similarity model
+From the raw co-occurrence counts of each triad, we calculated the thematic co-occurrence ratio as the number of thematic co-occurrences over the sum of thematic and taxonomic co-occurrences. We did this for both the English and Vietnamese corpus co-occurrence counts. In this way, we obtained predictions for 73 of 105 triads from the Vietnamese corpus and 104 of 105 triads from English. We therefore limited all analyses reported here to the subset of triads for which our corpus-based model can make meaningful predictions, meaning triads that have at least one non-zero collocate count (either thematic or taxonomic match). We replaced any remaining zero collocate counts with $\epsilon$ to account for sparsity in the corpus data. We then tested whether these simple relative frequency models predict US and VN responding.
+
+### Cosine distance of word vectors
+To give an intuition for our model, consider again the cow-grass-chicken triad: we retrieved word vectors for "cow" and "grass", and calculate the cosine distance between these vectors. Similarly, we retrieved vectors for "cow" and "chicken" and calculate the cosine distance between them. Our similarity prediction is then inversely proportional to the cosine distance of these pairs. This is because a larger cosine distance means the word vectors are further apart, and thus the words are less similar. For example, if the cosine distance of thematic cow-grass is 0.7 and the cosine distance of taxonomic cow-chicken is 0.3, then our model predicts, correspondingly, that 30% of responses to the triad will be grass, and the other 70% chicken. We then use a mixed-effects regression to evaluate how well each corpus model predicts participants’ similarity judgments, across triads and languages.
+
+#### Collocate retrieval
+We use the fastText pre-trained models of English, Mandarin, and Vietnamese in @Grave2018. These models are trained on Common Crawl and Wikipedia using We distribute pre-trained word vectors for 157 languages, trained on Common Crawl and Wikipedia using fastText. These models were trained using a Continuous Bag of Words (CBOW) with position-weights and a window of size 5. The models use character n-grams of length 5 and 10  negative examples.From the aforementioned models, we retrieve the word vectors (dimension 300) for each word we are interested in.
+
+#### Collocate similarity model
+From the word vectors, we calculated the cosine distance between each cue-thematic match (thematic cosine distance) and cue-taxonomic match (taxonomic cosine distance), using the spatial.distance.cosine function from the SciPy package [@2020SciPy]. We then calculated the thematic cosine distance proportion as thematic cosine distance over the sum of taxonomic cosine distance and thematic cosine distance. We did this for all three corpora. We were able to obtain predictions for all triads in all languages.
+
+## Data analysis
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+# Results
+```{r combine corpus and behavior data, include = F}
+#source("../2_combine/2_combine.Rmd")
+df <- read.csv("../../data/data_USCNVN_ENZHVI.csv")
+```
+
+## Do we extend previous work reporting a preference for taxonomic matching in the US and thematic matching in Asia?
+
+```{r warning=FALSE, include=FALSE, paged.print=TRUE}
+df.country <- df %>%
+  group_by(subject, country) %>%
+  summarize(theme_resp_percent = mean(responses_theme, na.rm = T))
+
+df.country_sum <- df.country %>%
+  group_by(country) %>%
+  summarize(mean_theme_resp_percent = mean(theme_resp_percent), 
+            sd_theme_resp_percent = sd(theme_resp_percent))
+
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df, 
+                    family = "binomial")
+summary(fit.country) 
+fit.country.anova = Anova(fit.country, type=3)
+
+fit.country_EN_VN = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df %>% filter(country != "China"),
+                    family = "binomial")
+summary(fit.country_EN_VN) 
+```
+The group means of proportion of thematic response in mainland China is the highest (M = `r round((df.country_sum %>% filter(country == "China"))$mean_theme_resp_percent, 2)`, SD = `r round((df.country_sum %>% filter(country == "China"))$sd_theme_resp_percent, 2)`), followed by the groups means in Vietnam (M = `r round((df.country_sum %>% filter(country == "Vietnam"))$mean_theme_resp_percent, 2)`, SD = `r round((df.country_sum %>% filter(country == "Vietnam"))$sd_theme_resp_percent, 2)`), which is slightly higher than that of the US (M = `r round((df.country_sum %>% filter(country == "US"))$mean_theme_resp_percent, 2)`, SD = `r round((df.country_sum %>% filter(country == "US"))$sd_theme_resp_percent, 2)`).
+
+```{r echo=FALSE, warning=FALSE, fig.cap="Proportion of thematic responses by country. Only US-China responding comparison shows a siginficant difference. We could not extend this to US-Vietnam responding comparison."}
+
+#show violin plot
+ggplot(df.country,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = theme_resp_percent, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_violin() +
+  geom_jitter(height = 0, 
+              alpha = 0.3) +  
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  labs(y = "Proportion Thematic Chosen", 
+       x = "Country", 
+       color = "Country") + 
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+```
+
+```{r correlation of country response, echo=FALSE, warning=FALSE}
+#US-China, US-Vietnam, China-Vietnam
+df.triad_country <- df %>%
+  group_by(triad, country) %>%
+  summarize(emp_theme_prop = mean(responses_theme))
+
+df.triad_country <- pivot_wider(data = df.triad_country, 
+                                names_from = country, 
+                                values_from = emp_theme_prop)
+plotUSCN = ggplot(data = df.triad_country,
+                  mapping = aes(x = US, 
+                                y = China, 
+                                label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (US)", 
+        y = "Proportion Thematic Chosen (China)") + 
+   xlim(0, 1) + 
+   ylim(0, 1) + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+plotUSVN = ggplot(data = df.triad_country,
+                  mapping = aes(x = US, 
+                                y = Vietnam, 
+                                label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (US)", 
+        y = "Proportion Thematic Chosen (Vietnam)") + 
+   xlim(0, 1) + 
+   ylim(0, 1)  + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+plotCNVN = ggplot(data = df.triad_country,
+                  mapping = aes(x = Vietnam,
+                                y = China, 
+                                label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (Vietnam)", 
+        y = "Proportion Thematic Chosen (China)") + 
+   xlim(0, 1) + 
+   ylim(0, 1)  + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+corr.USCN = apa_print(cor.test(df.triad_country$US, 
+                  df.triad_country$China, na.rm=T))
+
+corr.USVN = apa_print(cor.test(df.triad_country$US, 
+                  df.triad_country$Vietnam, na.rm=T))
+
+corr.CNVN = apa_print(cor.test(df.triad_country$China, 
+                  df.triad_country$Vietnam, na.rm=T))
+```
+
+```{r warning = F, fig.width = 8, fig.cap="Correlation between proportion thematic chosen by US-China participants, US-Vietnam participants, and China-Vietnam participants. All three comparisons show strong correlation, suggesting a strong signal of universality across cultural contexts regarding similarity judgments"}
+plotUSCN + plotUSVN + plotCNVN +
+  plot_layout(ncol = 3)
+```
+
+With a Pearson correlation test, we observed high correlations between thematic responding across all three countries. The proportion of US thematic responding is strongly correlated with thematic responding in China, `r corr.USCN$full_result`. The proportion of US thematic responding is strongly correlated with thematic responding in Vietnam, `r corr.USVN$full_result`. Likewise, the proportion of China thematic response is strongly correlated with thematic responding in Vietnam, `r corr.CNVN$full_result`. This points to a strong signal of universality across cultural contexts regarding similarity judgments.
+
+```{r USCN effect size comparison, include=FALSE}
+USCN_cohen <- cohen.d(df.triad_country$China, df.triad_country$US)
+```
+
+For comparison with previous work, we also included an effect size comparison for the difference in US-China thematic response data (though this was not a planned analysis). The effect size for this analysis was d = `r USCN_cohen$estimate`, a small effect size. This is smaller than the effect size from @Ji2004, even when we are unable to make a direct comparison. Calculating the effect size from the ANOVA reported in @Ji2004 between US participants tested in English and mainland China participants tested in English (both groups tested in the US) yields a Cohen's d = 0.81. @Ji2004 reported that mean thematic response for mainland China participants tested in Mandarin Chinese is higher than for those tested in English, so the effect size for a comparison between mainland China participants tested in Mandarin Chinese and US participants tested in English (parallel to our comparison) would likely have yielded an even larger effect size than 0.814. It is possible that we failed to replicate the magnitude of effect from @Ji2004 because the previous study calculated their dependent variable as frequency of thematic responses minus frequency of taxonomic responses, whereas our dependent variable is proportion of thematic response over total number of responses.
+
+To test for cross-context differences in similarity judgments between the countries, we ran a mixed-effects logistic regression predicting triad responding (taxonomic or thematic) with country (US, China, or Vietnam) as a fixed effect. As random effects, we included an intercept per subject and one per triad, as well as by-triad random slopes for country to account for variation in the country effect across triads. In R syntax, the model is: response ~ country + (1 | subject) + (country | triad).
+
+Overall, there is a significant effect of country on proportion of thematic responses ($\chi^2$(`r fit.country.anova["country", "Df"]`) = `r round(fit.country.anova["country", "Chisq"], 2)`, p < .001). However, this effect is driven by the difference between US and China responding ($\beta$ = `r round(fixef(fit.country)["countryUS"], 2)`, p < .001). There is no statistical difference between the Vietnam and China responding ($\beta$ = `r round(fixef(fit.country)["countryVietnam"], 2)`, p = `r round(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 2)`), and the US and Vietnam responding ($\beta$ = `r round(fixef(fit.country_EN_VN)["countryVietnam"], 2)`, p = `r round(as.data.frame(summary(fit.country_EN_VN)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)`).
+
+On this analysis, we do not find support that the US-China tendencies toward taxonomic and thematic responding (respectively) extend to the US-Vietnam comparison. Accordingly, we cannot speak to overall biases toward thematic responding across Asian cultural contexts broadly, but we do replicate the differences documented by @Ji2004 between the US and China. However, in our corpus model comparison, we do find evidence for different, more fine-grained variation in similarity judgments between the US and Vietnam. 
+
+## Can the differences in similarity judgments between English, Mandarin and Vietnamese speakers be explained by variation in lexical statistics?
+### Is responding in each cultural context predicted by the corresponding lexical statistics (raw co-occurrences and cosine distance)? 
+```{r Pearson correlation between raw co-occurrences of corpora and responding, warning=FALSE, include=FALSE}
+
+#raw co-occurrences
+df.triad_country_freq <- df %>%
+  filter(!(triad %in% triads_omit)) %>% # omit triads that do not have meaningful prediction (at least 1 non-zero prediction in both languages)
+  group_by(triad, country, theme_freq_prop_E, theme_freq_prop_V, theme_freq_prop_M) %>%  # not working 
+  summarize(emp_theme_prop = mean(responses_theme))
+df.triad_country_freq   #sanity
+
+df.triad_country_freq_E <- df.triad_country_freq %>%
+  filter(country == "US")
+
+#plotting English corpus against US responding data
+plotE = ggplot(data = df.triad_country_freq_E,
+        mapping = aes(x = emp_theme_prop,
+                     y = theme_freq_prop_E,
+                     label = triad)) +
+   geom_text() +
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (US)",
+        y = "Proportion Thematic Predicted (English)")
+plotE
+
+df.triad_country_freq_V <- df.triad_country_freq %>%
+  filter(country == "Vietnam")
+
+#plotting Vietnamese corpus against VN responding data
+plotV = ggplot(data = df.triad_country_freq_V,
+        mapping = aes(x = emp_theme_prop,
+                     y = theme_freq_prop_V,
+                     label = triad)) +
+   geom_text() +
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (Vietnam)",
+        y = "Proportion Thematic Predicted (Vietnamese)")
+plotV
+
+df.triad_country_freq_M <- df.triad_country_freq %>%
+  filter(country == "China")
+
+#plotting China corpus against CN responding data
+plotM = ggplot(data = df.triad_country_freq_M,
+        mapping = aes(x = emp_theme_prop,
+                     y = theme_freq_prop_M,
+                     label = triad)) +
+   geom_text() +
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (China)",
+        y = "Proportion Thematic Predicted (Chinese)")
+plotM
+
+#Pearson correlation between corpus and responding
+corr.E = apa_print(cor.test(df.triad_country_freq_E$emp_theme_prop,
+                  df.triad_country_freq_E$theme_freq_prop_E, na.rm=T))
+corr.E
+
+corr.V = apa_print(cor.test(df.triad_country_freq_V$emp_theme_prop,
+                  df.triad_country_freq_V$theme_freq_prop_V, na.rm=T))
+corr.V
+
+corr.M = apa_print(cor.test(df.triad_country_freq_M$emp_theme_prop,
+                  df.triad_country_freq_M$theme_freq_prop_M, na.rm=T))
+corr.M
+
+#Pearson correlation between EN and VI corpus
+corr.EV = apa_print(cor.test(df.triad_country_freq_V$theme_freq_prop_V,
+                   df.triad_country_freq_E$theme_freq_prop_E, na.rm=T))
+corr.EM = apa_print(cor.test(df.triad_country_freq_M$theme_freq_prop_M,
+                   df.triad_country_freq_E$theme_freq_prop_E, na.rm=T))
+corr.MV = apa_print(cor.test(df.triad_country_freq_V$theme_freq_prop_V,
+                   df.triad_country_freq_M$theme_freq_prop_M, na.rm=T))
+```
+
+```{r echo=FALSE, paged.print=FALSE, fig.cap ="Correlation between English corpus lexical co-occurrence and US responding, and Vietnamese corpus lexical co-occurrence and Vietnam responding."}
+plotE + plotV + plotM
+  plot_layout(ncol = 3)
+```
+
+
+We first conducted a Pearson correlation test between corresponding response data and corpus data. Looking at the raw lexical co-occurrence data, proportion of US thematic responding is moderately correlated to English corpus thematic proportion, `r corr.E$full_result`. Proportion of Vietnam thematic responding is moderately correlated to Vietnamese corpus thematic proportion, `r corr.V$full_result`. Proportion of China thematic responding is moderately correlated to Chinese corpus thematic proportion, `r corr.M$full_result`. 
+There was a strong similarity signal between the thematic proportions in the English and Vietnamese corpora, `r corr.EV$full_result`, and the thematic proportions in the English and Mandarin corpora, `r corr.EM$full_result`. There was a moderate similarity signal between the proportions in the Mandarin and Vietnamese corpora, `r corr.MV$full_result.`
+
+```{r Pearson correlation between corpus cosine distance and responding, warning=FALSE, include=FALSE}
+df.triad_country_cos <- df %>%
+  group_by(triad, country, theme_cosine_prop_E, theme_cosine_prop_V, theme_cosine_prop_M) %>%
+  summarize(emp_theme_prop = mean(responses_theme))
+
+df.triad_country_cos_E <- df.triad_country_cos %>%
+  filter(country == "US")
+
+plotE = ggplot(data = df.triad_country_cos_E, 
+        mapping = aes(x = emp_theme_prop, 
+                     y = theme_cosine_prop_E,
+                     label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (US)", 
+        y = "Proportion Thematic Predicted (English)") + 
+   scale_y_reverse() + 
+   xlim(0, 1) +
+   ylim(0.8, 0.2) + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+df.triad_country_cos_V <- df.triad_country_cos %>%
+  filter(country == "Vietnam")
+
+plotV = ggplot(data = df.triad_country_cos_V, 
+        mapping = aes(x = emp_theme_prop, 
+                     y = theme_cosine_prop_V, 
+                     label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (Vietnam)", 
+        y = "Proportion Thematic Predicted (Vietnamese)") + 
+   scale_y_reverse() +
+   xlim(0, 1) +
+   ylim(0.8, 0.2) + 
+  theme(axis.title = element_text(size=rel(0.75)))
+
+df.triad_country_cos_M <- df.triad_country_cos %>%
+  filter(country == "China")
+
+plotM = ggplot(data = df.triad_country_cos_M, 
+        mapping = aes(x = emp_theme_prop, 
+                     y = theme_cosine_prop_M, 
+                     label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (China)", 
+        y = "Proportion Thematic Predicted (Mandarin)") + 
+   xlim(0, 1) +
+   ylim(0.8, 0.2) + 
+  theme(axis.title = element_text(size=rel(0.75)))
+  
+  
+corr.E_cos = apa_print(cor.test(df.triad_country_cos_E$emp_theme_prop,
+                      df.triad_country_cos_E$theme_cosine_prop_E, na.rm=T))
+
+corr.V_cos = apa_print(cor.test(df.triad_country_cos_V$emp_theme_prop,
+                      df.triad_country_cos_V$theme_cosine_prop_V, na.rm=T))
+
+corr.M_cos = apa_print(cor.test(df.triad_country_cos_M$emp_theme_prop,
+                      df.triad_country_cos_M$theme_cosine_prop_M, na.rm=T))
+
+#correlation between corpora
+corr.EV_cos = apa_print(cor.test(df.triad_country_cos_E$theme_cosine_prop_E,
+                       df.triad_country_cos_V$theme_cosine_prop_V, na.rm=T))
+
+corr.EM_cos = apa_print(cor.test(df.triad_country_cos_E$theme_cosine_prop_E,
+                      df.triad_country_cos_M$theme_cosine_prop_M, na.rm=T))
+
+corr.VM_cos = apa_print(cor.test(df.triad_country_cos_V$theme_cosine_prop_V,
+                      df.triad_country_cos_M$theme_cosine_prop_M, na.rm=T))
+```
+
+```{r warning = FALSE, echo=FALSE, fig.width = 8, fig.cap="Correlation between English corpus cosine distance and US responding; Vietnamese corpus cosine distance and Vietnam responding; and Mandarin corpus cosine distance and China responding."}
+#maybe we should include a note that explains why they are correlate in the opposite direction? 
+#either changing the label of y-axis, or use y = 1/theme_cosine_prop_V? 
+plotE + plotV + plotM +
+  plot_layout(ncol = 3)
+```
+
+```{r US-Mandarin, China-English cross correlation, NOT SHOWN, eval=FALSE, warning=FALSE, include=FALSE}
+plotUSZH = ggplot(data = df.triad_country_cos_E, 
+        mapping = aes(x = emp_theme_prop, 
+                     y = theme_cosine_prop_M,
+                     label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (US)", 
+        y = "Proportion Thematic Predicted (Mandarin)") + 
+   scale_y_reverse() + 
+   xlim(0, 1) +
+   ylim(0.8, 0.3)
+
+
+plotCNEN = ggplot(data = df.triad_country_cos_M, 
+        mapping = aes(x = emp_theme_prop, 
+                     y = theme_cosine_prop_E,
+                     label = triad)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Thematic Chosen (China)", 
+        y = "Proportion Thematic Predicted (English)") + 
+   scale_y_reverse() + 
+   xlim(0, 1) +
+   ylim(0.8, 0.3)
+
+plotUSZH + plotCNEN +
+  plot_layout(ncol = 2)
+```
+
+Looking at the cosine distance data using fastText word vectors, proportion of US thematic responding is moderately correlated to English thematic cosine distance proportion, `r corr.E_cos$full_result`. There is a small correlation between proportion of Vietnam thematic responding and the Vietnamese thematic cosine distance proportion, `r corr.V_cos$full_result`. Proportion of China thematic responding is moderately correlated to Mandarin thematic match cosine distance proportion, `r corr.M_cos$full_result`. There were moderate signals of similarity between English and Mandarin (`r corr.EM_cos$full_result`). There was no significant correlation between English and Vietnamese (`r corr.EV_cos$full_result`), and between Vietnamese and Mandarin (`r corr.VM_cos$full_result`).
+
+To test whether variation in lexical co-occurrence can explain differences in similarity judgments between US and Vietnam participants, we compare logistic mixed-effects regression models fit to the thematic responding data from each country separately. We first ask how well each corpus model (English, Vietnamese, or Mandarin) predicts similarity judgments by speakers of the corresponding language (US, Vietnam, or China). To do this, we use a mixed-effects logistic regression to predict triad responses (0=taxonomic or 1=thematic) with corpus prediction (proportion thematic co-occurrence or cosine distance) as a fixed effect and participant and triad as random effects.
+
+#### Raw lexical co-occurrences
+
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=F}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+
+#Vietnamese
+fit.VI_US = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_US)
+fit.VI_US.anova = Anova(fit.VI_US, type = 3)
+
+#Mandarin
+fit.ZH_US = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_US)
+fit.ZH_US.anova = Anova(fit.ZH_US, type = 3)
+```
+
+```{r VN responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=F}
+# English 
+fit.EN_VN = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_VN)
+fit.EN_VN.anova = Anova(fit.EN_VN, type = 3)
+
+#Vietnamese
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.VI_VN, type = 3)
+
+#Mandarin
+fit.ZH_VN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_VN)
+fit.ZH_VN.anova = Anova(fit.ZH_VN, type = 3)
+```
+
+```{r CN responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=F}
+#English
+fit.EN_CN = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_CN)
+fit.EN_CN.anova = Anova(fit.EN_CN, type = 3)
+
+#Vietnamese
+fit.VI_CN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_CN)
+fit.VI_CN.anova = Anova(fit.VI_CN, type = 3)
+
+#Mandarin
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN)
+fit.ZH_CN.anova = Anova(fit.ZH_CN, type = 3)
+```
+
+TODO: ADD CHINA RESULTS
+Both the English (EN) and Vietnamese (VI) corpus are significant predictors of US responding (EN-US model: $\beta$ = `r round(fixef(fit.EN_US)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.EN_US.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.EN_US.anova["theme_freq_prop_E", "Chisq"], 2)`, p < .001; VI-US model: $\beta$ = `r round(fixef(fit.VI_US)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.VI_US.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.VI_US.anova["theme_freq_prop_V", "Chisq"], 2)`, p < .001). 
+
+Similarly, both the English (EN) and Vietnamese (VI) corpus are significant predictors of Vietnam (VN) responding (EN-VN model: $\beta$ = `r round(fixef(fit.EN_VN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.EN_VN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.EN_VN.anova["theme_freq_prop_E", "Chisq"], 2)`, p < .001; VI-VN model: $\beta$ = `r round(fixef(fit.VI_VN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.VI_VN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.VI_VN.anova["theme_freq_prop_V", "Chisq"], 2)`, p < .001). 
+
+This suggests a strong shared similarity signal across the languages, which is also reflected in the strong correlation between the two corpus models reported above (`r corr.EV$full_result`).
+
+#### Cosine distances of fastText word vectors
+```{r US responding predicted by each corpus model cosine differences, warning=FALSE, include=F}
+#English
+fit.EN_US_cos = glmer(responses_theme ~ theme_cosine_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US"), 
+          family="binomial")
+summary(fit.EN_US_cos)
+fit.EN_US_cos.anova = Anova(fit.EN_US_cos, type = 3)
+fit.EN_US_cos.anova
+
+#Vietnamese
+fit.VI_US_cos = glmer(responses_theme ~ theme_cosine_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US"), 
+          family="binomial")
+summary(fit.VI_US_cos)
+fit.VI_US_cos.anova = Anova(fit.VI_US_cos, type = 3)
+fit.VI_US_cos.anova
+
+#Mandarin
+fit.ZH_US_cos = glmer(responses_theme ~ theme_cosine_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US"), 
+          family="binomial")
+summary(fit.ZH_US_cos)
+fit.ZH_US_cos.anova = Anova(fit.ZH_US_cos, type = 3)
+fit.ZH_US_cos.anova
+```
+
+```{r VN responding predicted by each corpus model cosine differences, warning=FALSE, include=F}
+#English
+fit.EN_VN_cos = glmer(responses_theme ~ theme_cosine_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam"), 
+          family="binomial")
+summary(fit.EN_VN_cos)
+fit.EN_VN_cos.anova = Anova(fit.EN_VN_cos, type = 3)
+fit.EN_VN_cos.anova
+
+#Vietnamese
+fit.VI_VN_cos = glmer(responses_theme ~ theme_cosine_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam"), 
+          family="binomial")
+summary(fit.VI_VN_cos)
+fit.VI_VN_cos.anova = Anova(fit.VI_VN_cos, type = 3)
+fit.VI_VN_cos.anova
+
+#Mandarin
+fit.ZH_VN_cos = glmer(responses_theme ~ theme_cosine_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam"), 
+          family="binomial")
+summary(fit.ZH_VN_cos)
+fit.ZH_VN_cos.anova = Anova(fit.ZH_VN_cos, type = 3)
+fit.ZH_VN_cos.anova
+```
+
+```{r CN responding predicted by each corpus model cosine differences, warning=FALSE, include=F}
+## English
+fit.EN_CN_cos = glmer(responses_theme ~ theme_cosine_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China"), 
+          family="binomial")
+summary(fit.EN_CN_cos)
+fit.EN_CN_cos.anova = Anova(fit.EN_CN_cos, type = 3)
+fit.EN_CN_cos.anova
+
+#Vietnamese
+fit.VI_CN_cos = glmer(responses_theme ~ theme_cosine_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China"), 
+          family="binomial")
+summary(fit.VI_CN_cos)
+fit.VI_CN_cos.anova = Anova(fit.VI_CN_cos, type = 3)
+fit.VI_CN_cos.anova
+
+#Mandarin
+fit.ZH_CN_cos = glmer(responses_theme ~ theme_cosine_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China"), 
+          family="binomial")
+summary(fit.ZH_CN_cos)
+fit.ZH_CN_cos.anova = Anova(fit.ZH_CN_cos, type = 3)
+fit.ZH_CN_cos.anova
+```
+
+Similar to the results from the analysis with raw lexical co-occurrences, we found that all corpora are significant predictors of all cultural context responding. 
+
+For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of US responding (EN-US model: $\beta$ = `r round(fixef(fit.EN_US_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_US_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_US_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p < .001; VI-US model: $\beta$ = `r round(fixef(fit.VI_US_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_US_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_US_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.VI_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`; ZH-US model: $\beta$ = `r round(fixef(fit.ZH_US_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_US_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_US_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p < .001). 
+
+For Vietnam (VN) responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of VN responding (EN-VN model: $\beta$ = `r round(fixef(fit.EN_VN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_VN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_VN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p < .001; VI-VN model: $\beta$ = `r round(fixef(fit.VI_VN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_VN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_VN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.VI_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`; ZH-VN model: $\beta$ = `r round(fixef(fit.ZH_VN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p < .001). 
+
+For China (CN) responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of CN responding (EN-CN model: $\beta$ = `r round(fixef(fit.EN_CN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_CN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_CN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p < .001; VI-CN model: $\beta$ = `r round(fixef(fit.VI_CN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_CN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_CN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.VI_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`; ZH-CN model: $\beta$ = `r round(fixef(fit.ZH_CN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p < .001). 
+
+### Is responding in each cultural context __best__ predicted by the corresponding corpus's lexical statistics (raw co-occurrences and cosine distance), as opposed to the other two corpora?
+Next, we directly compare the corpus models by including both as fixed effects in two mixed-effect regressions (predicting US and Vietnam responding) with the same random effects as above. In R syntax, the model is: response ~ corpus_English + corpus_Vietnamese + corpus_Mandarin + (1|triad) + (1|subject). 
+
+#### Raw co-occurrences 
+```{r MIGHT NEED TO REMOVEEnglish + Vietnamese raw co-occurrences predicting US and Vietnam, warning=FALSE, include=F}
+## English/Vietnamese comparison
+fit.ENVI_US = glmer(responses_theme ~ theme_freq_prop_E + theme_freq_prop_V + 
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "US"), 
+                    family="binomial")
+summary(fit.ENVI_US)
+fit.ENVI_US.anova = Anova(fit.ENVI_US, type = 3)
+fit.ENVI_US.anova
+
+fit.ENVI_VN = glmer(responses_theme ~ theme_freq_prop_V + theme_freq_prop_E + 
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "Vietnam"), 
+                    family="binomial")
+summary(fit.ENVI_VN)
+fit.ENVI_VN.anova = Anova(fit.ENVI_VN, type = 3)
+fit.ENVI_VN.anova
+```
+When we included both corpora as predictors for US responding, only the English corpus has a significant effect ($\beta$ = `r round(fixef(fit.ENVI_US)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.ENVI_US.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.ENVI_US.anova["theme_freq_prop_E", "Chisq"], 2)`, p < .001). There is no effect of the Vietnamese corpus ($\beta$ = `r round(fixef(fit.ENVI_US)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.ENVI_US.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.ENVI_US.anova["theme_freq_prop_V", "Chisq"], 2)`, p = `r round(fit.ENVI_US.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)`). 
+
+However, when both corpora are included as predictors for Vietnam responding -- both corpora has a significant effect (English corpus: $\beta$ = `r round(fixef(fit.ENVI_VN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.ENVI_VN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.ENVI_VN.anova["theme_freq_prop_E", "Chisq"], 2)`, p = `r round(fit.ENVI_VN.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)`; Vietnamese corpus: $\beta$ = `r round(fixef(fit.ENVI_VN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.ENVI_VN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.ENVI_VN.anova["theme_freq_prop_V", "Chisq"], 2)`, p = `r round(fit.ENVI_VN.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)`).
+
+```{r Eng-Vie-Mand lexical co-occ predicting US, VN, CN, warning=FALSE, include=F}
+# ADDITION: adding theme_freq_prop_M
+#raw co-occurrences
+#linear mixed model with ALL corpora as predictors for each population.
+fit.ENVIZH_US = glmer(responses_theme ~ 
+                      theme_freq_prop_E + theme_freq_prop_V + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "US", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_US)
+fit.ENVIZH_US.anova = Anova(fit.ENVIZH_US, type = 3)
+fit.ENVIZH_US.anova
+
+fit.ENVIZH_VN = glmer(responses_theme ~ 
+                      theme_freq_prop_V + theme_freq_prop_E + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_VN)
+fit.ENVIZH_VN.anova = Anova(fit.ENVIZH_VN, type = 3)
+fit.ENVIZH_VN.anova
+
+fit.ENVIZH_CN = glmer(responses_theme ~ 
+                      theme_freq_prop_V + theme_freq_prop_E + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "China", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_CN)
+fit.ENVIZH_CN.anova = Anova(fit.ENVIZH_CN, type = 3)
+fit.ENVIZH_CN.anova
+```
+TODO: ADD WRITE-UP OF RESULTS
+
+```{r echo=FALSE, warning = FALSE, fig.cap = "Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response."}
+coeff_value_freq <- c(fixef(fit.ENVIZH_US)["theme_freq_prop_E"],
+                 fixef(fit.ENVIZH_US)["theme_freq_prop_V"], 
+                 fixef(fit.ENVIZH_US)["theme_freq_prop_M"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_E"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_V"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_M"], 
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_E"],
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_V"], 
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_M"])
+
+se_value_freq <- c(summary(fit.ENVIZH_US)$coef["theme_freq_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_US)$coef["theme_freq_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_US)$coef["theme_freq_prop_M", "Std. Error"], 
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_M", "Std. Error"],
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_M", "Std. Error"])
+
+country_value <- c(rep("US", 3),
+                   rep("VN", 3),
+                   rep("CN", 3))
+
+corpus_value <- c(rep(c("EN", "VI", "ZH"), 3))
+
+df.USVNCN_coeffs_freq <- data.frame(country_value, corpus_value, coeff_value_freq, se_value_freq)
+
+ggplot(data = df.USVNCN_coeffs_freq, 
+       mapping = aes(x = country_value, y = coeff_value_freq, fill = corpus_value)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(ymin= coeff_value_freq - se_value_freq, ymax = coeff_value_freq + se_value_freq), width=.2,
+                 position=position_dodge(.9)) +
+  scale_y_reverse() + 
+  labs(x = "Country", y = "Fixed effect size", fill = "Corpus") + 
+  scale_x_discrete(labels=c("CN" = "China", "US" = "US", "VN" = "Vietnam")) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+  
+```
+
+```{r model comparison, include=FALSE}
+fit.US_freq_compare = anova(fit.ENVIZH_US, fit.EN_US, type = 3)
+fit.VN_freq_compare = anova(fit.ENVIZH_VN, fit.VI_VN, type = 3)
+fit.CN_freq_compare = anova(fit.ENVIZH_CN, fit.ZH_CN, type = 3)
+```
+
+TODO: ADD WRITE-UP ON RESULTS 
+
+#### Cosine distances of fastText word vectors
+
+```{r Eng-Vie-Mand cosine similarities predicting US, VN, CN warning=FALSE, include=FALSE}
+## English/Vietnamese/Mandarin comparison
+fit.ENVIZH_US_cos = glmer(responses_theme ~ theme_cosine_prop_E + theme_cosine_prop_V + theme_cosine_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "US"), 
+                    family="binomial")
+summary(fit.ENVIZH_US_cos)
+fit.ENVIZH_US_cos.anova = Anova(fit.ENVIZH_US_cos, type = 3)
+fit.ENVIZH_US_cos.anova
+
+fit.ENVIZH_VN_cos = glmer(responses_theme ~ theme_cosine_prop_V + theme_cosine_prop_E + theme_cosine_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "Vietnam"), 
+                    family="binomial")
+summary(fit.ENVIZH_VN_cos)
+fit.ENVIZH_VN_cos.anova = Anova(fit.ENVIZH_VN_cos, type = 3)
+fit.ENVIZH_VN_cos.anova
+
+fit.ENVIZH_CN_cos = glmer(responses_theme ~ theme_cosine_prop_M + theme_cosine_prop_E + theme_cosine_prop_V +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "China"), 
+                    family="binomial")
+summary(fit.ENVIZH_CN_cos)
+fit.ENVIZH_CN_cos.anova = Anova(fit.ENVIZH_CN_cos, type = 3)
+fit.ENVIZH_CN_cos.anova
+```
+
+When we included all corpora thematic cosine distance proportion as predictors, all corpora are significant in predicting all cultural context's responding. 
+
+For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p < .001. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)`.
+
+For Vietnam responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)`.
+
+For China responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p = < .001.
+
+We observed some level of language specificity from this analysis. The English corpus is the best predictor for US responding, and the Mandarin corpus is the best predictor for China response. While this is not the case with the Vietnamese corpus and the Vietnam responding, the Vietnamese corpus is still a significant predictor for the Vietnam responding. 
+
+```{r echo=FALSE, warning = FALSE, fig.cap = "Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response."}
+coeff_value_cos <- c(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_E"],
+                 fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_V"], 
+                 fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_M"],
+                 fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_E"],
+                 fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_V"],
+                 fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_M"], 
+                 fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_E"],
+                 fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_V"], 
+                 fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_M"])
+
+se_value_cos <- c(summary(fit.ENVIZH_US_cos)$coef["theme_cosine_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_US_cos)$coef["theme_cosine_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_US_cos)$coef["theme_cosine_prop_M", "Std. Error"], 
+              summary(fit.ENVIZH_VN_cos)$coef["theme_cosine_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_VN_cos)$coef["theme_cosine_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_VN_cos)$coef["theme_cosine_prop_M", "Std. Error"],
+              summary(fit.ENVIZH_CN_cos)$coef["theme_cosine_prop_E", "Std. Error"], 
+              summary(fit.ENVIZH_CN_cos)$coef["theme_cosine_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_CN_cos)$coef["theme_cosine_prop_M", "Std. Error"])
+
+country_value <- c(rep("US", 3),
+                   rep("VN", 3),
+                   rep("CN", 3))
+
+corpus_value <- c(rep(c("EN", "VI", "ZH"), 3))
+
+df.USVNCN_coeffs_cos <- data.frame(country_value, corpus_value, coeff_value_cos, se_value_cos)
+
+ggplot(data = df.USVNCN_coeffs_cos, 
+       mapping = aes(x = country_value, y = coeff_value_cos, fill = corpus_value)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(ymin= coeff_value_cos - se_value_cos, ymax = coeff_value_cos + se_value_cos), width=.2,
+                 position=position_dodge(.9)) +
+  scale_y_reverse() + 
+  labs(x = "Country", y = "Fixed effect size", fill = "Corpus") + 
+  scale_x_discrete(labels=c("CN" = "China", "US" = "US", "VN" = "Vietnam")) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+  
+```
+
+```{r model comparison, include=FALSE}
+fit.US_cos_compare = anova(fit.ENVIZH_US_cos, fit.EN_US_cos, type = 3)
+fit.VN_cos_compare = anova(fit.ENVIZH_VN_cos, fit.VI_VN_cos, type = 3)
+fit.CN_cos_compare = anova(fit.ENVIZH_CN_cos, fit.ZH_CN_cos, type = 3)
+```
+
+However, we found that language specificity alone does not explain our results. We used an ANOVA to compare the model with only the corresponding corpus, and the model with all 3 corpora for each cultural context. We found that in all three cases (US, China, Vietnam), adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_compare["fit.ENVIZH_US_cos", "Df"]`) = `r round(fit.US_compare["fit.ENVIZH_US_cos", "Chisq"], 2)`, p = `r round(fit.US_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"], 3)`; Vietnam response: $\chi^2$(`r fit.VN_compare["fit.ENVIZH_VN_cos", "Df"]`) = `r round(fit.VN_compare["fit.ENVIZH_VN_cos", "Chisq"], 2)`, p = < .001; China response: $\chi^2$(`r fit.CN_compare["fit.ENVIZH_CN_cos", "Df"]`) = `r round(fit.CN_compare["fit.ENVIZH_CN_cos", "Chisq"], 2)`, p = `r round(fit.CN_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"], 3)`). 
+
+```{r add linguistic model to Ji et al., include=FALSE}
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (1 | triad), 
+                           data = df %>% filter(country != "Vietnam"), 
+                           family = "binomial")
+
+fit.country_corpus = glmer(responses_theme ~ country + theme_cosine_prop_E + theme_cosine_prop_M + (1 | subject) + (1 | triad), 
+                           data = df %>% filter(country != "Vietnam"), 
+                           family = "binomial")
+
+fit.add_corpus <- anova(fit.country, fit.country_corpus, type = 3)
+                   
+```
+
+We carried out an ANOVA model comparison to compare our approach with previous studies that did not include corpus information. Because @Ji2004 only compared US and China participants, we filtered our data to only include responding data from these two countries. Our approach would be to compare a model that only includes country (US or China) as a fixed effect with one that also includes English and Chinese corpus data. Our previous model with an intercept per subject and one per triad, as well as by-triad random slopes for country to account for variation in the country effect across triads fails to converge with the more complex model, so we include a simpler random effect structure with an intercept per subject and one per triad in both the basic and more complex model. We compare this model with an identical model but including Chinese and English corpus cosine distance proportion prediction. We found that adding English and Chinese corpus data produces a significantly better fit than the identical model without English and Chinese corpus data as predictors ($\chi^2$(`r fit.add_corpus["fit.country_corpus", "Df"]`) = `r round(fit.add_corpus["fit.country_corpus", "Chisq"], 2)`, p = < .001. This suggests that including corpus data would better model the cross-cultural differences in similarity judgment in this study as well as similar studies.
+
+
+## Exploratory analysis 
+
+Because our exclusion criterion for attention checks excluded over 50% Vietnam participants, we carried out exploratory analysis where we applied less stringent exclusion criteria. In the following analysis, we only exclude participants who miss more than 2 attention checks (rather than any attention checks). We kept the rest of the exclusion criteria. 
+
+TODO: CREATE .CSV FILES FOR THESE, SEPARATE OUT R SCRIPT INTO RMD.
+```{r loading data E explore, warning=FALSE, include=F}
+df.resp_E <- read.csv("../../data/data_E_0319.csv") %>%
+  select(-X)
+
+# check for participants who completed the entire experiment. Because the experiment is
+# quite long, some participants decide to come back afterwards, so there are a few files
+# that are recorded as incomplete. 
+df.ppts_finished_E <- df.resp_E %>% 
+  group_by(subject) %>%
+  summarize(finished = ifelse("demo-final" %in% unique(variable_type), "yes", "no")) %>%
+  filter(finished == "yes")
+
+df.resp_E <- df.resp_E %>%
+  filter(subject %in% df.ppts_finished_E$subject) 
+
+df.ppts_att_E <- df.resp_E %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Choose ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarize(pass_att_check_percent = mean(pass_att_check)) %>%
+  filter(pass_att_check_percent >= 0.8)
+
+df.resp_E <- df.resp_E %>%
+  filter(subject %in% df.ppts_att_E$subject) 
+```
+
+```{r exclusion E explore, include = F, warning = F}
+#non-native speaker
+split_responses_demog <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+NATIVE_LANG = 2
+get_native_lang <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  if(responses[NATIVE_LANG-1] != "{firstlanguage") 
+    {warnings("cannot find native language answer")}
+  else
+    {return (responses[NATIVE_LANG])}
+})
+
+df.ppts_non_native_lang_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language") %>%
+  mutate(native_speaker = get_native_lang(responses)) %>%
+  filter(native_speaker == "No")
+
+ppts_non_native_lang_E = unique(df.ppts_non_native_lang_E$subject)#18
+percent_dropped = length(ppts_non_native_lang_E) / length(unique(df.resp_E$subject))
+percent_dropped #0.1041667
+
+#fluent in Vietnamese & Mandarin
+SPEAKER = 2
+SPEAKING = 23
+UNDERSTANDING = 46
+
+get_speaker <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKER])
+})
+
+get_fluency_speaking <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKING])
+})
+
+get_fluency_understanding <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[UNDERSTANDING])
+})
+
+df.lang_vi_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_vi") %>%
+  mutate(vi_speaker = get_speaker(responses))
+  
+df.lang_vi_fluency_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_conditional_language_vn_fluency") %>%
+  mutate(vi_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(vi_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_vi_E <- full_join(df.lang_vi_E, 
+                          df.lang_vi_fluency_E, 
+                          by = "subject") %>%
+  select(subject, vi_speaker, vi_fluency_sp, vi_fluency_ud) %>%
+  filter(vi_speaker == "Yes",
+         vi_fluency_sp > 4, 
+         vi_fluency_ud > 4)
+
+ppts_vi_speaker_E = unique(df.lang_vi_E$subject) #4
+percent_dropped = length(ppts_vi_speaker_E) / length(unique(df.resp_E$subject))
+percent_dropped #0.02083333
+
+df.lang_zh_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_cn") %>%
+  mutate(zh_speaker = get_speaker(responses))
+  
+df.lang_zh_fluency_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_conditional_language_cn_fluency") %>%
+  mutate(zh_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(zh_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_zh_E <- full_join(df.lang_zh_E, 
+                          df.lang_zh_fluency_E, 
+                          by = "subject") %>%
+  select(subject, zh_speaker, zh_fluency_sp, zh_fluency_ud) %>%
+  filter(zh_speaker == "Yes",
+         zh_fluency_sp > 4, 
+         zh_fluency_ud > 4)
+
+ppts_zh_speaker_E = unique(df.lang_zh_E$subject) #30
+percent_dropped = length(ppts_zh_speaker_E) / length(unique(df.resp_E$subject))
+percent_dropped #0.1822917
+
+#have lived outside the sample country for more than 2 years
+#have travelled extensively (more than 6 international experiences of 2 days or longer) 
+YEARSABROAD = 2
+OVERSEAEXP = 4
+
+get_lived_abroad <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[YEARSABROAD])
+})
+
+get_oversea_exp <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[OVERSEAEXP])
+})
+
+df.abroad_E <- df.resp_E %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_oversea_experience") %>%
+  mutate(lived_abroad = get_lived_abroad(responses)) %>%
+  mutate(oversea_exp = get_oversea_exp(responses))
+
+df.lived_abroad_E <- df.abroad_E %>%
+  filter(lived_abroad == "Yes")
+
+ppts_lived_abroad_E = unique(df.lived_abroad_E$subject) #29
+percent_dropped = length(ppts_lived_abroad_E) / length(unique(df.resp_E$subject))
+percent_dropped #0.171875
+
+df.oversea_exp_E <- df.abroad_E %>%
+  filter(oversea_exp == "Six or more experiences")
+
+ppts_oversea_exp_E = unique(df.oversea_exp_E$subject) #77
+percent_dropped = length(ppts_oversea_exp_E) / length(unique(df.resp_E$subject))
+percent_dropped #0.44 # will not use this criterion
+
+df.resp_E <- df.resp_E %>%
+  filter(!(subject %in% ppts_non_native_lang_E),
+         !(subject %in% ppts_vi_speaker_E), 
+         !(subject %in% ppts_zh_speaker_E),
+         !(subject %in% ppts_lived_abroad_E))
+
+length(unique(df.resp_E$subject)) #132
+```
+
+```{r demog_E explore, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_E <- df.resp_E %>%
+  filter(trial_type %in% demog) 
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_E <- df.demog_E %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_E_summ <- df.age_gender_E %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+
+```{r loading data V explore, include=F}
+df.resp_V <- read.csv("../../data/data_V_0530.csv") %>%
+  select(-X)
+
+# check for participants who completed the entire experiment. Because the experiment is
+# quite long, some participants decide to come back afterwards, so there are a few files
+# that are recorded as incomplete. 
+df.ppts_finished_V <- df.resp_V %>% 
+  group_by(subject) %>%
+  summarize(finished = ifelse("demo-final" %in% unique(variable_type), "yes", "no")) %>%
+  filter(finished == "yes")
+
+df.resp_V <- df.resp_V %>%
+  filter(subject %in% df.ppts_finished_V$subject) 
+
+df.ppts_att_V <- df.resp_V %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Chọn ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarize(pass_att_check_percent = mean(pass_att_check)) %>%
+  filter(pass_att_check_percent >= 0.8)
+
+df.resp_V <- df.resp_V %>%
+  filter(subject %in% df.ppts_att_V$subject) #73
+```
+
+```{r exclusion V explore, include = F}
+#non-native speaker
+split_responses_demog <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+NATIVE_LANG = 2
+get_native_lang <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  if(responses[NATIVE_LANG-1] != "{firstlanguage") 
+    {warnings("cannot find native language answer")}
+  else
+    {return (responses[NATIVE_LANG])}
+})
+
+df.ppts_non_native_lang_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language") %>%
+  mutate(native_speaker = get_native_lang(responses)) %>%
+  filter(native_speaker == "Không")
+
+ppts_non_native_lang_V = unique(df.ppts_non_native_lang_V$subject)
+percent_dropped = length(ppts_non_native_lang_V) / length(unique(df.resp_V$subject))
+percent_dropped #0
+
+#fluent in English
+SPEAKER = 2
+SPEAKING = 23
+UNDERSTANDING = 46
+
+get_speaker <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKER])
+})
+
+get_fluency_speaking <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKING])
+})
+
+get_fluency_understanding <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[UNDERSTANDING])
+})
+
+df.lang_en_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_en") %>%
+  mutate(en_speaker = get_speaker(responses))
+  
+df.lang_en_fluency_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_conditional_language_en_fluency") %>%
+  mutate(en_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(en_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_en_V <- full_join(df.lang_en_V, 
+                          df.lang_en_fluency_V, 
+                          by = "subject") %>%
+  select(subject, en_speaker, en_fluency_sp, en_fluency_ud) %>%
+  filter(en_speaker == "Có",
+         en_fluency_sp > 4, 
+         en_fluency_ud > 4)
+
+ppts_en_speaker_V = unique(df.lang_en_V$subject) #4
+percent_dropped = length(ppts_en_speaker_V) / length(unique(df.resp_V$subject))
+percent_dropped #0.6861314 # do not use this criterion
+
+df.lang_zh_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_cn") %>%
+  mutate(zh_speaker = get_speaker(responses))
+  
+df.lang_zh_fluency_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_conditional_language_cn_fluency") %>%
+  mutate(zh_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(zh_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_zh_V <- full_join(df.lang_zh_V, 
+                          df.lang_zh_fluency_V, 
+                          by = "subject") %>%
+  select(subject, zh_speaker, zh_fluency_sp, zh_fluency_ud) %>%
+  filter(zh_speaker == "Có",
+         zh_fluency_sp > 4, 
+         zh_fluency_ud > 4)
+
+ppts_zh_speaker_V = unique(df.lang_zh_V$subject) #4
+percent_dropped = length(ppts_zh_speaker_V) / length(unique(df.resp_V$subject))
+percent_dropped #0.05839416
+
+#have lived outside the sample country for more than 2 years
+#have travelled extensively (more than 6 international experiences of 2 days or longer) 
+YEARSABROAD = 2
+OVERSEAEXP = 4
+
+get_lived_abroad <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[YEARSABROAD])
+})
+
+get_oversea_exp <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[OVERSEAEXP])
+})
+
+df.abroad_V <- df.resp_V %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_oversea_experience") %>%
+  mutate(lived_abroad = get_lived_abroad(responses)) %>%
+  mutate(oversea_exp = get_oversea_exp(responses))
+
+df.lived_abroad_V <- df.abroad_V %>%
+  filter(lived_abroad == "Có")
+
+ppts_lived_abroad_V = unique(df.lived_abroad_V$subject)
+percent_dropped = length(ppts_lived_abroad_V) / length(unique(df.resp_V$subject))
+percent_dropped #0.1094891
+
+df.oversea_exp_V <- df.abroad_V %>%
+  filter(oversea_exp == "6 lần trở lên")
+
+ppts_oversea_exp_V = unique(df.oversea_exp_V$subject) #77
+percent_dropped = length(ppts_oversea_exp_V) / length(unique(df.resp_V$subject))
+percent_dropped #0.1094891
+
+df.resp_V <- df.resp_V %>%
+  filter(!(subject %in% ppts_non_native_lang_V),
+         !(subject %in% ppts_oversea_exp_V), 
+         !(subject %in% ppts_zh_speaker_V),
+         !(subject %in% ppts_lived_abroad_V))
+
+length(unique(df.resp_V$subject))  #110
+```
+
+```{r demog_V explore, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_V <- df.resp_V %>%
+  filter(trial_type %in% demog)
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_V <- df.demog_V %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_V_summ <- df.age_gender_V %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+
+```{r loading data M explore, warning=FALSE, include=F}
+df.resp_M <- read.csv("../../data/data_M_0530.csv") %>%
+  select(-X)
+
+# check for participants who completed the entire experiment. Because the experiment is
+# quite long, some participants decide to come back afterwards, so there are a few files
+# that are recorded as incomplete. 
+df.ppts_finished_M <- df.resp_M %>% 
+  group_by(subject) %>%
+  summarize(finished = ifelse("demo-final" %in% unique(variable_type), "yes", "no")) %>%
+  filter(finished == "yes")
+
+df.resp_M <- df.resp_M %>%
+  filter(subject %in% df.ppts_finished_M$subject) 
+
+df.ppts_att_M <- df.resp_M %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "选择")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(correct_response = str_replace_all(correct_response, "“", "")) %>%
+  mutate(correct_response = str_replace_all(correct_response, "”", "")) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarize(pass_att_check_percent = mean(pass_att_check)) %>%
+  filter(pass_att_check_percent >= 0.8)
+
+df.resp_M <- df.resp_M %>%
+  filter(subject %in% df.ppts_att_M$subject) 
+```
+
+```{r exclusion M explore, include = F, warning = F}
+#non-native speaker
+split_responses_demog <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+NATIVE_LANG = 2
+get_native_lang <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  if(responses[NATIVE_LANG-1] != "{firstlanguage") 
+    {warnings("cannot find native language answer")}
+  else
+    {return (responses[NATIVE_LANG])}
+})
+
+df.ppts_non_native_lang_M <- df.resp_M %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language") %>%
+  mutate(native_speaker = get_native_lang(responses)) %>%
+  filter(native_speaker == "不是")
+
+ppts_non_native_lang_M = unique(df.ppts_non_native_lang_M$subject) #2
+percent_dropped = length(ppts_non_native_lang_M) / length(unique(df.resp_M$subject))
+percent_dropped #0.01149425
+
+#fluent in English
+SPEAKER = 2
+SPEAKING = 23
+UNDERSTANDING = 46
+
+get_speaker <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKER])
+})
+
+get_fluency_speaking <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[SPEAKING])
+})
+
+get_fluency_understanding <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[UNDERSTANDING])
+})
+
+df.lang_en_M <- df.resp_M %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_en") %>%
+  mutate(en_speaker = get_speaker(responses))
+  
+df.lang_en_fluency_M <- df.resp_M %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_conditional_language_en_fluency") %>%
+  mutate(en_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(en_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_en_M <- full_join(df.lang_en_M, 
+                          df.lang_en_fluency_M, 
+                          by = "subject") %>%
+  select(subject, en_speaker, en_fluency_sp, en_fluency_ud) %>%
+  filter(en_speaker == "能",
+         en_fluency_sp > 4, 
+         en_fluency_ud > 4)
+
+ppts_en_speaker_M = unique(df.lang_en_M$subject) #50
+percent_dropped = length(ppts_en_speaker_M) / length(unique(df.resp_M$subject))
+percent_dropped #0.3850575 # will not use this criterion
+
+df.lang_vi_M <- df.resp_M %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_language_vi") %>%
+  mutate(vi_speaker = get_speaker(responses))
+  
+df.lang_vi_fluency_M <- df.resp_M %>%
+  filter(variable_type == "demog_conditional_language_vi_fluency") %>%
+  mutate(vi_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
+  mutate(vi_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+
+df.lang_vi_M <- full_join(df.lang_vi_M, 
+                          df.lang_vi_fluency_M, 
+                          by = "subject") %>%
+  select(subject, vi_speaker, vi_fluency_sp, vi_fluency_ud) %>%
+  filter(vi_speaker == "能",
+         vi_fluency_sp > 4, 
+         vi_fluency_ud > 4)
+
+ppts_vi_speaker_M = unique(df.lang_vi_M$subject) #50
+percent_dropped = length(ppts_vi_speaker_M) / length(unique(df.resp_M$subject))
+percent_dropped #0
+
+#have lived outside the sample country for more than 2 years
+#have travelled extensively (more than 6 international experiences of 2 days or longer) 
+YEARSABROAD = 2
+OVERSEAEXP = 4
+
+get_lived_abroad <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[YEARSABROAD])
+})
+
+get_oversea_exp <- Vectorize(function(responses) {
+  responses <- split_responses_demog(responses)
+  return (responses[OVERSEAEXP])
+})
+
+df.abroad_M <- df.resp_M %>%
+  select(subject, responses, variable_type) %>%
+  filter(variable_type == "demog_oversea_experience") %>%
+  mutate(lived_abroad = get_lived_abroad(responses)) %>%
+  mutate(oversea_exp = get_oversea_exp(responses))
+
+df.lived_abroad_M <- df.abroad_M %>%
+  filter(lived_abroad == "是")
+
+ppts_lived_abroad_M = unique(df.lived_abroad_M$subject) #23
+percent_dropped = length(ppts_lived_abroad_M) / length(unique(df.resp_M$subject))
+percent_dropped # 0.1551724
+
+df.oversea_exp_M <- df.abroad_M %>%
+  filter(oversea_exp == "六段或更多国际经历")
+
+ppts_oversea_exp_M = unique(df.oversea_exp_M$subject) #0
+percent_dropped = length(ppts_oversea_exp_M) / length(unique(df.resp_M$subject))
+percent_dropped #0.03448276
+
+df.resp_M <- df.resp_M %>%
+  filter(!(subject %in% ppts_non_native_lang_M),
+         !(subject %in% ppts_lived_abroad_M),
+         !(subject %in% ppts_vi_speaker_M),
+         !(subject %in% ppts_oversea_exp_M),)
+
+length(unique(df.resp_M$subject)) #143
+```
+
+```{r demog_M explore, include = F}
+demog <- c("demog-dropdown", "demog-multi-choice", "demog-free-response", "demog-multi-select")
+df.demog_M <- df.resp_M %>%
+  filter(trial_type %in% demog) 
+#write.csv(data_demog, "data_anon_demog_0201.csv")
+
+AGE = 97 #index for age answer
+GENDER = 115 #index for gender answer
+split_responses <- function(responses) {
+  responses <- as.character(responses)
+  response_list <- unlist(strsplit(responses, ',|:'))
+  response_list <- response_list[seq(1, length(response_list))]
+  response_list <- gsub("}", "", response_list)
+  response_list <- gsub("\"", "", response_list)
+  return(response_list)
+}
+
+get_age <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[AGE-1] != "A0") {warnings("cannot find age answer")}
+  else{return (responses[AGE])}
+})
+
+get_gender <- Vectorize(function(responses) {
+  responses <- split_responses(responses)
+  if(responses[GENDER-1] != "A1") {warnings("cannot find gender answer")}
+  else{return (responses[GENDER])}
+})
+
+df.age_gender_M <- df.demog_M %>%
+  filter(variable_type == "demog_age_gender_ethnic") %>%
+  select(subject, responses) %>%
+  mutate(age = as.numeric(get_age(responses))) %>%
+  mutate(age = as.numeric(age)) %>%
+  mutate(gender = get_gender(responses))
+
+df.age_gender_M_summ <- df.age_gender_M %>%
+  summarize(mean_age = mean(age), 
+            median_age = median(age), 
+            sd_age = sd(age))
+```
+
+With the new exclusion criteria, we excluded `r length(unique(df.ppts_finished_E$subject)) - length(unique(df.ppts_att_E$subject))` US participants, `r length(unique(df.ppts_finished_V$subject)) - length(unique(df.ppts_att_V$subject))` VN participants, and `r length(unique(df.ppts_finished_M$subject)) - length(unique(df.ppts_att_M$subject))` CN participants who did not answer more than 2 attention checks correctly. We then applied the 4 criteria that aim to retain only participants who are influenced by one culture: (1) non-native speakers of English and Vietnamese, respectively, (2) fluent in at least one of the other two study languages (Vietnamese for US participants, English for Vietnamese participants and Chinese participants), (3) have lived outside of the test country (US, Vietnam, or China) for more than two years, and (4) have significant international experience (more than 6 international experiences of 2 days or longer.) We did not use a particular criterion for a language if it would exclude 25% or more of any one sample. In this round of exclusion, we excluded `r length(unique(df.ppts_att_E$subject)) - length(unique(df.resp_E$subject))` US, `r length(unique(df.ppts_att_V$subject)) - length(unique(df.resp_V$subject))` VN participants, and `r length(unique(df.ppts_att_M$subject)) - length(unique(df.resp_M$subject))` CN participants. After these exclusions, the US sample included `r length(unique(df.resp_E$subject))` participants (`r df.age_gender_E %>% filter(gender == "Male") %>% count()`M, `r df.age_gender_E %>% filter(gender == "Female") %>% count()`F, `r df.age_gender_E %>% filter(gender == "Non-binary") %>% count()` non-binary, `r df.age_gender_E %>% filter(gender == "Decline to answer") %>% count()` other), with mean age = `r round(df.age_gender_E_summ$mean_age, 2)` (SD = `r round(df.age_gender_E_summ$sd_age, 2)`) and median age = `r df.age_gender_E_summ$median_age`. The VN sample included `r length(unique(df.resp_V$subject))` participants (`r df.age_gender_V %>% filter(gender == "Nam") %>% count()`M, `r df.age_gender_V %>% filter(gender == "Nữ") %>% count()`F), with mean age = `r round(df.age_gender_V_summ$mean_age, 2)` (SD = `r round(df.age_gender_V_summ$sd_age, 2)`) and median age = `r df.age_gender_V_summ$median_age`. The CN sample included `r length(unique(df.resp_M$subject))` participants (`r df.age_gender_M %>% filter(gender == "男性") %>% count()`M, `r df.age_gender_M %>% filter(gender == "女性") %>% count()`F), with mean age = `r round(df.age_gender_M_summ$mean_age, 2)` (SD = `r round(df.age_gender_M_summ$sd_age, 2)`) and median age = `r df.age_gender_M_summ$median_age`.
+
+```{r corpus explore, include = F}
+df.corpus_E <- read.csv("../../data/corpusE_cos.csv") %>%
+  rename(tax_frequency_E = tax.frequency,
+         theme_frequency_E = theme.frequency,
+         tax_cosine_E = Tax.cosine_dist, 
+         theme_cosine_E = Theme.cosine_dist,
+         tax_cosine_sim_E = Tax.cosine_sim,
+         theme_cosine_sim_E = Theme.cosine_sim,
+         tax_match_E = Tax.match,
+         theme_match_E = Theme.match, 
+         cue_E = Cue)
+
+df.corpus_V <- read.csv("../../data/corpusV_cos.csv") %>%
+  rename(tax_frequency_V = tax.frequency,
+         theme_frequency_V = theme.frequency,
+         tax_cosine_V = Tax.cosine_dist, 
+         theme_cosine_V = Theme.cosine_dist,
+         tax_cosine_sim_V = Tax.cosine_sim,
+         theme_cosine_sim_V = Theme.cosine_sim,
+         tax_match_V = Tax.match,
+         theme_match_V = Theme.match, 
+         cue_V = Cue)
+
+df.corpus_M <- read.csv("../../data/corpusM_cos.csv") %>%
+  rename(tax_frequency_M = tax.frequency,
+         theme_frequency_M = theme.frequency,
+         tax_cosine_M = Tax.cosine_dist, 
+         theme_cosine_M = Theme.cosine_dist,
+         tax_cosine_sim_M = Tax.cosine_sim,
+         theme_cosine_sim_M = Theme.cosine_sim,
+         tax_match_M = Tax.match,
+         theme_match_M = Theme.match, 
+         cue_M = Cue)
+```
+
+```{r full corpus explore, M freqs is incorrect, include=F}
+df.corpus <- left_join(df.corpus_E, df.corpus_V, by = "Cue_renamed")
+df.corpus <- left_join(df.corpus, df.corpus_M, by = "Cue_renamed")
+
+#replacing any 0 raw counts with epsilon
+df.corpus <- df.corpus %>%
+  mutate(tax_frequency_E = ifelse(tax_frequency_E == 0, 
+                                  .Machine$double.eps, tax_frequency_E),
+         theme_frequency_E = ifelse(theme_frequency_E == 0, 
+                                  .Machine$double.eps, theme_frequency_E),
+         tax_frequency_V = ifelse(tax_frequency_V == 0, 
+                                  .Machine$double.eps, tax_frequency_V),
+         theme_frequency_V = ifelse(theme_frequency_V == 0, 
+                                  .Machine$double.eps, theme_frequency_V))
+
+```
+
+```{r corpus - frequency explore, include = F}
+#find triads_omit, used whenever analysis uses raw collocates 
+df.corpus_E_freq <- df.corpus_E %>%
+  select(Cue_renamed, cue_E, tax_match_E, theme_match_E, tax_frequency_E, theme_frequency_E)
+corpus_E_omit <- df.corpus_E_freq %>%
+  filter(tax_frequency_E == 0 & theme_frequency_E == 0)
+
+df.corpus_V_freq <- df.corpus_V %>%
+  select(Cue_renamed, cue_V, tax_match_V, theme_match_V, tax_frequency_V, theme_frequency_V)
+corpus_V_omit <- df.corpus_V_freq %>% 
+  filter(tax_frequency_V == 0 & theme_frequency_V == 0)
+
+triads_omit <- append(corpus_E_omit$Cue_renamed, corpus_V_omit$Cue_renamed)
+
+df.corpus_freq <- left_join(df.corpus_E_freq, df.corpus_V_freq, by = "Cue_renamed")
+```
+
+```{r corpus - cosine explore, include = F}
+#mainly for sanity checking and so that there is a parallel df to df.corpus_freq
+df.corpus_E_cos <- df.corpus_E %>%
+  select(Cue_renamed, cue_E, tax_match_E, theme_match_E, 
+         tax_cosine_E, theme_cosine_E,
+         tax_cosine_sim_E, theme_cosine_sim_E)
+
+df.corpus_V_cos <- df.corpus_V %>%
+  select(Cue_renamed, cue_V, tax_match_V, theme_match_V, tax_cosine_V, theme_cosine_V,
+         tax_cosine_sim_V, theme_cosine_sim_V)
+
+df.corpus_M_cos <- df.corpus_M %>%
+  select(Cue_renamed, cue_M, tax_match_M, theme_match_M, tax_cosine_M, theme_cosine_M, 
+         tax_cosine_sim_M, theme_cosine_sim_M)
+
+df.corpus_cos <- left_join(df.corpus_E_cos, df.corpus_V_cos, by = "Cue_renamed")
+df.corpus_cos <- left_join(df.corpus_cos, df.corpus_M_cos, by = "Cue_renamed")
+```
+
+```{r getting triads from the 3 languages explore, include = F}
+#combine response and corpus data
+df.triad_E <- df.resp_E %>%
+  filter(stim_type == "triad",
+         responses != "NA")
+triad_cues_E <- read.csv("../../data/cue_renamed_E.csv")
+df.triad_E <- left_join(df.triad_E, triad_cues_E, by = c("cue", "top_opt", "bottom_opt"))
+df.triad_E <- inner_join(df.triad_E, df.corpus, by = "Cue_renamed")
+
+df.triad_E <- df.triad_E %>%
+  mutate(responses_theme = ifelse(responses == theme_match_E, 1, 0),
+         language = "English",
+         country = "US") %>%
+  select(subject, rt, Cue_renamed, cue, top_opt, bottom_opt, 
+         responses, responses_theme, country, language,
+         tax_match_E, theme_match_E, tax_match_V, theme_match_V, tax_match_M, theme_match_M,
+         tax_frequency_E, theme_frequency_E, tax_frequency_V, theme_frequency_V, tax_frequency_M, theme_frequency_M,
+         tax_cosine_E, theme_cosine_E, tax_cosine_V, theme_cosine_V, tax_cosine_M, theme_cosine_M,
+         tax_cosine_sim_E, theme_cosine_sim_E, tax_cosine_sim_V, theme_cosine_sim_V, tax_cosine_sim_M, theme_cosine_sim_M)
+
+df.triad_V <- df.resp_V %>%
+  filter(stim_type == "triad",
+         responses != "NA")
+triad_cues_V <- read.csv("../../data/cue_renamed_V.csv")
+df.triad_V <- left_join(df.triad_V, triad_cues_V, by = c("cue", "top_opt", "bottom_opt"))
+df.triad_V <- inner_join(df.triad_V, df.corpus, by = "Cue_renamed")
+
+df.triad_V <- df.triad_V %>%
+  mutate(responses_theme = ifelse(responses == theme_match_V, 1, 0),
+         language = "Vietnamese", 
+         country = "Vietnam") %>%
+  select(subject, rt, Cue_renamed, cue, top_opt, bottom_opt, 
+         responses, responses_theme, country, language,
+         tax_match_E, theme_match_E, tax_match_V, theme_match_V, tax_match_M, theme_match_M,
+         tax_frequency_E, theme_frequency_E, tax_frequency_V, theme_frequency_V, tax_frequency_M, theme_frequency_M,
+         tax_cosine_E, theme_cosine_E, tax_cosine_V, theme_cosine_V, tax_cosine_M, theme_cosine_M,
+         tax_cosine_sim_E, theme_cosine_sim_E, tax_cosine_sim_V, theme_cosine_sim_V, tax_cosine_sim_M, theme_cosine_sim_M)
+
+df.triad_M <- df.resp_M %>%
+  filter(stim_type == "triad",
+         responses != "NA")
+triad_cues_M <- read.csv("../../data/cue_renamed_M.csv")
+df.triad_M <- left_join(df.triad_M, triad_cues_M, by = c("cue", "top_opt", "bottom_opt"))
+df.triad_M <- inner_join(df.triad_M, df.corpus, by = "Cue_renamed")
+
+df.triad_M <- df.triad_M %>%
+  mutate(responses_theme = ifelse(responses == theme_match_M, 1, 0),
+         language = "Mandarin", 
+         country = "China") %>%
+  select(subject, rt, Cue_renamed, cue, top_opt, bottom_opt, 
+         responses, responses_theme, country, language,
+         tax_match_E, theme_match_E, tax_match_V, theme_match_V, tax_match_M, theme_match_M,
+         tax_frequency_E, theme_frequency_E, tax_frequency_V, theme_frequency_V, tax_frequency_M, theme_frequency_M,
+         tax_cosine_E, theme_cosine_E, tax_cosine_V, theme_cosine_V, tax_cosine_M, theme_cosine_M,
+         tax_cosine_sim_E, theme_cosine_sim_E, tax_cosine_sim_V, theme_cosine_sim_V, tax_cosine_sim_M, theme_cosine_sim_M)
+
+#calculate proportion for raw frequencies and cosine distance
+df <- rbind(df.triad_E, df.triad_V)
+df <- rbind(df, df.triad_M) %>%
+  mutate(theme_freq_prop_E = theme_frequency_E / (theme_frequency_E + tax_frequency_E),
+         theme_freq_prop_V = theme_frequency_V / (theme_frequency_V + tax_frequency_V), 
+         theme_freq_prop_M = theme_frequency_M / (theme_frequency_M + tax_frequency_M), 
+         theme_cosine_prop_E = theme_cosine_E / (theme_cosine_E + tax_cosine_E),
+         theme_cosine_prop_V = theme_cosine_V / (theme_cosine_V + tax_cosine_V), 
+         theme_cosine_prop_M = theme_cosine_M / (theme_cosine_M + tax_cosine_M)) %>%
+  rename(triad = Cue_renamed)
+```
+
+```{r country effect - explore, warning=FALSE, include=FALSE, paged.print=TRUE}
+df.country <- df %>%
+  group_by(subject, country) %>%
+  summarize(theme_resp_percent = mean(responses_theme, na.rm = T))
+
+df.country_sum <- df.country %>%
+  group_by(country) %>%
+  summarize(mean_theme_resp_percent = mean(theme_resp_percent), 
+            sd_theme_resp_percent = sd(theme_resp_percent))
+
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df, 
+                    family = "binomial")
+summary(fit.country) 
+fit.country.anova = Anova(fit.country, type=3)
+
+fit.country_EN_VN = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df %>% filter(country != "China"),
+                    family = "binomial")
+summary(fit.country_EN_VN) 
+```
+
+```{r echo=FALSE, warning=FALSE, fig.cap="Proportion of thematic responses by country, with a less stringent attention check criterion. We did not find any significant differences from the analysis reported above with a more stringent criterion."}
+
+ggplot(df.country,
+       mapping = aes(x = country, 
+                     y = theme_resp_percent, 
+                     color = country)) +
+  geom_violin() +
+  geom_jitter(height = 0, 
+              alpha = 0.3) +  
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  labs(y = "Proportion Thematic Chosen", 
+       x = "Country", 
+       color = "Country") + 
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+```
+
+There is no significant difference in this round of analysis compared to the one reported above (with more stringent attention check criterion). That is, we still observed a significant effect of country on proportion of thematic responses ($\chi^2$(`r fit.country.anova["country", "Df"]`) = `r round(fit.country.anova["country", "Chisq"], 2)`, p < .001), but this effect is driven by only the difference between US and China response ($\beta$ = `r round(fixef(fit.country)["countryUS"], 2)`, p < .001). There is no statistical difference between the Vietnam and China response ($\beta$ = `r round(fixef(fit.country)["countryVietnam"], 2)`, p = `r round(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)`), and the US and Vietnam response ($\beta$ = `r round(fixef(fit.country_EN_VN)["countryVietnam"], 2)`, p = `r round(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)`).
+
+# Discussion
+In this paper, we consider whether statistics of the language environment can account for cross-cultural differences in a classic similarity judgment paradigm, as an alternative to the view that members of different cultures vary in their conception of similarity. 
+
+We first tested the generality of a cultural account which holds that people from Western and East Asian cultures tend to conceive of similarity in more taxonomic and thematic ways, respectively, and respond accordingly in categorization tasks such as ours. While we managed to replicate the previously documented contrast between English speakers in the US and Mandarin Chinese speakers from East Asia (mainland China, Taiwan, Hong Kong, and Singapore), we do not extend this contrast to our sample of Vietnamese speakers in Vietnam and English speakers in the US. This finding suggests some limitations on the generality of this cultural account. 
+
+We did find some signatures of language specificity in our analysis, such as the large positive correlation between similarity judgments of each country and the respective corpus statistics, and how each corpus statistics are good predictors for corresponding country's similarity judgments. However, this is potentially due to the high correlation between corpus statistics of English, Vietnamese and Mandarin. We find even stronger evidence for consistency across the three groups, with substantive overlapping predictions across the corpus models, highly similar responding across the experiments, and a correspondingly high fit in cross-language comparisons between models and data.
+
+```{r include=FALSE}
+fit.country_no_triad <- glmer(responses_theme ~ country + (1 | subject), 
+                              data = df_main_analysis, 
+                              family = "binomial")
+
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df_main_analysis, 
+                    family = "binomial")
+summary(fit.country)
+
+fit.no_triad_compare <- anova(fit.country, fit.country_no_triad, type = 3)
+```
+
+There are some suggestions that the current approach can predict triad-specific cross-cultural effects. First of all, an ANOVA model comparison showed that adding a random effect term for varying slope by country and varying intercept by triad to the model produces a significant better fit than the identical model without this random effect term included as a predictor ($\chi^2$(`r fit.no_triad_compare["fit.country", "Df"]`) = `r round(fit.no_triad_compare["fit.country", "Chisq"], 2)`, p < .001)
+
+Anecdotally, we show below some examples of triads that show contrasting difference in the magnitude of difference in thematic responses between countries. As a review, the overall result across all triads showed that there was significant difference between US and China responding, and no significant differences between US and Vietnam or China and Vietnam responding. However, we observed that for the triad "cow-grass-chicken," there were significant differences between US and China, and US and Vietnam responding. There was no significant difference between China and Vietnam responding. For the triad "spoon-sugar-fork," there were significant difference between China and US, and China and Vietnam responding, but no significant difference between US and Vietnam. For the triad "hair-comb-beard," there were no significant differences pairwise across the three cultural contexts. This suggests that there are triad-specific cross-cultural effects in play. Beyond emphasizing the importance of including triad predictors as a random effect, this finding suggests that, firstly, future similar studies need to report triads that are used, as the triads used can affect results (for example, if a study only includes triads where China and US responding are significantly different, it would be more likely to conclude that Chinese and US cultures hold different notions of similarity). Secondly, that future studies can look more deeply into which groups of triads are driving the US-China responding difference. For example, triads belonging to different semantic neighborhoods might be influencing cross-cultural responding in different ways.
+
+```{r include=FALSE}
+df.country_item <- df_main_analysis %>%
+  filter(triad == "hair")
+
+plot.hair <- ggplot(df.country_item,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = responses_theme, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_jitter(stat = "identity", alpha  = .5) +
+  labs(y = "Proportion Thematic Chosen (hair: beard / comb)",  
+       x = "Country", 
+       color = "Country") + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  scale_y_continuous(limits=c(0.0, 1.0), oob = scales::squish) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237")) +  
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237"))  + 
+  theme(axis.title = element_text(size=rel(0.75)))
+```
+
+```{r include=FALSE}
+df.country_item <- df_main_analysis %>%
+  filter(triad == "spoon2")
+
+plot.spoon2 <- ggplot(df.country_item,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = responses_theme, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_jitter(stat = "identity", alpha  = .5) +
+  labs(y = "Proportion Thematic Chosen (spoon: fork / sugar)",  
+       x = "Country", 
+       color = "Country") + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  scale_y_continuous(limits=c(0.0, 1.0), oob = scales::squish) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237")) +  
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237")) + 
+  theme(legend.position = "none") + 
+  theme(axis.title = element_text(size=rel(0.75)))
+```
+
+```{r include = FALSE}
+#show 1 triad
+
+df.country_item <- df_main_analysis %>%
+  filter(triad == "cow2")
+
+df.country_item_summ <- df_main_analysis %>%
+  group_by(triad, country) %>%
+  summarize(theme_resp_percent = mean(responses_theme, na.rm = T)) %>%
+  filter(triad == "cow2")
+
+plot.cow2 <- ggplot(df.country_item,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = responses_theme, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_jitter(stat = "identity", alpha  = .5) +
+  labs(y = "Proportion Thematic Chosen (cow: chicken / grass)",  
+       x = "Country", 
+       color = "Country") + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  scale_y_continuous(limits=c(0.0, 1.0), oob = scales::squish) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237")) +  
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237")) + 
+  theme(legend.position = "none") + 
+  theme(axis.title = element_text(size=rel(0.75)))
+# 
+# +  
+#   geom_bar(data = df.country_item_summ, 
+#            mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+#                           y = theme_resp_percent, 
+#                          color = factor(country, levels=c("China", "US", "Vietnam"))), 
+#            stat='identity', alpha = .3, 
+#            fill=c("#D63230", "#1C77C3", "#F39237"))
+```
+
+```{r echo=FALSE, warning = FALSE, fig.width=8, fig.cap="Anecdotal evidence of triad-specific effects. Cow-grass-chicken shows significant differences between US-China responding, and between US-Vietnam responding. Spoon-sugar-fork shows only a significant difference between US-China responding. Hair-comb-beard does not show any significant differences in pairwise comparisons across the three countries."}
+plot.cow2 + plot.spoon2 + plot.hair + 
+    plot_layout(ncol = 3)
+```
+
+
+We also identified some data quality / quantity issues that are an obstacle to modeling similarity in Vietnamese and Mandarin. As stated above, we were not able to find a Mandarin corpus with raw co-occurrences that contains similar magnitude of number of sentences as our English corpus (COCA). Additionally, we could only retrieve fastText word vectors for Vietnamese and Mandarin that are trained on both Common Crawl and Wikipedia. 63% of the articles on Vietnamese Wikipedia and 16% of the Chinese Wikipedia are bot translations from another language (compared to 3% of English Wikipedia). This would affect the quality of the word vectors trained on the Vietnamese and Chinese Wikipedia, potentially making them not reflecting the naturally-occurring lexical co-occurrence in the corresponding language.
+
+Our findings raise additional questions for future work: if not differences in taxonomic vs. thematic responding, then what differences drive the relativity effects previous studies have observed? To what extent are the relativity effects driven by language, and to what extent by culture? @Ji2004 established that culture-aligned differences in this paradigm exist, even when the test language is held constant, concluding that “it is culture (independent of the testing language) that led to different grouping styles” in their study. Our data provide a cautionary note to this conclusion, suggesting that semantic representations in bilinguals (see @Francis2005 for a review) may have the potential to provide an offline account for cross-context differences in similarity judgments, independent of test language. However, there are still many open questions for this account. How do semantic associations guide categorization? Can they explain taxonomic-thematic differences of the type reported by @Ji2004 and others? Can we provide a more specific computational account than the simple frequency model tested here?
+
+Despite these caveats, our findings here demonstrate the plausibility of an alternative perspective on cross-cultural accounts of language, thought, and similarity in the case of taxonomic and thematic reasoning: that it may be the input to similarity judgments, rather than the evaluative process or the conceptualization of similarity that produces variation in similarity reasoning across cultural and linguistic contexts. We hope this work provides a foundation for further research probing this question. 
+
+[^footnote]:While we discuss cross-cultural variability at the level of countries or larger world areas, these are not cultural monoliths. For convenience, we operationalize culture at the level of country, based on where participants were raised. It is an open question whether performance in our participant populations (of relatively young and well-educated adults) is representative of the broader country. This is especially true for societies with substantial ethnic and cultural variation such as the US. We expect that our data is likely to underestimate variation both within and between the countries we sample from.
+
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id="refs" custom-style="Bibliography"></div>
+\endgroup
+
+\newpage
+# Supplemental Information
+
+```{r echo=TRUE, fig.align="center", fig.cap=c("List of triads used"), fig.show="hold"}
+#include_graphics(c("../../data/SI_triads/SI_triads_1.jpg"))
+include_graphics(c("../../data/SI_triads/SI_triads_1.jpg",
+                   "../../data/SI_triads/SI_triads_2.jpg",
+                   "../../data/SI_triads/SI_triads_3.jpg",
+                   "../../data/SI_triads/SI_triads_4.jpg",
+                   "../../data/SI_triads/SI_triads_5.jpg"))
+```

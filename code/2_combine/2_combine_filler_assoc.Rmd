@@ -1,0 +1,51 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+```
+
+```{r get association strengths and triad information}
+df.assoc = read_delim("../../data/assoc_strengths.csv",delim='\t',quote = '',escape_backslash = F,escape_double = F) %>%
+  select(cue, response, R123.Strength) %>%
+  rename(assoc_strength = R123.Strength)
+
+df.filler_E = read.csv("../../data/corpus/corpusEMV_filler.csv") %>% 
+  select(cue_E, word1_E, word2_E, cue_M, word1_M, word2_M, cue_V, word1_V, word2_V)
+```
+
+```{r combine association strength and triad information}
+df.filler_assoc <- left_join(df.filler_E, df.assoc,
+                            by = c('cue_E'='cue', 'word1_E'='response')) %>%
+  rename(word1_assoc_strength_E = assoc_strength)
+
+df.filler_assoc <- left_join(df.filler_assoc, df.assoc,
+                            by = c('cue_E'='cue', 'word2_E'='response')) %>%
+  rename(word2_assoc_strength_E = assoc_strength)
+
+#write.csv(df.filler_assoc, "../../data/corpus/fillers_assoc_strength.csv", row.names = FALSE)
+```
+
+```{r}
+triad_omit <- df.filler_assoc %>%
+  filter(is.na(word1_assoc_strength_E) & is.na(word2_assoc_strength_E))
+#write.csv(triad_omit$triad, "../../data/fillers_omit_assoc.csv", row.names = FALSE)
+```
+
+```{r combine association strength data with responding data}
+df = read.csv("../../data/data_filler_USCNVN_ENZHVI.csv") %>%
+  select(-X)
+
+#df.triad_assoc <- read.csv("../../data/corpus/corpusE_assoc_strength.csv") %>%
+#  select(-X)
+
+df <- left_join(df, df.filler_assoc, 
+                by = c("cue_E", "word1_E", "word2_E",
+                       "cue_M", "word1_M", "word2_M", 
+                       "cue_V", "word1_V", "word2_V"))
+
+write.csv(df, "../../data/data_filler_USCNVN_ENZHVI_assoc_strength.csv", row.names = F)
+```

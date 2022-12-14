@@ -24,17 +24,17 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
 ```{r loading data E, warning=FALSE, include=F}
-df.resp_E <- read.csv("../../data/dataUS_excl.csv") %>%
+df.resp_E <- read.csv("../../data/responding/dataUS_excl.csv") %>%
   select(-X)
 ```
 
 ```{r loading data V, include=F}
-df.resp_V <- read.csv("../../data/dataVN_excl.csv") %>%
+df.resp_V <- read.csv("../../data/responding/dataVN_excl.csv") %>%
   select(-X)
 ```
 
 ```{r loading data M, warning=FALSE, include=F}
-df.resp_M <- read.csv("../../data/dataCN_excl.csv") %>%
+df.resp_M <- read.csv("../../data/responding/dataCN_excl.csv") %>%
   select(-X)
 ```
  

@@ -1,0 +1,111 @@
+"triad","cue_E","word1_E","word2_E","cue_M","word1_M","word2_M","cue_V","word1_V","word2_V","word1_assoc_strength_E","word2_assoc_strength_E"
+"lemon","lemon","grape","pear","柠檬","葡萄","梨","chanh","nho","lê",0.00675675675675676,NA
+"library","library","bank","cinema","图书馆","银行","电影院","thư viện","ngân hàng","rạp chiếu phim",NA,NA
+"kite","kite","basketball","swing","风筝","篮球","秋千","diều","bóng rổ","xích đu",NA,NA
+"bridge","bridge","tunnel","highway","桥","隧道","公路","cầu","đường hầm","đường cao tốc",NA,0.0034965034965035
+"infant","infant","man","woman","婴儿","男人","女人","trẻ sơ sinh","đàn ông","phụ nữ",NA,NA
+"coriander","coriander","salt","pepper","香菜","盐","胡椒","rau mùi ","muối","tiêu",NA,NA
+"grandfather","grandfather","sister","uncle","祖父","姐妹","叔叔","ông","chị","cậu",NA,NA
+"candle","candle","torch","lantern","蜡烛","火炬","灯笼","nến","đuốc","đèn lồng",0.00344827586206897,NA
+"fox","fox","tiger","lion","狐狸","老虎","狮子","cáo","hổ","sư tử",NA,NA
+"branch","branch","root","stem","树枝","根","茎","cành cây","rễ cây","thân cây",NA,0.00341296928327645
+"parrot","parrot","hawk","songbird","鹦鹉","鹰","夜莺","vẹt","diều hâu","sơn ca",NA,NA
+"sprout","sprout","seedling","plant","新芽","小树苗","植物","chồi cây","cây con","cây",NA,0.06164384
+"nose","nose","thumb","finger","鼻","大拇指","手指","mũi","ngón cái","ngón tay",NA,NA
+"cucumber","cucumber","corn","potato","黄瓜","玉米","土豆","dưa leo","ngô","khoai tây",NA,NA
+"scarf","scarf","socks","beanie","围巾","袜子","毛线帽","khăn quàng cổ","tất","mũ len",NA,NA
+"shovel","shovel","rake","hoe","铲子","耙子","锄头","cái xẻng","cái cào","cái cuốc",0.01027397,0.01369863
+"vinegar","vinegar","oil","butter","醋","油","黄油","giấm","dầu","bơ",0.07958478,NA
+"comics","comics","magazine","newspaper","漫画","杂志","报纸","truyện tranh","tạp chí","báo",0.00706713780918728,0.0318021201413428
+"button","button","sleeve","collar","纽扣","袖子","衣领","nút áo","tay áo","cổ áo",0.00350877192982456,0.00350877192982456
+"mattress","mattress","sheet","blanket","床垫","床单","毯子","nệm","ga giường","chăn",0.0100671140939597,0.00671140939597315
+"tea","tea","soda","lemonade","茶","苏打水","柠檬水","trà","nước ngọt","nước chanh",NA,NA
+"wolf","wolf","bear","leopard","狼","熊","豹","sói","gấu","báo",0.01360544,0.003401361
+"bird","bird","lizard","toad","鸟","蜥蜴","蟾蜍","chim","thằn lằn","cóc",NA,NA
+"drawer","drawer","shelf","cabinet","抽屉","架子","储藏柜","ngăn kéo","kệ","tủ",0.0173010380622837,0.027681660899654
+"neck","neck","chin","shoulders","脖子","下巴","肩膀","cổ","cằm","vai",0.0101351351351351,0.0135135135135135
+"floor","floor","rug","tile","地","小地毯","瓷砖","sàn nhà","thảm","gạch",0.0169491525423729,0.0474576271186441
+"leech","leech","flea","louse","水蛭","跳蚤","虱子","con đỉa","bọ chét","con rận",NA,NA
+"balloon","balloon","marbles","doll","气球","弹珠","玩具娃娃","bong bóng","viên bi","búp bê",NA,NA
+"singer","singer","writer","poet","歌手","作家","诗人","ca sĩ","nhà văn","nhà thơ",0.003521127,0.003521127
+"robot","robot","phone","computer","机器人","电话","电脑","người máy","điện thoại","máy vi tính",NA,0.02105263
+"tongue","tongue","teeth","lips","舌头","牙齿","嘴唇","lưỡi","răng","môi",0.03472222,0.03472222
+"garlic","garlic","ginger","cilantro","大蒜","生姜","香叶","tỏi","gừng","ngò",0.00342465753424658,NA
+"watermelon","watermelon","papaya","grapefruit","西瓜","木瓜","西柚","dưa hấu","đu đủ","bưởi",NA,NA
+"heart","heart","stomach","lungs","心脏","胃","肺","tim","dạ dày","phổi",NA,0.00335570469798658
+"coral","coral","shark","dolphin","珊瑚","鲨鱼","海豚","san hô","cá mập","cá heo",NA,NA
+"worm ","worm","ant","cockroach","蠕虫","蚂蚁","蟑螂","giun","kiến","gián",NA,NA
+"coast","coast","harbor","pier","海岸","港湾","码头","bờ biển","hải cảng","cầu tàu",NA,NA
+"mushroom","mushroom","pumpkin","eggplant","蘑菇","南瓜","茄子","nấm","bí đỏ","cà tím",NA,NA
+"museum","museum","playground","park","博物馆","操场","公园","bảo tàng","sân chơi","công viên",NA,NA
+"waterfall","waterfall","cave","chasm","瀑布","洞穴","裂谷","thác nước","hang động","vực sâu",0.003448276,0.003448276
+"orchid","orchid","jasmine","lotus","兰花","茉莉花","莲花","hoa lan","hoa nhài","hoa sen",NA,NA
+"camel","camel","rhinoceros","gorilla","骆驼","犀牛","大猩猩","lạc đà","tê giác","khỉ đột",NA,NA
+"popcorn","popcorn","chips","crackers","爆米花","薯片","梳打饼","bắp rang","khoai tây chiên","bánh quy",NA,NA
+"electricity","electricity","heat","sunlight","电","热","阳光","điện","nhiệt","ánh nắng",0.0034965034965035,NA
+"camera","camera","clock","vacuum","相机","钟","吸尘器","máy ảnh","đồng hồ","máy hút bụi",NA,NA
+"rock","rock","soil","crystal","石头","土壤","水晶","đá","đất","thuỷ tinh",NA,0.003424658
+"crutch","crutch","cane","wheelchair","拐杖","手杖","轮椅","nạng","gậy","xe lăn",0.0242214532871972,NA
+"musician","musician","artist","actor","音乐家","艺术家","演员","nhạc sĩ","nghệ sĩ","diễn viên",0.023972602739726,NA
+"seller","seller","shop","market","销售员","商店","市场","người bán hàng","cửa hàng","chợ",0.04810997,0.03780069
+"octopus","octopus","starfish","jellyfish","章鱼","海星","水母","bạch tuộc","sao biển","sứa",NA,NA
+"shield","shield","cannon","spear","盾","大炮","矛","tấm khiên","đại bác","giáo",NA,0.003521127
+"champion","champion","athlete","celebrity","冠军","运动员","名人","nhà vô địch","vận động viên","người nổi tiếng",0.00694444444444444,NA
+"town","town","village","city","小镇","村庄","城市","thị trấn","làng","thành phố",0.09931507,0.2020548
+"glue","glue","alcohol","gasoline","胶水","酒精","汽油","hồ dán","cồn","xăng",NA,NA
+"crow","crow","sparrow","eagle","乌鸦","麻雀","鹰","quạ","chim sẻ","đại bàng",NA,NA
+"peacock","peacock","ostrich","owl","孔雀","鸵鸟","猫头鹰","công","đà điểu","cú",NA,NA
+"stairs","stairs","attic","balcony","楼梯","阁楼","阳台","cầu thang","gác xép","ban công",NA,NA
+"feather","feather","beak","talons","羽毛","喙","爪","lông vũ","mỏ","móng vuốt",NA,NA
+"roof","roof","patio","gate","屋顶","露台","大门","mái nhà","hiên","cổng",NA,NA
+"castle","castle","throne","tower","城堡","宝座","堡垒","lâu đài","ngai vàng","tháp",0.00342465753424658,0.0102739726027397
+"elbow","elbow","ankle","knuckle","手肘","脚踝","指关节","khuỷu tay","mắt cá","đốt ngón tay",NA,NA
+"aunt","aunt","grandmother","sister","姨母","奶奶","亲姐姐","cô","bà","chị",NA,0.072463768115942
+"moon","moon","planet","asteroid","月亮","行星","小行星","trăng","hành tinh","thiên thạch",0.0204081632653061,NA
+"witch","witch","fairy","magician","女巫","仙女","魔法师","phù thuỷ","tiên","nhà ảo thuật",0.003571429,NA
+"rainforest","rainforest","oasis","swamp","雨林","绿洲","沼泽","rừng nhiệt đới","ốc đảo","đầm lầy",NA,NA
+"aquarium","aquarium","canal","dam","水族馆","运河","大坝","bể cá","kênh đào","đập nước",NA,NA
+"panda","panda","koala","polar bear","熊猫","树袋熊","北极熊","gấu trúc","gấu túi","gấu Bắc cực",NA,NA
+"comet","comet","atmosphere","galaxy","彗星","大气层","星系","sao chổi","khí quyển","thiên hà",0.00706713780918728,0.00706713780918728
+"marble","marble","concrete","cement","大理石","混凝土","水泥","cẩm thạch","bê tông","xi măng",NA,NA
+"north","north","east","west","北","东","西","bắc","đông ","tây",0.0790378006872852,0.0618556701030928
+"fountain","fountain","square","statue","喷泉","广场","雕像","đài phun nước ","quãng trường","tượng",0.013986013986014,0.027972027972028
+"desert","desert","arctic","island","沙漠","北极","岛屿","sa mạc","Bắc cực","đảo",NA,0.0101010101010101
+"waiter","waiter","cook","bartender","侍者","厨师","酒吧侍者","bồi bàn","đầu bếp","người pha chế rượu",0.003424658,0.003424658
+"bookcase","bookcase","fireplace","air conditioner","书架","壁炉","空调","tủ sách","lò sưởi","máy lạnh",NA,NA
+"earthquake","earthquake","hurricane","tsunami","地震","飓风","海啸","động đất","bão","sóng thần",0.013840830449827,0.027681660899654
+"dinosaur","dinosaur","crocodile","snake","恐龙","鳄鱼","蛇","khủng long","cá sấu","rắn",NA,NA
+"leather","leather","silk","velvet","皮革","丝绸","天鹅绒","da thuộc","lụa","nhung",NA,NA
+"glasses","glasses","binoculars","telescope","眼镜","双筒望远镜","单筒望远镜","mắt kính","ống nhòm","kính viễn vọng",0.0034965034965035,NA
+"pipe","pipe","sewer","pump","管道","下水道","泵","ống nước","cống","máy bơm",0.00709219858156028,NA
+"corridor","corridor","entrance","exit","走廊","入口","出口","hành lang","lối vào","lối ra",0.00367647058823529,NA
+"medicine","medicine","thermometer","stethoscope","药","体温计","听诊器","thuốc","nhiệt kế","ống nghe",NA,0.00348432055749129
+"middle","middle","top","bottom","中间","上面","下面","giữa","trên","dưới",0.0174216027874564,0.0139372822299652
+"employee","employee","manager","executive","雇员","经理","执行总监","nhân viên","quản lý","giám đốc",0.0139372822299652,NA
+"letter","letter","note","article","信件","便条","文章","thư","ghi chú","bài báo",0.0134680134680135,NA
+"rough","rough","hard","sharp","粗糙","坚硬","尖锐","thô","cứng","nhọn",0.05454545,NA
+"smooth","smooth","soft","light","光滑","柔软","轻便","trơn","mềm","nhẹ",0.05673759,NA
+"loud","loud","hot","bright","响","热","亮","to tiếng","nóng","sáng",NA,0.003584229390681
+"trap","trap","trick","lie","陷阱","诡计","谎言","bẫy","lừa gạt","nói dối",0.01083032,NA
+"muzzle","muzzle","claw","tail","动物的口鼻部","爪子","尾巴","mõm","móng","đuôi",NA,NA
+"during","during","before","after","在……期间","在……之前","在……之后","trong lúc","trước","sau",0.0330882352941176,0.0735294117647059
+"hundred","hundred","ten","thousand","百","十","千","trăm","mười","ngàn",0.0140350877192982,0.12280701754386
+"June","June","February","October","六月","二月","十月","tháng sáu","tháng hai","tháng mười",NA,NA
+"vertebra","vertebra","skull","rib","椎骨","头骨","肋骨","đốt sống","sọ","xương sườn",NA,NA
+"audience","audience","patient","customer","听众","病人","顾客","khán giả","bệnh nhân","khách hàng",NA,NA
+"skyscraper","skyscraper","stadium","apartment","摩天大楼","体育场","公寓","nhà chọc trời","sân vận động","căn hộ",NA,0.003436426
+"black","black","white","blue","黑色","白色","蓝色","đen","trắng","xanh dương",0.204946996466431,0.0282685512367491
+"morning","morning","evening","afternoon","早晨 ","傍晚","下午","buổi sáng","buổi tối","buổi chiều",0.0378006872852234,0.0378006872852234
+"wind","wind","rain","sleet","风","雨","雪","gió","mưa","mưa đá",0.01360544,NA
+"sunset","sunset","day","night","日落","白天","夜晚","hoàng hôn","ngày","đêm",0.003436426,0.01718213
+"triangle","triangle","circle","star","三角形","圆圈","星形","hình tam giác","hình tròn","ngôi sao",0.05594406,0.006993007
+"sad","sad","afraid","angry","伤心","害怕","生气","buồn","sợ hãi","giận dữ",NA,0.003584229
+"sidewalk","sidewalk","intersection","road","人行道","十字路口","马路","vỉa hè","ngã tư","con đường",NA,0.04225352
+"smoke","smoke","fog","steam","烟","雾","蒸汽","khói","sương mù","hơi nước",0.01666667,NA
+"silver","silver","gold","iron","银","金","铁","bạc","vàng","sắt",0.2147651,0.003355705
+"rainbow","rainbow","cloud","sun","彩虹","云","太阳","cầu vồng","mây","mặt trời",0.003460208,0.02076125
+"month","month","week","year","月","星期","年","tháng","tuần","năm",0.0505050505050505,0.168350168350168
+"height","height","width","depth","高度","宽度","深度","chiều cao","chiều rộng","chiều sâu",0.024822695035461,0.00709219858156028
+"wednesday","wednesday","saturday","sunday","周三","周六","周日","thứ tư","thứ bảy","chủ nhật",NA,NA
+"minute","minute","hour","second","分钟","小时","秒","phút","giờ","giây",0.0878378378378378,0.111486486486486
+"today","today","tomorrow","yesterday","今天","明天","昨天","hôm nay","ngày mai","hôm qua",0.165493,0.1549296

@@ -1,0 +1,114 @@
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+library("Hmisc")
+library("dplyr")
+
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+r_refs("r-references.bib")
+r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r read in data}
+df <- read.csv("../../data/data_filler_USCNVN_ENZHVI_assoc_strength.csv")
+fillers_omit_assoc <- read.csv("../../data/fillers_omit_assoc.csv") %>%
+  pull(x)
+
+#NO FILLERS NEEDED TO BE OMITTED
+#triads_omit_freq <- read.csv("../../data/triads_omit.csv") %>%
+#  pull(x)
+```
+
+```{r change NA to epsilon}
+df <- df %>%
+  mutate(word1_assoc_strength_E = ifelse(is.na(word1_assoc_strength_E), 
+                                  .Machine$double.eps, word1_assoc_strength_E),
+         word2_assoc_strength_E = ifelse(is.na(word2_assoc_strength_E), 
+                                  .Machine$double.eps, word2_assoc_strength_E)) %>%
+  mutate(word1_assoc_strength_prop_E = word1_assoc_strength_E / (word1_assoc_strength_E + word2_assoc_strength_E))
+```
+
+# Correlation between assoc strength prediction and response data
+```{r}
+df.cue_country_freq <- df %>%
+  group_by(cue_E, country, word1_assoc_strength_prop_E) %>%
+  dplyr::summarize(emp_word1_prop = mean(responses_word1))
+ggplot(data = df.cue_country_freq %>% filter(country == "US"), 
+        mapping = aes(x = emp_word1_prop, 
+                     y = word1_assoc_strength_prop_E,
+                     label = cue_E)) +
+   geom_text() + 
+   geom_smooth(method = "lm") +
+   labs(x = "Proportion Word1 Chosen (US)", 
+        y = "Proportion Word1 Predicted by Assoc Strength (English)") + 
+  theme(axis.title = element_text(size=rel(0.75)))
+```
+
+# Does adding association improve the model?
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+# English 
+fit.EN_US = glmer(responses_word1 ~ word1_match_frequency_prop_E + (1 | subject) + (1 | cue_E), 
+          data = df %>% filter(country == "US", 
+                               !(cue_E %in% fillers_omit_assoc)), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+
+fit.EN_US.anova
+
+# English with association strengths
+fit.EN_US_assoc = glmer(responses_word1 ~ word1_match_frequency_prop_E + word1_assoc_strength_E + (1 | subject) + (1 | cue_E), 
+          data = df %>% filter(country == "US", 
+                               !(cue_E %in% fillers_omit_assoc)), 
+          family="binomial")
+summary(fit.EN_US_assoc)
+fit.EN_US_assoc.anova = Anova(fit.EN_US_assoc, type = 3)
+
+fit.EN_US_assoc.anova
+
+fit.EN_US_assoc_compare = anova(fit.EN_US, fit.EN_US_assoc, type = 3)
+fit.EN_US_assoc_compare
+```
+
+Adding association strengths does not improve the model significantly (p = 0.07)
+
+# Does association strength predict response data?
+```{r only association strengths}
+# English 
+fit.EN_US_assoc_only = glmer(responses_word1 ~ word1_assoc_strength_E + (1 | subject) + (1 | cue_E), 
+          data = df %>% filter(country == "US", 
+                               !(cue_E %in% fillers_omit_assoc)),
+          family="binomial")
+summary(fit.EN_US_assoc_only)
+fit.EN_US_assoc_only.anova = Anova(fit.EN_US_assoc_only, type = 3)
+
+fit.EN_US_assoc_only.anova
+
+fit.EN_US_assoc_only_compare = anova(fit.EN_US, fit.EN_US_assoc_only, type = 3)
+fit.EN_US_assoc_only_compare
+```
+
+Having just the association strength is a significant predictor. But not significantly better than only the language co-occurrence model. 
+
+Yes. 

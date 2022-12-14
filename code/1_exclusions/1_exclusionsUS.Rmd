@@ -47,143 +47,70 @@ df.ppts_att_E <- df.resp_E %>%
   mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
   group_by(subject) %>%
   summarize(pass_att_check_percent = mean(pass_att_check)) %>%
-  filter(pass_att_check_percent == 1.0)
+  filter(pass_att_check_percent >= 0.8)
 
 df.resp_E <- df.resp_E %>%
   filter(subject %in% df.ppts_att_E$subject) 
+
+ppts_resp_E <- unique(df.resp_E$subject)
+```
+
+```{r}
+df.demog <- read.csv("../../data/responding/data_demog.csv") %>%
+  select(-X) %>%
+  filter(country == "US")
 ```
 
 
 ```{r exclusion E, include = F, warning = F}
 #non-native speaker
-split_responses_demog <- function(responses) {
-  responses <- as.character(responses)
-  response_list <- unlist(strsplit(responses, ',|:'))
-  response_list <- response_list[seq(1, length(response_list))]
-  response_list <- gsub("}", "", response_list)
-  response_list <- gsub("\"", "", response_list)
-  return(response_list)
-}
+df.ppts_non_native_lang_E <- df.demog %>%
+  filter(demog_question == "firstlanguage" & demog_response == "No")
 
-NATIVE_LANG = 2
-get_native_lang <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  if(responses[NATIVE_LANG-1] != "{firstlanguage") 
-    {warnings("cannot find native language answer")}
-  else
-    {return (responses[NATIVE_LANG])}
-})
-
-df.ppts_non_native_lang_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_language") %>%
-  mutate(native_speaker = get_native_lang(responses)) %>%
-  filter(native_speaker == "No")
-
-ppts_non_native_lang_E = unique(df.ppts_non_native_lang_E$subject)#18
-percent_dropped = length(ppts_non_native_lang_E) / length(unique(df.resp_E$subject))
-percent_dropped #0.1034482775
+ppts_non_native_lang_E = unique(df.ppts_non_native_lang_E$subject)#20
+percent_dropped = length(intersect(ppts_non_native_lang_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.104166
 
 #fluent in Vietnamese & Mandarin
-SPEAKER = 2
-SPEAKING = 23
-UNDERSTANDING = 46
+df.lang_sp_vi_E <- df.demog %>%
+  filter(demog_question == "lang_sp_vi" & demog_response > 4)
 
-get_speaker <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  return (responses[SPEAKER])
-})
+df.lang_ud_vi_E <- df.demog %>%
+  filter(demog_question == "lang_ud_vi" & demog_response > 4)
 
-get_fluency_speaking <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  return (responses[SPEAKING])
-})
+df.lang_vi_E <- inner_join(df.lang_sp_vi_E, df.lang_ud_vi_E, by = 'subject')
+         
+ppts_vi_speaker_E = unique(df.lang_vi_E$subject) #2
+percent_dropped = length(intersect(ppts_vi_speaker_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.01041666
 
-get_fluency_understanding <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  return (responses[UNDERSTANDING])
-})
+df.lang_sp_zh_E <- df.demog %>%
+  filter(demog_question == "lang_sp_zh" & demog_response > 4)
 
-df.lang_vi_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_language_vi") %>%
-  mutate(vi_speaker = get_speaker(responses))
-  
-df.lang_vi_fluency_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_conditional_language_vn_fluency") %>%
-  mutate(vi_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
-  mutate(vi_fluency_ud = as.numeric(get_fluency_understanding(responses)))
+df.lang_ud_zh_E <- df.demog %>%
+  filter(demog_question == "lang_ud_zh" & demog_response > 4)
 
-df.lang_vi_E <- full_join(df.lang_vi_E, 
-                          df.lang_vi_fluency_E, 
-                          by = "subject") %>%
-  select(subject, vi_speaker, vi_fluency_sp, vi_fluency_ud) %>%
-  filter(vi_speaker == "Yes",
-         vi_fluency_sp > 4, 
-         vi_fluency_ud > 4)
-
-ppts_vi_speaker_E = unique(df.lang_vi_E$subject) #4
-percent_dropped = length(ppts_vi_speaker_E) / length(unique(df.resp_E$subject))
-percent_dropped #0.02298851
-
-df.lang_zh_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_language_cn") %>%
-  mutate(zh_speaker = get_speaker(responses))
-  
-df.lang_zh_fluency_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_conditional_language_cn_fluency") %>%
-  mutate(zh_fluency_sp = as.numeric(get_fluency_speaking(responses))) %>%
-  mutate(zh_fluency_ud = as.numeric(get_fluency_understanding(responses)))
-
-df.lang_zh_E <- full_join(df.lang_zh_E, 
-                          df.lang_zh_fluency_E, 
-                          by = "subject") %>%
-  select(subject, zh_speaker, zh_fluency_sp, zh_fluency_ud) %>%
-  filter(zh_speaker == "Yes",
-         zh_fluency_sp > 4, 
-         zh_fluency_ud > 4)
+df.lang_zh_E <- inner_join(df.lang_sp_zh_E, df.lang_ud_zh_E, by = 'subject')
 
 ppts_zh_speaker_E = unique(df.lang_zh_E$subject) #30
-percent_dropped = length(ppts_zh_speaker_E) / length(unique(df.resp_E$subject))
-percent_dropped #0.1742424
+percent_dropped = length(intersect(ppts_zh_speaker_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.15104
 
 #have lived outside the sample country for more than 2 years
-#have travelled extensively (more than 6 international experiences of 2 days or longer) 
-YEARSABROAD = 2
-OVERSEAEXP = 4
+df.lived_abroad_E <- df.demog %>%
+  filter(demog_question == "abroadexp" & demog_response == "Yes")
 
-get_lived_abroad <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  return (responses[YEARSABROAD])
-})
+ppts_lived_abroad_E = unique(df.lived_abroad_E$subject) #36
+percent_dropped = length(intersect(ppts_lived_abroad_E, ppts_resp_E)) / length(unique(df.resp_E$subject))
+percent_dropped #0.171875
 
-get_oversea_exp <- Vectorize(function(responses) {
-  responses <- split_responses_demog(responses)
-  return (responses[OVERSEAEXP])
-})
+#have travelled extensively (more than 6 international experiences of 2 days or longer)
+df.oversea_exp_E <- df.demog %>%
+  filter(demog_question == "overseaexpnum" & demog_response == "Six or more experiences")
 
-df.abroad_E <- df.resp_E %>%
-  select(subject, responses, variable_type) %>%
-  filter(variable_type == "demog_oversea_experience") %>%
-  mutate(lived_abroad = get_lived_abroad(responses)) %>%
-  mutate(oversea_exp = get_oversea_exp(responses))
-
-df.lived_abroad_E <- df.abroad_E %>%
-  filter(lived_abroad == "Yes")
-
-ppts_lived_abroad_E = unique(df.lived_abroad_E$subject) #29
-percent_dropped = length(ppts_lived_abroad_E) / length(unique(df.resp_E$subject))
-percent_dropped #0.1666667
-
-df.oversea_exp_E <- df.abroad_E %>%
-  filter(oversea_exp == "Six or more experiences")
-
-ppts_oversea_exp_E = unique(df.oversea_exp_E$subject) #77
-percent_dropped = length(ppts_oversea_exp_E) / length(unique(df.resp_E$subject))
-percent_dropped #0.44 # will not use this criterion
+ppts_oversea_exp_E = unique(df.oversea_exp_E$subject) #95
+percent_dropped = length(intersect(ppts_oversea_exp_E, ppts_resp_E)) / length(unique(df.resp_E$subject))
+percent_dropped #0.4739 # will not use this criterion
 
 df.resp_E <- df.resp_E %>%
   filter(!(subject %in% ppts_non_native_lang_E),
@@ -191,7 +118,7 @@ df.resp_E <- df.resp_E %>%
          !(subject %in% ppts_zh_speaker_E),
          !(subject %in% ppts_lived_abroad_E))
 
-length(unique(df.resp_E$subject)) #132
+length(unique(df.resp_E$subject)) #124
 ```
 
 ```{r}
