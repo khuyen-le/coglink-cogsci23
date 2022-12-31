@@ -9,3 +9,5 @@ analysis/.Rproj.user/shared/notebooks/paths
 code/.DS_Store
 code/3_analysis/.DS_Store
 data/.DS_Store
+*cache*
+*.bin

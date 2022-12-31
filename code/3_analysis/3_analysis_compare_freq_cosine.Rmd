@@ -66,7 +66,7 @@ fit.EN_US_compare_freq_cos
 
 
 # Comparing between 2 models for VN responding
-```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE}
+```{r VN responding predicted by each corpus model raw co-occurrences, warning=FALSE}
 # Vietnamese 
 fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
           data = df %>% filter(country == "Vietnam", 
@@ -119,20 +119,35 @@ fit.ZH_CN_compare_freq_cos = anova(fit.ZH_CN, fit.ZH_CN_cos, type = 3)
 fit.ZH_CN_compare_freq_cos
 
 ```
-# Does adding country help with the model (compared to with just English co-occurrence)? 
+
+# Does adding country help with the model (compared to with corresponding lexcial co-occurrence)? 
 ```{r}
-fit.language = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
-          data = df %>% filter(!(near(theme_frequency_E, .Machine$double.eps) & 
-                                  near(tax_frequency_E, .Machine$double.eps))),  
+df <- df %>%
+  mutate(theme_freq_prop_corr_lang = case_when(
+    country == "US" ~ theme_freq_prop_E,
+    country == "China" ~ theme_freq_prop_M, 
+    country == "Vietnam" ~ theme_freq_prop_V)) %>%
+  mutate(theme_frequency_corr_lang = case_when(
+    country == "US" ~ theme_frequency_E,
+    country == "China" ~ theme_frequency_M, 
+    country == "Vietnam" ~ theme_frequency_V)) %>%
+  mutate(tax_frequency_corr_lang = case_when(
+    country == "US" ~ tax_frequency_E,
+    country == "China" ~ tax_frequency_M, 
+    country == "Vietnam" ~ tax_frequency_V))
+
+fit.language = glmer(responses_theme ~ theme_freq_prop_corr_lang + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(near(theme_frequency_corr_lang, .Machine$double.eps) & 
+                                  near(tax_frequency_corr_lang, .Machine$double.eps))),  
           
           family="binomial")
 summary(fit.language)
 fit.language.anova = Anova(fit.language, type = 3)
 fit.language.anova
 
-fit.country_language = glmer(responses_theme ~ theme_freq_prop_E * country + (1 | subject) + (1 | triad), 
-          data = df %>% filter(!(near(theme_frequency_E, .Machine$double.eps) & 
-                                  near(tax_frequency_E, .Machine$double.eps))),  
+fit.country_language = glmer(responses_theme ~ theme_freq_prop_corr_lang * country + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(near(theme_frequency_corr_lang, .Machine$double.eps) & 
+                                  near(tax_frequency_corr_lang, .Machine$double.eps))),  
           
           family="binomial")
 summary(fit.country_language)
@@ -144,6 +159,5 @@ fit.country_language_compare = anova(fit.language, fit.country_language, type = 
 fit.country_language_compare
 ```
 
-Adding country improves the model (thematic proportion of lexical co-occurrence, country, and their interaction were all significant predictors).
-
+Adding country improves the model. Only country and interaction between country and corresponding corpus's lexical co-occurrence were significant predictors. Corresponding corpus's lexical co-occurrence is no longer a significant predictor. 
 

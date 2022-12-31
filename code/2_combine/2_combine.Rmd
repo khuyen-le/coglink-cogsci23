@@ -210,5 +210,6 @@ df <- rbind(df, df.triad_M) %>%
   rename(triad = Cue_renamed)
 
 df_main_analysis <- df #keep a copy of df in case exploratory analysis changes it
-write.csv(df_main_analysis, "../../data/data_USCNVN_ENZHVI.csv")
+write.csv(df_main_analysis, "../../data/data_USCNVN_ENZHVI.csv", row.names = F)
+write.csv(triads_omit, "../../data/triads_omit.csv", row.names = F)
 ```

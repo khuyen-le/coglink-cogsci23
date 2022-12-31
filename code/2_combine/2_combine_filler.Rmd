@@ -41,13 +41,17 @@ df.resp_M <- read.csv("../../data/responding/dataCN_excl.csv") %>%
 ```{r corpus filler just English, include = F}
 df.corpus_filler <- read.csv("../../data/corpus/corpusEMV_filler.csv") %>%
   select(ends_with("_E") | ends_with("_M") | ends_with("_V")) %>%
+  select(!(contains("cue_frequency") | contains("word1_frequency") | contains("word2_frequency"))) %>% # ignore base frequencies for now
   mutate(cue_id = cue_E)
 ```
 
 ```{r corpus - frequency, include = F}
 #find triads_omit, used whenever analysis uses raw collocates 
-corpus_E_omit <- df.corpus_filler %>% 
-  filter(word1_match_frequency_E == 0 & word2_match_frequency_E == 0) # = 0 so no need to do this.
+triads_omit <- df.corpus_filler %>% 
+  filter((word1_match_frequency_E == 0 & word2_match_frequency_E == 0) |
+          #(word1_match_frequency_M == 0 & word2_match_frequency_M == 0) |
+           (word1_match_frequency_V == 0 & word2_match_frequency_V == 0)) %>%
+  pull(cue_id)
 ```
 
 ```{r full corpus, include=F}
@@ -57,7 +61,7 @@ df.corpus_filler <- df.corpus_filler %>%
                   ~ ifelse(. == 0, .Machine$double.eps, .)))
 ```
 
-```{r getting triads from the 3 languages, include = F}
+```{r getting triads from the 3 languages}
 #combine response and corpus data
 df.filler_E <- df.resp_E %>%
   filter(stim_type == "filler",
@@ -72,8 +76,6 @@ df.filler_E <- left_join(df.filler_E, df.corpus_filler,
 
 df.filler_E <- df.filler_E %>%
   mutate(responses_word1 = ifelse(responses == word1_E, 1, 0))
-
-
 ```
 
 ```{r}
@@ -116,7 +118,15 @@ df <- df %>%
          word1_match_frequency_prop_M = 
            word1_match_frequency_M / (word1_match_frequency_M + word2_match_frequency_M),
          word1_match_frequency_prop_V = 
-           word1_match_frequency_V / (word1_match_frequency_V + word2_match_frequency_V))
+           word1_match_frequency_V / (word1_match_frequency_V + word2_match_frequency_V), 
+         word1_match_cosine_prop_E = 
+           word1_match_cosine_E / (word1_match_cosine_E + word2_match_cosine_E),
+         word1_match_cosine_prop_M = 
+           word1_match_cosine_M / (word1_match_cosine_M + word2_match_cosine_M),
+         word1_match_cosine_prop_V = 
+           word1_match_cosine_V / (word1_match_cosine_V + word2_match_cosine_V), 
+         )
 
-write.csv(df, "../../data/data_filler_USCNVN_ENZHVI.csv")
+write.csv(df, "../../data/data_filler_USCNVN_ENZHVI.csv", row.names = F)
+write.csv(triads_omit, "../../data/fillers_omit.csv", row.names = F)
 ```

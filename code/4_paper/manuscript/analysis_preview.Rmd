@@ -1,0 +1,752 @@
+---
+title: "Analysis Preview"
+output: html_document
+date: "2022-12-17"
+---
+
+
+```{r, libraries}
+library(png)
+library(grid)
+library(ggplot2)
+library(xtable)
+```
+
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+opts_chunk$set(cache=TRUE)
+
+#r_refs("r-references.bib")
+#r_refs("references/packages.bib")
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r get responding and demographic data, include = F}
+df <- read.csv("../../../data/data_USCNVN_ENZHVI.csv")
+df_main_analysis <- df
+
+triads_omit <- read.csv("../../../data/triads_omit.csv")
+```
+
+# Results
+
+## Do we extend previous work reporting a preference for taxonomic matching in the US and thematic matching in Asia?
+
+```{r warning=FALSE, cache = TRUE, include = FALSE, paged.print=TRUE}
+df.country <- df %>%
+  group_by(subject, country) %>%
+  summarize(theme_resp_percent = mean(responses_theme, na.rm = T))
+```
+
+```{r echo=FALSE, warning=FALSE, cache = TRUE, fig.cap="Proportion of thematic responses by country. Only US-China responding comparison shows a siginficant difference. We could not extend this to US-Vietnam responding comparison."}
+
+#show violin plot
+ggplot(df.country,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = theme_resp_percent, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_violin() +
+  geom_jitter(height = 0, 
+              alpha = 0.3) +  
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  labs(y = "Proportion Thematic Chosen", 
+       x = "Country", 
+       color = "Country") + 
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+```
+
+```{r warning=FALSE, include = TRUE, cache = TRUE, paged.print=TRUE}
+# df.country_sum <- df.country %>%
+#   group_by(country) %>%
+#   summarize(mean_theme_resp_percent = mean(theme_resp_percent), 
+#             sd_theme_resp_percent = sd(theme_resp_percent))
+
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (country | triad),
+                    data = df, 
+                    family = "binomial")
+summary(fit.country) 
+fit.country.anova = Anova(fit.country, type=3)
+
+fit.country_EN_VN = glmer(responses_theme ~ country + (1 | subject) + (country | triad), 
+                    data = df %>% filter(country != "China"),
+                    family = "binomial")
+summary(fit.country_EN_VN) 
+```
+
+To test for cross-context differences in similarity judgments between the countries, we ran a mixed-effects logistic regression predicting triad responding (taxonomic or thematic) with country (US, China, or Vietnam) as a fixed effect. As random effects, we included an intercept per subject and one per triad, as well as by-triad random slopes for country to account for variation in the country effect across triads. In R syntax, the model is: response ~ country + (1 | subject) + (country | triad).
+
+Overall, there is a significant effect of country on proportion of thematic responses ($\chi^2$(`r fit.country.anova["country", "Df"]`) = `r round(fit.country.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country.anova["country", "Pr(>Chisq)"], 3)), "< .001")`). However, this effect is driven by the difference between US and China responding ($\beta$ = `r round(fixef(fit.country)["countryUS"], 2)`, p `r ifelse(as.data.frame(summary(fit.country)[["coefficients"]])["countryUS", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country)[["coefficients"]])["countryUS", "Pr(>|z|)"], 3)), "< .001")`). There is no statistical difference between the Vietnam and China responding ($\beta$ = `r round(fixef(fit.country)["countryVietnam"], 2)`, p `r ifelse(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)), "< .001")`), and the US and Vietnam responding ($\beta$ = `r round(fixef(fit.country_EN_VN)["countryVietnam"], 2)`, p `r ifelse(as.data.frame(summary(fit.country_EN_VN)[["coefficients"]])["countryVietnam", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country_EN_VN)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)), "< .001")`).
+
+On this analysis, we do not find support that the US-China tendencies toward taxonomic and thematic responding (respectively) extend to the US-Vietnam comparison. Accordingly, we cannot speak to overall biases toward thematic responding across Asian cultural contexts broadly, but we do replicate the differences documented by @Ji2004 between the US and China. However, in our corpus model comparison, we do find evidence for different, more fine-grained variation in similarity judgments between the US and Vietnam. 
+
+## Can the differences in similarity judgments between English, Mandarin and Vietnamese speakers be explained by variation in lexical statistics?
+### Is responding in each cultural context predicted by the corresponding lexical statistics? 
+
+To test whether variation in lexical co-occurrence can explain differences in similarity judgments between US and Vietnam participants, we compare logistic mixed-effects regression models fit to the thematic responding data from each country separately. We first ask how well each corpus model (English, Vietnamese, or Mandarin) predicts similarity judgments by speakers of the corresponding language (US, Vietnam, or China). To do this, we use a mixed-effects logistic regression to predict triad responses (0=taxonomic or 1=thematic) with corpus prediction (proportion thematic co-occurrence or cosine distance) as a fixed effect and participant and triad as random effects.
+
+We found that all corpora are significant predictors of all cultural context responding.
+```{r US responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=T, cache = TRUE}
+# English 
+fit.EN_US = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US)
+fit.EN_US.anova = Anova(fit.EN_US, type = 3)
+
+#Vietnamese
+fit.VI_US = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_US)
+fit.VI_US.anova = Anova(fit.VI_US, type = 3)
+
+#Mandarin
+fit.ZH_US = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_US)
+fit.ZH_US.anova = Anova(fit.ZH_US, type = 3)
+```
+For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.EN_US)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.EN_US.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.EN_US.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_US.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_US.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.VI_US)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.VI_US.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.VI_US.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_US.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_US.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ZH_US)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ZH_US.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ZH_US.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_US.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_US.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
+
+```{r VN responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=T, cache = TRUE}
+# English 
+fit.EN_VN = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_VN)
+fit.EN_VN.anova = Anova(fit.EN_VN, type = 3)
+
+#Vietnamese
+fit.VI_VN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN)
+fit.VI_VN.anova = Anova(fit.VI_VN, type = 3)
+
+#Mandarin
+fit.ZH_VN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_VN)
+fit.ZH_VN.anova = Anova(fit.ZH_VN, type = 3)
+```
+For Vietnam responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.EN_VN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.EN_VN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.EN_VN.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_VN.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_VN.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.VI_VN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.VI_VN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.VI_VN.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_VN.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_VN.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ZH_VN)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ZH_VN.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ZH_VN.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_VN.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_VN.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
+
+```{r CN responding predicted by each corpus model raw co-occurrences, warning=FALSE, include=T, cache = TRUE}
+#English
+fit.EN_CN = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_CN)
+fit.EN_CN.anova = Anova(fit.EN_CN, type = 3)
+
+#Vietnamese
+fit.VI_CN = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_CN)
+fit.VI_CN.anova = Anova(fit.VI_CN, type = 3)
+
+#Mandarin
+fit.ZH_CN = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN)
+fit.ZH_CN.anova = Anova(fit.ZH_CN, type = 3)
+```
+
+For China responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are all significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.EN_CN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.EN_CN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.EN_CN.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_CN.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_CN.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.VI_CN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.VI_CN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.VI_CN.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_CN.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_CN.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ZH_US)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ZH_CN.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ZH_CN.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_CN.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_CN.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
+
+This suggests a strong shared similarity signal across the languages.
+
+### Is responding in each cultural context __best__ predicted by the corresponding corpus's lexical statistics, as opposed to the other two corpora?
+Next, we directly compare the corpus models by including both as fixed effects in three mixed-effect regressions (predicting US, Vietnam and China responding) with the same random effects as above. In R syntax, the model is: response ~ corpus_English + corpus_Vietnamese + corpus_Mandarin + (1|triad) + (1|subject).
+
+```{r Eng-Vie-Mand lexical co-occ predicting US, warning=FALSE, include=T, cache = TRUE}
+#raw co-occurrences
+#linear mixed model with ALL corpora as predictors for each population.
+fit.ENVIZH_US = glmer(responses_theme ~ 
+                      theme_freq_prop_E + theme_freq_prop_V + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "US", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_US)
+fit.ENVIZH_US.anova = Anova(fit.ENVIZH_US, type = 3)
+fit.ENVIZH_US.anova
+```
+For US responding: only English (EN) corpus is a significant predictor. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_US.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.ENVIZH_US.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_US.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.ENVIZH_US.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_US.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ENVIZH_US.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
+
+```{r Eng-Vie-Mand lexical co-occ predicting VN, warning=FALSE, include=T, cache = TRUE}
+fit.ENVIZH_VN = glmer(responses_theme ~ 
+                      theme_freq_prop_V + theme_freq_prop_E + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "Vietnam", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_VN)
+fit.ENVIZH_VN.anova = Anova(fit.ENVIZH_VN, type = 3)
+fit.ENVIZH_VN.anova
+```
+For Vietnam responding: only English (EN) and Mandarin (ZH) corpora are significant predictors. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_VN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.ENVIZH_VN.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_VN.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ENVIZH_VN.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_VN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.ENVIZH_VN.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. 
+
+```{r Eng-Vie-Mand lexical co-occ predicting CN, warning=FALSE, include=T, cache = TRUE}
+fit.ENVIZH_CN = glmer(responses_theme ~ 
+                      theme_freq_prop_V + theme_freq_prop_E + theme_freq_prop_M +
+                      (1 | subject) + (1 | triad), 
+                    data = df %>% filter(country == "China", !(triad %in% triads_omit)),
+                    family="binomial")
+summary(fit.ENVIZH_CN)
+fit.ENVIZH_CN.anova = Anova(fit.ENVIZH_CN, type = 3)
+fit.ENVIZH_CN.anova
+```
+For China responding: only Mandarin (ZH) corpus is a significant predictor. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN)["theme_freq_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_CN.anova["theme_freq_prop_M", "Df"]`) = `r round(fit.ENVIZH_CN.anova["theme_freq_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN.anova["theme_freq_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN.anova["theme_freq_prop_M", "Pr(>Chisq)"], 3)), "< .001")`. EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN)["theme_freq_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_CN.anova["theme_freq_prop_E", "Df"]`) = `r round(fit.ENVIZH_CN.anova["theme_freq_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN.anova["theme_freq_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN.anova["theme_freq_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN)["theme_freq_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_CN.anova["theme_freq_prop_V", "Df"]`) = `r round(fit.ENVIZH_CN.anova["theme_freq_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN.anova["theme_freq_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN.anova["theme_freq_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. 
+
+```{r echo=FALSE, warning = FALSE, cache = TRUE, fig.cap = "Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response."}
+coeff_value_freq <- c(fixef(fit.ENVIZH_US)["theme_freq_prop_M"],
+                 fixef(fit.ENVIZH_US)["theme_freq_prop_E"], 
+                 fixef(fit.ENVIZH_US)["theme_freq_prop_V"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_M"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_E"],
+                 fixef(fit.ENVIZH_VN)["theme_freq_prop_V"], 
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_M"],
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_E"], 
+                 fixef(fit.ENVIZH_CN)["theme_freq_prop_V"])
+
+se_value_freq <- c(summary(fit.ENVIZH_US)$coef["theme_freq_prop_M", "Std. Error"], 
+              summary(fit.ENVIZH_US)$coef["theme_freq_prop_E", "Std. Error"],
+              summary(fit.ENVIZH_US)$coef["theme_freq_prop_V", "Std. Error"], 
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_M", "Std. Error"], 
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_E", "Std. Error"],
+              summary(fit.ENVIZH_VN)$coef["theme_freq_prop_V", "Std. Error"],
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_M", "Std. Error"], 
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_E", "Std. Error"],
+              summary(fit.ENVIZH_CN)$coef["theme_freq_prop_V", "Std. Error"])
+
+country_value <- c(rep("US", 3),
+                   rep("VN", 3),
+                   rep("CN", 3))
+
+corpus_value <- c(rep(c("ZH", "EN", "VI"), 3))
+
+df.USVNCN_coeffs_freq <- data.frame(country_value, corpus_value, coeff_value_freq, se_value_freq) %>%
+  mutate(corpus_value = factor(corpus_value, levels=c("ZH", "EN", "VI")))
+
+ggplot(data = df.USVNCN_coeffs_freq, 
+       mapping = aes(x = country_value, y = coeff_value_freq, fill = corpus_value)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(ymin= coeff_value_freq - se_value_freq, ymax = coeff_value_freq + se_value_freq), width=.2,
+                 position=position_dodge(.9)) +
+  labs(x = "Country", y = "Fixed effect size", fill = "Corpus") + 
+  scale_x_discrete(labels=c("CN" = "China", "US" = "US", "VN" = "Vietnam")) + 
+  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+  
+```
+
+```{r freq model comparison, include=FALSE, cache = TRUE}
+fit.US_freq_compare = anova(fit.ENVIZH_US, fit.EN_US, type = 3)
+fit.US_freq_compare
+fit.VN_freq_compare = anova(fit.ENVIZH_VN, fit.VI_VN, type = 3)
+fit.VN_freq_compare
+fit.CN_freq_compare = anova(fit.ENVIZH_CN, fit.ZH_CN, type = 3)
+fit.CN_freq_compare
+```
+
+We observed some level of language specificity from this analysis. The English corpus is the best predictor for US responding, and the Mandarin corpus is the best predictor for China response. 
+
+We used an ANOVA to compare the model with only the corresponding corpus, and the model with all 3 corpora for each cultural context. For Vietnam, adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor. However, for US and China, adding the other two corpora does not produce a significantly better fit.
+*When this analysis was done with cosine similarity proportion (in my thesis), all prediction for all 3 cultural contexts improved with the addition of the other corpora, which we explained as an effect of linguistic universality. This different result probably stems from the Vietnamese corpus being sparse?*
+
+<!-- While this is not the case with the Vietnamese corpus and the Vietnam responding, the Vietnamese corpus is still a significant predictor for the Vietnam responding.  -->
+
+<!-- However, we found that language specificity alone does not explain our results. We used an ANOVA to compare the model with only the corresponding corpus, and the model with all 3 corpora for each cultural context. We found that in all three cases (US, China, Vietnam), adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_freq_compare["fit.ENVIZH_US", "Df"]`) = `r round(fit.US_freq_compare["fit.ENVIZH_US", "Chisq"], 2)`, p `r ifelse( fit.US_freq_compare["fit.ENVIZH_US", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_freq_compare["fit.ENVIZH_US", "Pr(>Chisq)"], 3)), "< .001")`; Vietnam response: $\chi^2$(`r fit.VN_freq_compare["fit.ENVIZH_VN", "Df"]`) = `r round(fit.VN_freq_compare["fit.ENVIZH_VN", "Chisq"], 2)`, p `r ifelse( fit.VN_freq_compare["fit.ENVIZH_VN", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_freq_compare["fit.ENVIZH_VN", "Pr(>Chisq)"], 3)), "< .001")`; China response: $\chi^2$(`r fit.CN_freq_compare["fit.ENVIZH_CN", "Df"]`) = `r round(fit.CN_freq_compare["fit.ENVIZH_CN", "Chisq"], 2)`, p `r ifelse( fit.CN_freq_compare["fit.ENVIZH_CN", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_freq_compare["fit.ENVIZH_CN", "Pr(>Chisq)"], 3)), "< .001")`).   -->
+
+```{r add linguistic model to Ji et al., include=TRUE, cache = T}
+fit.country = glmer(responses_theme ~ country + (1 | subject) + (1 | triad), 
+                           data = df %>% filter(country != "Vietnam"), 
+                           family = "binomial")
+
+#changed from cosine to frequency proportion
+fit.country_corpus = glmer(responses_theme ~ country + theme_freq_prop_E + theme_freq_prop_M + (1 | subject) + (1 | triad), 
+                           data = df %>% filter(country != "Vietnam"), 
+                           family = "binomial")
+
+fit.add_corpus <- anova(fit.country, fit.country_corpus, type = 3)
+fit.add_corpus
+                   
+```
+*Should this analysis be updated to be more similar to the analysis in 3 (next section)?*
+We carried out an ANOVA model comparison to compare our approach with previous studies that did not include corpus information. Because @Ji2004 only compared US and China participants, we filtered our data to only include responding data from these two countries. Our approach would be to compare a model that only includes country (US or China) as a fixed effect with one that also includes English and Chinese corpus data. Our previous model with an intercept per subject and one per triad, as well as by-triad random slopes for country to account for variation in the country effect across triads fails to converge with the more complex model, so we include a simpler random effect structure with an intercept per subject and one per triad in both the basic and more complex model. We compare this model with an identical model but including Chinese and English corpus cosine distance proportion prediction. We found that adding English and Chinese corpus data produces a significantly better fit than the identical model without English and Chinese corpus data as predictors ($\chi^2$(`r fit.add_corpus["fit.country_corpus", "Df"]`) = `r round(fit.add_corpus["fit.country_corpus", "Chisq"], 2)`, p = < .001. This suggests that including corpus data would better model the cross-cultural differences in similarity judgment in this study as well as similar studies.
+
+
+## Does similarity reasoning differ across cultures, only the input to it, or both?
+Does adding country and interaction term with the corresponding corpus improves the model? 
+```{r}
+df <- df %>%
+  mutate(theme_freq_prop_corr_lang = case_when(
+    country == "US" ~ theme_freq_prop_E,
+    country == "China" ~ theme_freq_prop_M, 
+    country == "Vietnam" ~ theme_freq_prop_V))
+
+fit.language = glmer(responses_theme ~ theme_freq_prop_corr_lang + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(triad %in% triads_omit)),  
+          family="binomial")
+summary(fit.language)
+fit.language.anova = Anova(fit.language, type = 3)
+fit.language.anova
+
+fit.country_language = glmer(responses_theme ~ theme_freq_prop_corr_lang * country + (1 | subject) + (1 | triad), 
+          data = df %>% filter(!(triad %in% triads_omit)),  
+          family="binomial")
+summary(fit.country_language)
+fit.country_language.anova = Anova(fit.country_language, type = 3)
+fit.country_language.anova
+
+fit.country_language_compare = anova(fit.language, fit.country_language, type = 3)
+fit.country_language_compare
+```
+
+Adding country improves the model. Only country and interaction between country and corresponding corpus's lexical co-occurrence are significant predictors. Corresponding corpus's lexical co-occurrence is no longer a significant predictor.
+
+## How specific are the cross-language differences in similarity judgments we observe?
+```{r loading in the csv with semantic coding, include =F}
+df.sem_code <- read.csv("../../../data/corpus/corpus_sem_coding.csv")
+
+df <- df %>%
+  left_join(df.sem_code, by = "triad")
+```
+### Do we see differential responding across cue items from different semantic domains?
+Plotting mean response theme by country, by type of triad
+```{r plotting thematic responses by cue_genre, cache = T}
+
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = cue_genre, 
+                          y = responses_theme)) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = cue_genre, 
+                          y = responses_theme))
+
+```
+
+```{r plotting thematic response by cue_genre and country, cache = T}
+ggplot(data = df,
+       mapping = aes(x = cue_genre, 
+                     y = responses_theme,
+                     color = country, 
+                     fill = country)) + 
+   stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") 
+#color code by cue genre, spatial sep by country, plotting all triads (mean response)
+
+```
+
+```{r plotting thematic response by cue_genre, country and triad, cache = T}
+ggplot(data = df, 
+       mapping = aes(x = country, 
+                     y = responses_theme, 
+                     label = triad, 
+                     group = triad,
+                     color = cue_genre)) + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "point", 
+               alpha = .5, 
+               position = position_dodge(width = .2)) + 
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "text", 
+               position = position_dodge(width = .2), size = 2)
+```
+
+There seems to be a preference for more thematic matches in the 'living things' cues in comparison to the 'moveable artifacts' cue.
+
+Comparing some models (omitting cue_genre = "other") *should we omit 'other' from the analysis?*
+
+#### English
+Base line model:
+
+```{r US responding predicted by corpus co-occurrences, warning=FALSE, cache = T}
+# English 
+fit.EN_US_cue_genre_base = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.EN_US_cue_genre_base)
+fit.EN_US_cue_genre_base.anova = Anova(fit.EN_US_cue_genre_base, type = 3)
+```
+
+Adding cue genre: significant
+
+```{r US responding, co-occurrence and cue_genre, cache = T}
+fit.EN_US_cue_genre = glmer(responses_theme ~ theme_freq_prop_E + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.EN_US_cue_genre)
+Anova(fit.EN_US_cue_genre, type = 3)
+```
+
+Anova comparison: including cue genre is a better model
+```{r US anova comparison, cue_genre, cache = T}
+fit.EN_US_cue_genre_compare = anova(fit.EN_US_cue_genre_base, fit.EN_US_cue_genre, type = 3)
+fit.EN_US_cue_genre_compare
+```
+#### Vietnamese
+
+```{r VN responding predicted by VN corpus model, warning=FALSE, cache = T}
+
+#Vietnamese
+fit.VI_VN_cue_genre_base = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.VI_VN_cue_genre_base)
+fit.VI_VN_cue_genre_base.anova = Anova(fit.VI_VN_cue_genre_base, type = 3)
+```
+
+Adding cue genre: NOT significant
+
+```{r VN responding, co-occurrence + cue_genre}
+fit.VI_VN_cue_genre = glmer(responses_theme ~ theme_freq_prop_V + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit), 
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.VI_VN_cue_genre)
+Anova(fit.VI_VN_cue_genre, type = 3)
+```
+
+Anova comparison (also not significant)
+```{r VN anova comparison, cue_genre, cach}
+fit.VI_VN_cue_genre_compare = anova(fit.VI_VN_cue_genre_base, fit.VI_VN_cue_genre, type = 3)
+fit.VI_VN_cue_genre_compare
+```
+
+#### Mandarin
+```{r CN responding predicted by co-occurrences, warning=FALSE, cache = T}
+#Mandarin
+fit.ZH_CN_cue_genre_base = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial")
+summary(fit.ZH_CN_cue_genre_base)
+fit.ZH_CN_cue_genre_base.anova = Anova(fit.ZH_CN_cue_genre_base, type = 3)
+```
+
+Adding cue genre: significant
+
+```{r CN responding, co-occurrences + cue_genre, cache = T}
+fit.ZH_CN_cue_genre = glmer(responses_theme ~ theme_freq_prop_M + cue_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit),
+                               !(cue_genre == "other")), 
+          family="binomial") 
+
+summary(fit.ZH_CN_cue_genre)
+Anova(fit.ZH_CN_cue_genre, type = 3)
+```
+Anova comparison: including cue genre is a better model
+```{r CN anova comparison,cue_genre, cache = T}
+fit.ZH_CN_cue_genre_compare = anova(fit.ZH_CN_cue_genre_base, fit.ZH_CN_cue_genre, type = 3)
+fit.ZH_CN_cue_genre_compare
+```
+
+When added to the baseline model, cue genre is a significant predictor for US and China responses. But not for Vietnam.
+
+### Do we see differential responding across distinct types of thematic relationships?
+Plotting mean response theme by country, by type of thematic match
+```{r plotting thematic responses by theme_genre, cache = T}
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme)) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            alpha = .5, 
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme)) +
+  geom_hline(yintercept = 0.5)
+
+```
+
+```{r plotting thematic responses by theme_genre and country}
+ggplot(data = df) + 
+   geom_bar(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme, 
+                          fill = country), 
+            position = position_dodge(width = .7), width = .7) +
+  geom_pointrange(stat = "summary", 
+            fun.data = "mean_cl_boot",
+            mapping = aes(x = theme_genre, 
+                          y = responses_theme,
+                          group = country), 
+            position = position_dodge(width = .7)) +
+  geom_hline(yintercept = 0.5)
+#color code by cue genre, spatial sep by country, plotting all triads (mean response)
+
+```
+
+```{r plotting thematic response by country, triad and theme_genre}
+ggplot(data = df, 
+       mapping = aes(x = country, 
+                     y = responses_theme, 
+                     label = triad, 
+                     group = triad)) + 
+  geom_point(stat = "summary", 
+             fun.data = "mean_cl_boot", 
+             position = position_dodge(width = .7)) +
+  geom_text(stat = "summary", 
+            fun.data = "mean_cl_boot", 
+            color = alpha('black'),
+            position = position_dodge(width = .7), size = 2) +
+  geom_violin(data = df %>% 
+                group_by(country, theme_genre, triad) %>%
+                summarize(theme_resp_triad = mean(responses_theme, na.rm = T)), 
+                mapping = aes(x = country,
+                              y = theme_resp_triad, 
+                              group = country,
+                              fill = country,
+                              color = country), 
+                alpha = .5) + 
+  facet_grid(~theme_genre)
+
+
+
+# geom_point(data = df %>% filter(theme_genre == 'ecology'),
+#            mapping = aes(x = country,
+#                    y = responses_theme,
+#                    label = triad,
+#                    group = triad,
+#                    color = theme_genre),
+#            stat = "summary",
+#            fun.data = "mean_cl_boot",
+#            position = position_dodge(width =.7))
+  
+  
+
+```
+
+1. All theme match semantic categories prefer thematic, except for association.
+2. China is always the most thematic in all theme match semantic categories. Only country that prefers thematic across all categories. 
+3. Only US & Vietnam + association prefer taxonomic. Overall, association seems to be least thematic preferring.
+4. Vietnam is not significantly different from US except for ecology. 
+5. Most thematic: causal (but might be driven by strong China response) and occupation (most consistent across countries to be thematic).
+
+
+#### English
+Base line model:
+
+```{r US responding predicted by corpus co-occurrences re-run for theme_genre, warning=FALSE}
+# English 
+fit.EN_US_theme_genre_base = glmer(responses_theme ~ theme_freq_prop_E + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.EN_US_theme_genre_base)
+fit.EN_US_theme_genre_base.anova = Anova(fit.EN_US_theme_genre_base, type = 3)
+```
+
+Adding theme genre: significant
+
+```{r US responding, co-occurrence and theme_genre}
+fit.EN_US_theme_genre = glmer(responses_theme ~ theme_freq_prop_E + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "US", 
+                               !(triad %in% triads_omit)), 
+          family="binomial") 
+
+summary(fit.EN_US_theme_genre)
+fit.EN_US_theme_genre.anova = Anova(fit.EN_US_theme_genre, type = 3)
+```
+
+Anova comparison: including theme genre is a better model
+```{r US anova comparison, theme_genre}
+fit.EN_US_theme_genre_compare = anova(fit.EN_US_theme_genre_base, fit.EN_US_theme_genre, type = 3)
+fit.EN_US_theme_genre_compare
+```
+#### Vietnamese
+
+```{r VN responding predicted by VN corpus model re-run for theme_genre, warning=FALSE}
+
+#Vietnamese
+fit.VI_VN_theme_genre_base = glmer(responses_theme ~ theme_freq_prop_V + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.VI_VN_theme_genre_base)
+fit.VI_VN_theme_genre_base.anova = Anova(fit.VI_VN_theme_genre_base, type = 3)
+```
+
+Adding theme genre: not significant
+
+```{r VN responding, co-occurrence + theme_genre}
+fit.VI_VN_theme_genre = glmer(responses_theme ~ theme_freq_prop_V + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "Vietnam", 
+                               !(triad %in% triads_omit)), 
+          family="binomial") 
+
+summary(fit.VI_VN_theme_genre)
+fit.VI_VN_theme_genre.anova = Anova(fit.VI_VN_theme_genre, type = 3)
+```
+
+Anova comparison: not significant
+```{r VN anova comparison, theme_genre}
+fit.VI_VN_theme_genre_compare = anova(fit.VI_VN_theme_genre_base, fit.VI_VN_theme_genre, type = 3)
+fit.VI_VN_theme_genre_compare
+```
+
+#### Mandarin
+```{r CN responding predicted by co-occurrences re-run for theme_genre, warning=FALSE}
+#Mandarin
+fit.ZH_CN_theme_genre_base = glmer(responses_theme ~ theme_freq_prop_M + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit)), 
+          family="binomial")
+summary(fit.ZH_CN_theme_genre_base)
+fit.ZH_CN_theme_genre_base.anova = Anova(fit.ZH_CN_theme_genre_base, type = 3)
+```
+
+Adding theme genre: NOT significant
+
+```{r CN responding, co-occurrences + theme_genre}
+fit.ZH_CN_theme_genre = glmer(responses_theme ~ theme_freq_prop_M + theme_genre + (1 | subject) + (1 | triad), 
+          data = df %>% filter(country == "China", 
+                               !(triad %in% triads_omit)), 
+          family="binomial") 
+
+summary(fit.ZH_CN_theme_genre)
+fit.ZH_CN_theme_genre.anova = Anova(fit.ZH_CN_theme_genre, type = 3)
+fit.ZH_CN_theme_genre.anova
+```
+Anova comparison: including theme genre is not a better model
+```{r CN anova comparison, theme_genre}
+fit.ZH_CN_theme_genre_compare = anova(fit.ZH_CN_theme_genre_base, fit.ZH_CN_theme_genre, type = 3)
+fit.ZH_CN_theme_genre_compare
+```
+
+When added to the baseline model, theme genre is a significant predictor for Vietnam response, but not for US and China!
+
+```{r summary of semantic coding result}
+text_tbl <- data.frame(
+  Country = c("US", "China", "Vietnam"),
+  Add_Cue_Genre = c(
+    "significant", "significant", "not significant"
+  ), 
+  Add_Theme_Genre = c(
+    "significant", "not significant", "not significant"
+  )
+)
+kable(text_tbl)
+```
+
+## How general are the cross-language differences in similarity judgments we observe? Are they limited to taxonomic-thematic contrasts or do they extend to other cases?
+
+```{r incorporate base freq}
+df.filler <- read.csv("../../../data/data_filler_USCNVN_ENZHVI.csv")
+```
+
+```{r warning=FALSE, cache = TRUE, include = FALSE, paged.print=TRUE}
+df.country_filler <- df.filler %>%
+  group_by(subject, country) %>%
+  summarize(word1_resp_percent = mean(responses_word1, na.rm = T))
+``` 
+
+```{r echo=FALSE, warning=FALSE, cache = TRUE, fig.cap="Proportion of thematic responses by country. Only US-China responding comparison shows a siginficant difference. We could not extend this to US-Vietnam responding comparison."}
+
+#show violin plot
+ggplot(df.country_filler,
+       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+                     y = word1_resp_percent, 
+                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+  geom_violin() +
+  geom_jitter(height = 0, 
+              alpha = 0.3) +  
+  stat_summary(fun.data = "mean_cl_boot", 
+               geom = "pointrange") + 
+  labs(y = "Proportion Word1 Chosen", 
+       x = "Country", 
+       color = "Country") + 
+  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+```
+
+```{r warning=FALSE, include = TRUE, cache = TRUE, paged.print=TRUE}
+# df.country_sum <- df.country %>%
+#   group_by(country) %>%
+#   summarize(mean_theme_resp_percent = mean(theme_resp_percent), 
+#             sd_theme_resp_percent = sd(theme_resp_percent))
+
+fit.country_filler = glmer(responses_word1 ~ country + (1 | subject) + (country | cue),
+                    data = df.filler, 
+                    family = "binomial")
+summary(fit.country_filler) 
+fit.country_filler.anova = Anova(fit.country_filler, type=3)
+fit.country_filler.anova
+``` 
+
+No effect of country on filler responding.
+
+### Does lexical co-occurrences for fillers predict responding in the corresponding cultural context?
+
+```{r US responding predicted by each corpus model raw co-occurrences for fillers, warning=FALSE}
+# English 
+fit.EN_US_filler = glmer(responses_word1 ~ word1_match_frequency_prop_E + (1 | subject) + (1 | cue), 
+          data = df.filler %>% filter(country == "US", 
+                               !(near(word1_match_frequency_E, .Machine$double.eps) & 
+                                  near(word2_match_frequency_E, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.EN_US_filler)
+fit.EN_US_filler.anova = Anova(fit.EN_US_filler, type = 3)
+
+fit.EN_US_filler.anova
+```
+
+```{r VN responding predicted by each corpus model raw co-occurrences for fillers, warning=FALSE}
+# Vietnamese
+fit.VI_VN_filler = glmer(responses_word1 ~ word1_match_frequency_prop_V + (1 | subject) + (1 | cue), 
+          data = df.filler %>% filter(country == "Vietnam", 
+                               !(near(word1_match_frequency_V, .Machine$double.eps) & 
+                                  near(word2_match_frequency_V, .Machine$double.eps))), 
+          family="binomial")
+summary(fit.VI_VN_filler)
+fit.VI_VN_filler.anova = Anova(fit.VI_VN_filler, type = 3)
+
+fit.VI_VN_filler.anova
+```
+Yes, corpus predicts responding for both US and Vietnamese. *need to discuss with Shan to incorporate Mandarin due to a lot of empty counts*
+
+
+

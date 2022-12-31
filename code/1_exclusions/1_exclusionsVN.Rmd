@@ -106,22 +106,29 @@ percent_dropped #0.05839416
 
 #have travelled extensively (more than 6 international experiences of 2 days or longer)
 df.oversea_exp_V <- df.demog %>%
-  filter(demog_question == "overseaexpnum" & demog_response == "Six or more experiences")
+  filter(demog_question == "overseaexpnum" & demog_response == "6 lần trở lên")
 
-ppts_oversea_exp_V = unique(df.oversea_exp_V$subject) #95
+ppts_oversea_exp_V = unique(df.oversea_exp_V$subject) #20
 percent_dropped = length(intersect(ppts_oversea_exp_V, ppts_resp_V)) / length(unique(df.resp_V$subject))
-percent_dropped #0.4739 # will not use this criterion
+percent_dropped #0.109 
 
 df.resp_V <- df.resp_V %>%
   filter(!(subject %in% ppts_non_native_lang_V),
-         !(subject %in% ppts_vi_speaker_V), 
          !(subject %in% ppts_zh_speaker_V),
-         !(subject %in% ppts_lived_abroad_V))
+         !(subject %in% ppts_lived_abroad_V), 
+         !(subject %in% ppts_oversea_exp_V))
 
-length(unique(df.resp_V$subject)) #124
+length(unique(df.resp_V$subject)) #110
 ```
 
 ```{r}
-write.csv(df.resp_V, "../../data/responding/dataVN_excl.csv")
+df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_V$subject))),
+                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_V$subject))), 
+                      ppts_after_demog_excl = c(length(unique(df.resp_V$subject))))
 ```
 
+
+```{r}
+write.csv(df.resp_V, "../../data/responding/dataVN_excl.csv")
+write.csv(df.demog_metadata, "../../data/responding/dataVN_excl_metadata.csv")
+```

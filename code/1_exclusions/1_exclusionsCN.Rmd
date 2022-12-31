@@ -53,7 +53,7 @@ df.ppts_att_M <- df.resp_M %>%
   mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
   group_by(subject) %>%
   summarize(pass_att_check_percent = mean(pass_att_check)) %>%
-  filter(pass_att_check_percent >= 0.8)
+  filter(pass_att_check_percent == 1.0)
 
 df.resp_M <- df.resp_M %>%
   filter(subject %in% df.ppts_att_M$subject) 
@@ -128,6 +128,14 @@ length(unique(df.resp_M$subject)) #149
 ```
 
 ```{r}
+df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_M$subject))),
+                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_M$subject))), 
+                      ppts_after_demog_excl = c(length(unique(df.resp_M$subject))))
+```
+
+
+```{r}
 write.csv(df.resp_M, "../../data/responding/dataCN_excl.csv")
+write.csv(df.demog_metadata, "../../data/responding/dataCN_excl_metadata.csv")
 ```
 

@@ -122,6 +122,14 @@ length(unique(df.resp_E$subject)) #124
 ```
 
 ```{r}
+df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_E$subject))),
+                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_E$subject))), 
+                      ppts_after_demog_excl = c(length(unique(df.resp_E$subject))))
+```
+
+
+```{r}
 write.csv(df.resp_E, "../../data/responding/dataUS_excl.csv")
+write.csv(df.demog_metadata, "../../data/responding/dataUS_excl_metadata.csv")
 ```
 

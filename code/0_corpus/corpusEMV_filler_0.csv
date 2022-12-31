@@ -1,0 +1,111 @@
+﻿triad,cue_M,cue_frequency_M,word1_M,word1_frequency_M,word2_M,word2_frequency_M,word1_match_M,word1_match_frequency_M,word2_match_M,word2_match_frequency_M,cue_E,cue_frequency_E,word1_E,word1_frequency_E,word2_E,word2_frequency_E,word1_match_E,word1_match_frequency_E,word2_match_E,word2_match_frequency_E,cue_V,cue_frequency_V,word1_V,word1_frequency_V,word2_V,word2_frequency_V,word1_match_V,word1_match_frequency_V,word2_match_V,word2_match_frequency_V
+lemon,柠檬,,葡萄,,梨,,柠檬 - 葡萄,,柠檬 - 梨,,lemon,19153,grape,10062,pear,4968,lemon - grape,40,lemon - pear,36,chanh,,nho,,lê,,chanh - nho,5,chanh - lê,0
+library,图书馆,,银行,,电影院,,图书馆 - 银行,,图书馆 - 电影院,,library,71921,bank,138673,cinema,8617,library - bank,67,library - cinema,11,thư viện,,ngân hàng,,rạp chiếu phim,,thư viện - ngân hàng,0,thư viện - rạp chiếu phim,0
+kite,风筝,,篮球,,秋千,,风筝 - 篮球,,风筝 - 秋千,,kite,3274,basketball,40007,swing,27981,kite - basketball,0,kite - swing,5,diều,,bóng rổ,,xích đu,,diều - bóng rổ,0,diều - xích đu,0
+bridge,桥,,隧道,,公路,,桥 - 隧道,,桥 - 公路,,bridge,49030,tunnel,19814,highway,34789,bridge - tunnel,231,bridge - highway,338,cầu,,đường hầm,,đường cao tốc,,cầu - đường hầm,5,cầu - đường cao tốc,0
+infant,婴儿,,男人,,女人,,婴儿 - 男人,,婴儿 - 女人,,infant,20410,man,1091176,woman,759817,infant - man,103,infant - woman,185,trẻ sơ sinh,,đàn ông,,phụ nữ,,trẻ sơ sinh - đàn ông,0,trẻ sơ sinh - phụ nữ,0
+coriander,香菜,,盐,,胡椒,,香菜 - 盐,,香菜 - 胡椒,,coriander,1009,salt,46825,pepper,34195,coriander - salt,217,coriander - pepper,187,rau mùi ,,muối,,tiêu,,rau mùi  - muối,0,rau mùi  - tiêu,3
+grandfather,祖父,,姐妹,,叔叔,,祖父 - 姐妹,,祖父 - 叔叔,,grandfather,22432,sister,120346,uncle,46291,grandfather - sister,78,grandfather - uncle,254,ông,,chị,,cậu,,ông - chị,0,ông - cậu,3
+candle,蜡烛,,火炬,,灯笼,,蜡烛 - 火炬,,蜡烛 - 灯笼,,candle,15125,torch,6336,lantern,4659,candle - torch,15,candle - lantern,47,nến,,đuốc,,đèn lồng,,nến - đuốc,0,nến - đèn lồng,0
+fox,狐狸,,老虎,,狮子,,狐狸 - 老虎,,狐狸 - 狮子,,fox,10254,tiger,26334,lion,23871,fox - tiger,22,fox - lion,53,cáo,,hổ,,sư tử,,cáo - hổ,0,cáo - sư tử,0
+branch,树枝,,根,,茎,,树枝 - 根,,树枝 - 茎,,branch,40300,root,45327,stem,18061,branch - root,121,branch - stem,45,cành cây,,rễ cây,,thân cây,,cành cây - rễ cây,0,cành cây - thân cây,0
+parrot,鹦鹉,,鹰,,夜莺,,鹦鹉 - 鹰,,鹦鹉 - 夜莺,,parrot,3307,hawk,9428,songbird,930,parrot - hawk,2,parrot - songbird,0,vẹt,,diều hâu,,sơn ca,,vẹt - diều hâu,0,vẹt - sơn ca,0
+sprout,新芽,,小树苗,,植物,,新芽 - 小树苗,,新芽 - 植物,,sprout,4062,seedling,2683,plant,118323,sprout - seedling,2,sprout - plant,37,chồi cây,,cây con,,cây,,chồi cây - cây con,0,chồi cây - cây,0
+nose,鼻,,大拇指,,手指,,鼻 - 大拇指,,鼻 - 手指,,nose,45433,thumb,16776,finger,81817,nose - thumb,203,nose - finger,354,mũi,,ngón cái,,ngón tay,,mũi - ngón cái,0,mũi - ngón tay,12
+cucumber,黄瓜,,玉米,,土豆,,黄瓜 - 玉米,,黄瓜 - 土豆,,cucumber,4252,corn,26609,potato,29496,cucumber - corn,27,cucumber - potato,24,dưa leo,,ngô,,khoai tây,,dưa leo - ngô,0,dưa leo - khoai tây,4
+scarf,围巾,,袜子,,毛线帽,,围巾 - 袜子,,围巾 - 毛线帽,,scarf,7566,socks,14170,beanie,434,scarf - socks,25,scarf - beanie,5,khăn quàng cổ,,tất,,mũ len,,khăn quàng cổ - tất,0,khăn quàng cổ - mũ len,0
+shovel,铲子,,耙子,,锄头,,铲子 - 耙子,,铲子 - 锄头,,shovel,5572,rake,3704,hoe,1279,shovel - rake,61,shovel - hoe,27,cái xẻng,,cái cào,,cái cuốc,,cái xẻng - cái cào,0,cái xẻng - cái cuốc,0
+vinegar,醋,,油,,黄油,,醋 - 油,,醋 - 黄油,,vinegar,9110,oil,150410,butter,29372,vinegar - oil,1826,vinegar - butter,132,giấm,,dầu,,bơ,,giấm - dầu,7,giấm - bơ,0
+comics,漫画,,杂志,,报纸,,漫画 - 杂志,,漫画 - 报纸,,comics,13245,magazine,75615,newspaper,66598,comics - magazine,51,comics - newspaper,85,truyện tranh,,tạp chí,,báo,,truyện tranh - tạp chí,0,truyện tranh - báo,0
+button,纽扣,,袖子,,衣领,,纽扣 - 袖子,,纽扣 - 衣领,,button,36451,sleeve,12091,collar,11916,button - sleeve,26,button - collar,65,nút áo,,tay áo,,cổ áo,,nút áo - tay áo,0,nút áo - cổ áo,0
+mattress,床垫,,床单,,毯子,,床垫 - 床单,,床垫 - 毯子,,mattress,7696,sheet,42366,blanket,19318,mattress - sheet,84,mattress - blanket,70,nệm,,ga giường,,chăn,,nệm - ga giường,0,nệm - chăn,10
+tea,茶,,苏打水,,柠檬水,,茶 - 苏打水,,茶 - 柠檬水,,tea,47503,soda,12515,lemonade,3263,tea - soda,127,tea - lemonade,108,trà,,nước ngọt,,nước chanh,,trà - nước ngọt,4,trà - nước chanh,3
+wolf,狼,,熊,,豹,,狼 - 熊,,狼 - 豹,,wolf,29042,bear,45125,leopard,2389,wolf - bear,192,wolf - leopard,17,sói,,gấu,,báo,,sói - gấu,0,sói - báo,0
+bird,鸟,,蜥蜴,,蟾蜍,,鸟 - 蜥蜴,,鸟 - 蟾蜍,,bird,69662,lizard,4467,toad,2283,bird - lizard,19,bird - toad,4,chim,,thằn lằn,,cóc,,chim - thằn lằn,0,chim - cóc,0
+drawer,抽屉,,架子,,储藏柜,,抽屉 - 架子,,抽屉 - 储藏柜,,drawer,12435,shelf,21854,cabinet,22078,drawer - shelf,34,drawer - cabinet,190,ngăn kéo,,kệ,,tủ,,ngăn kéo - kệ,3,ngăn kéo - tủ,16
+neck,脖子,,下巴,,肩膀,,脖子 - 下巴,,脖子 - 肩膀,,neck,52214,chin,14538,shoulders,78062,neck - chin,319,neck - shoulders,983,cổ,,cằm,,vai,,cổ - cằm,9,cổ - vai,67
+floor,地,,小地毯,,瓷砖,,地 - 小地毯,,地 - 瓷砖,,floor,122291,rug,9361,tile,10297,floor - rug,305,floor - tile,797,sàn nhà,,thảm,,gạch,,sàn nhà - thảm,15,sàn nhà - gạch,7
+leech,水蛭,,跳蚤,,虱子,,水蛭 - 跳蚤,,水蛭 - 虱子,,leech,1508,flea,3721,louse,1706,leech - flea,2,leech - louse,1,con đỉa,,bọ chét,,con rận,,con đỉa - bọ chét,0,con đỉa - con rận,0
+balloon,气球,,弹珠,,玩具娃娃,,气球 - 弹珠,,气球 - 玩具娃娃,,balloon,12102,marbles,9297,doll,16714,balloon - marbles,0,balloon - doll,3,bong bóng,,viên bi,,búp bê,,bong bóng - viên bi,0,bong bóng - búp bê,0
+singer,歌手,,作家,,诗人,,歌手 - 作家,,歌手 - 诗人,,singer,24095,writer,96279,poet,20918,singer - writer,101,singer - poet,46,ca sĩ,,nhà văn,,nhà thơ,,ca sĩ - nhà văn,0,ca sĩ - nhà thơ,0
+robot,机器人,,电话,,电脑,,机器人 - 电话,,机器人 - 电脑,,robot,20517,phone,194941,computer,139082,robot - phone,32,robot - computer,92,người máy,,điện thoại,,máy vi tính,,người máy - điện thoại,0,người máy - máy vi tính,0
+tongue,舌头,,牙齿,,嘴唇,,舌头 - 牙齿,,舌头 - 嘴唇,,tongue,25612,teeth,46405,lips,48507,tongue - teeth,659,tongue - lips,893,lưỡi,,răng,,môi,,lưỡi - răng,11,lưỡi - môi,29
+garlic,大蒜,,生姜,,香叶,,大蒜 - 生姜,,大蒜 - 香叶,,garlic,18473,ginger,5005,cilantro,3417,garlic - ginger,957,garlic - cilantro,258,tỏi,,gừng,,ngò,,tỏi - gừng,35,tỏi - ngò,0
+watermelon,西瓜,,木瓜,,西柚,,西瓜 - 木瓜,,西瓜 - 西柚,,watermelon,2676,papaya,930,grapefruit,2010,watermelon - papaya,15,watermelon - grapefruit,16,dưa hấu,,đu đủ,,bưởi,,dưa hấu - đu đủ,6,dưa hấu - bưởi,7
+heart,心脏,,胃,,肺,,心脏 - 胃,,心脏 - 肺,,heart,216345,stomach,29089,lungs,22170,heart - stomach,418,heart - lungs,975,tim,,dạ dày,,phổi,,tim - dạ dày,14,tim - phổi,89
+coral,珊瑚,,鲨鱼,,海豚,,珊瑚 - 鲨鱼,,珊瑚 - 海豚,,coral,7272,shark,15207,dolphin,9675,coral - shark,11,coral - dolphin,1,san hô,,cá mập,,cá heo,,san hô - cá mập,0,san hô - cá heo,0
+worm ,蠕虫,,蚂蚁,,蟑螂,,蠕虫 - 蚂蚁,,蠕虫 - 蟑螂,,worm,10575,ant,9137,cockroach,2373,worm - ant,11,worm - cockroach,3,giun,,kiến,,gián,,giun - kiến,0,giun - gián,0
+coast,海岸,,港湾,,码头,,海岸 - 港湾,,海岸 - 码头,,coast,53114,harbor,16291,pier,7851,coast - harbor,172,coast - pier,29,bờ biển,,hải cảng,,cầu tàu,,bờ biển - hải cảng,0,bờ biển - cầu tàu,0
+mushroom,蘑菇,,南瓜,,茄子,,蘑菇 - 南瓜,,蘑菇 - 茄子,,mushroom,11459,pumpkin,10608,eggplant,2406,mushroom - pumpkin,7,mushroom - eggplant,13,nấm,,bí đỏ,,cà tím,,nấm - bí đỏ,0,nấm - cà tím,0
+museum,博物馆,,操场,,公园,,博物馆 - 操场,,博物馆 - 公园,,museum,73559,playground,8054,park,135440,museum - playground,18,museum - park,778,bảo tàng,,sân chơi,,công viên,,bảo tàng - sân chơi,0,bảo tàng - công viên,8
+waterfall,瀑布,,洞穴,,裂谷,,瀑布 - 洞穴,,瀑布 - 裂谷,,waterfall,4158,cave,18219,chasm,1710,waterfall - cave,26,waterfall - chasm,0,thác nước,,hang động,,vực sâu,,thác nước - hang động,4,thác nước - vực sâu,0
+orchid,兰花,,茉莉花,,莲花,,兰花 - 茉莉花,,兰花 - 莲花,,orchid,3078,jasmine,4015,lotus,2341,orchid - jasmine,2,orchid - lotus,1,hoa lan,,hoa nhài,,hoa sen,,hoa lan - hoa nhài,0,hoa lan - hoa sen,0
+camel,骆驼,,犀牛,,大猩猩,,骆驼 - 犀牛,,骆驼 - 大猩猩,,camel,5552,rhinoceros,600,gorilla,4176,camel - rhinoceros,2,camel - gorilla,0,lạc đà,,tê giác,,khỉ đột,,lạc đà - tê giác,0,lạc đà - khỉ đột,0
+popcorn,爆米花,,薯片,,梳打饼,,爆米花 - 薯片,,爆米花 - 梳打饼,,popcorn,5163,chips,35203,crackers,6170,popcorn - chips,59,popcorn - crackers,21,bắp rang,,khoai tây chiên,,bánh quy,,bắp rang - khoai tây chiên,0,bắp rang - bánh quy,0
+electricity,电,,热,,阳光,,电 - 热,,电 - 阳光,,electricity,26003,heat,82112,sunlight,13624,electricity - heat,658,electricity - sunlight,137,điện,,nhiệt,,ánh nắng,,điện - nhiệt,76,điện - ánh nắng,0
+camera,相机,,钟,,吸尘器,,相机 - 钟,,相机 - 吸尘器,,camera,99855,clock,29112,vacuum,10389,camera - clock,45,camera - vacuum,7,máy ảnh,,đồng hồ,,máy hút bụi,,máy ảnh - đồng hồ,0,máy ảnh - máy hút bụi,0
+rock,石头,,土壤,,水晶,,石头 - 土壤,,石头 - 水晶,,rock,100028,soil,38159,crystal,18456,rock - soil,311,rock - crystal,116,đá,,đất,,thuỷ tinh,,đá - đất,82,đá - thuỷ tinh,0
+crutch,拐杖,,手杖,,轮椅,,拐杖 - 手杖,,拐杖 - 轮椅,,crutch,2566,cane,8248,wheelchair,10213,crutch - cane,15,crutch - wheelchair,5,nạng,,gậy,,xe lăn,,nạng - gậy,0,nạng - xe lăn,3
+musician,音乐家,,艺术家,,演员,,音乐家 - 艺术家,,音乐家 - 演员,,musician,24829,artist,101861,actor,58856,musician - artist,209,musician - actor,131,nhạc sĩ,,nghệ sĩ,,diễn viên,,nhạc sĩ - nghệ sĩ,23,nhạc sĩ - diễn viên,11
+seller,销售员,,商店,,市场,,销售员 - 商店,,销售员 - 市场,,seller,11683,shop,61038,market,210848,seller - shop,31,seller - market,240,người bán hàng,,cửa hàng,,chợ,,người bán hàng - cửa hàng,0,người bán hàng - chợ,9
+octopus,章鱼,,海星,,水母,,章鱼 - 海星,,章鱼 - 水母,,octopus,2297,starfish,739,jellyfish,1274,octopus - starfish,7,octopus - jellyfish,4,bạch tuộc,,sao biển,,sứa,,bạch tuộc - sao biển,0,bạch tuộc - sứa,0
+shield,盾,,大炮,,矛,,盾 - 大炮,,盾 - 矛,,shield,13931,cannon,7396,spear,7038,shield - cannon,0,shield - spear,86,tấm khiên,,đại bác,,giáo,,tấm khiên - đại bác,0,tấm khiên - giáo,0
+champion,冠军,,运动员,,名人,,冠军 - 运动员,,冠军 - 名人,,champion,27593,athlete,40094,celebrity,24989,champion - athlete,86,champion - celebrity,15,nhà vô địch,,vận động viên,,người nổi tiếng,,nhà vô địch - vận động viên,0,nhà vô địch - người nổi tiếng,0
+town,小镇,,村庄,,城市,,小镇 - 村庄,,小镇 - 城市,,town,173905,village,55217,city,433843,town - village,946,town - city,3539,thị trấn,,làng,,thành phố,,thị trấn - làng,17,thị trấn - thành phố,84
+glue,胶水,,酒精,,汽油,,胶水 - 酒精,,胶水 - 汽油,,glue,5606,alcohol,36823,gasoline,12925,glue - alcohol,5,glue - gasoline,9,hồ dán,,cồn,,xăng,,hồ dán - cồn,0,hồ dán - xăng,0
+crow,乌鸦,,麻雀,,鹰,,乌鸦 - 麻雀,,乌鸦 - 鹰,,crow,4678,sparrow,1558,eagle,21220,crow - sparrow,1,crow - eagle,21,quạ,,chim sẻ,,đại bàng,,quạ - chim sẻ,0,quạ - đại bàng,0
+peacock,孔雀,,鸵鸟,,猫头鹰,,孔雀 - 鸵鸟,,孔雀 - 猫头鹰,,peacock,1354,ostrich,846,owl,8139,peacock - ostrich,3,peacock - owl,2,công,,đà điểu,,cú,,công - đà điểu,0,công - cú,0
+stairs,楼梯,,阁楼,,阳台,,楼梯 - 阁楼,,楼梯 - 阳台,,stairs,1491,attic,5729,balcony,7449,stairs - attic,132,stairs - balcony,60,cầu thang,,gác xép,,ban công,,cầu thang - gác xép,0,cầu thang - ban công,0
+feather,羽毛,,喙,,爪,,羽毛 - 喙,,羽毛 - 爪,,feather,11419,beak,2668,talons,1123,feather - beak,10,feather - talons,0,lông vũ,,mỏ,,móng vuốt,,lông vũ - mỏ,0,lông vũ - móng vuốt,0
+roof,屋顶,,露台,,大门,,屋顶 - 露台,,屋顶 - 大门,,roof,34005,patio,5571,gate,37317,roof - patio,36,roof - gate,26,mái nhà,,hiên,,cổng,,mái nhà - hiên,0,mái nhà - cổng,0
+castle,城堡,,宝座,,堡垒,,城堡 - 宝座,,城堡 - 堡垒,,castle,15330,throne,12528,tower,31252,castle - throne,17,castle - tower,133,lâu đài,,ngai vàng,,tháp,,lâu đài - ngai vàng,0,lâu đài - tháp,0
+elbow,手肘,,脚踝,,指关节,,手肘 - 脚踝,,手肘 - 指关节,,elbow,15543,ankle,15182,knuckle,3923,elbow - ankle,38,elbow - knuckle,3,khuỷu tay,,mắt cá,,đốt ngón tay,,khuỷu tay - mắt cá,0,khuỷu tay - đốt ngón tay,0
+aunt,姨母,,奶奶,,亲姐姐,,姨母 - 奶奶,,姨母 - 亲姐姐,,aunt,30364,grandmother,28091,sister,120346,aunt - grandmother,320,aunt - sister,546,cô,,bà,,chị,,cô - bà,216,cô - chị,241
+moon,月亮,,行星,,小行星,,月亮 - 行星,,月亮 - 小行星,,moon,54069,planet,69822,asteroid,8179,moon - planet,651,moon - asteroid,115,trăng,,hành tinh,,thiên thạch,,trăng - hành tinh,9,trăng - thiên thạch,0
+witch,女巫,,仙女,,魔法师,,女巫 - 仙女,,女巫 - 魔法师,,witch,15359,fairy,11276,magician,4454,witch - fairy,45,witch - magician,12,phù thuỷ,,tiên,,nhà ảo thuật,,phù thuỷ - tiên,0,phù thuỷ - nhà ảo thuật,0
+rainforest,雨林,,绿洲,,沼泽,,雨林 - 绿洲,,雨林 - 沼泽,,rainforest,2584,oasis,2908,swamp,6725,rainforest - oasis,0,rainforest - swamp,5,rừng nhiệt đới,,ốc đảo,,đầm lầy,,rừng nhiệt đới - ốc đảo,0,rừng nhiệt đới - đầm lầy,0
+aquarium,水族馆,,运河,,大坝,,水族馆 - 运河,,水族馆 - 大坝,,aquarium,4135,canal,11850,dam,10959,aquarium - canal,3,aquarium - dam,0,bể cá,,kênh đào,,đập nước,,bể cá - kênh đào,0,bể cá - đập nước,0
+panda,熊猫,,树袋熊,,北极熊,,熊猫 - 树袋熊,,熊猫 - 北极熊,,panda,3014,koala,494,polar bear,1150,panda - koala,3,panda - polar bear,0,gấu trúc,,gấu túi,,gấu Bắc cực,,gấu trúc - gấu túi,0,gấu trúc - gấu Bắc cực,0
+comet,彗星,,大气层,,星系,,彗星 - 大气层,,彗星 - 星系,,comet,8808,atmosphere,34247,galaxy,25775,comet - atmosphere,64,comet - galaxy,23,sao chổi,,khí quyển,,thiên hà,,sao chổi - khí quyển,0,sao chổi - thiên hà,0
+marble,大理石,,混凝土,,水泥,,大理石 - 混凝土,,大理石 - 水泥,,marble,9297,concrete,18533,cement,6772,marble - concrete,38,marble - cement,16,cẩm thạch,,bê tông,,xi măng,,cẩm thạch - bê tông,0,cẩm thạch - xi măng,0
+north,北,,东,,西,,北 - 东,,北 - 西,,north,137666,east,110589,west,116683,north - east,4707,north - west,4107,bắc,,đông ,,tây,,bắc - đông ,,bắc - tây,
+fountain,喷泉,,广场,,雕像,,喷泉 - 广场,,喷泉 - 雕像,,fountain,9334,square,34163,statue,15343,fountain - square,124,fountain - statue,44,đài phun nước ,,quãng trường,,tượng,,đài phun nước  - quãng trường,0,đài phun nước  - tượng,0
+desert,沙漠,,北极,,岛屿,,沙漠 - 北极,,沙漠 - 岛屿,,desert,29353,arctic,NA,island,98596,desert - arctic,28,desert - island,533,sa mạc,,Bắc cực,,đảo,,sa mạc - Bắc cực,0,sa mạc - đảo,0
+waiter,侍者,,厨师,,酒吧侍者,,侍者 - 厨师,,侍者 - 酒吧侍者,,waiter,8916,cook,13308,bartender,5478,waiter - cook,29,waiter - bartender,41,bồi bàn,,đầu bếp,,người pha chế rượu,,bồi bàn - đầu bếp,0,bồi bàn - người pha chế rượu,0
+bookcase,书架,,壁炉,,空调,,书架 - 壁炉,,书架 - 空调,,bookcase,1770,fireplace,7241,air conditioner,1392,bookcase - fireplace,19,bookcase - air conditioner,0,tủ sách,,lò sưởi,,máy lạnh,,tủ sách - lò sưởi,0,tủ sách - máy lạnh,0
+earthquake,地震,,飓风,,海啸,,地震 - 飓风,,地震 - 海啸,,earthquake,16050,hurricane,31072,tsunami,5130,earthquake - hurricane,138,earthquake - tsunami,701,động đất,,bão,,sóng thần,,động đất - bão,5,động đất - sóng thần,89
+dinosaur,恐龙,,鳄鱼,,蛇,,恐龙 - 鳄鱼,,恐龙 - 蛇,,dinosaur,9975,crocodile,2834,snake,18993,dinosaur - crocodile,3,dinosaur - snake,4,khủng long,,cá sấu,,rắn,,khủng long - cá sấu,0,khủng long - rắn,0
+leather,皮革,,丝绸,,天鹅绒,,皮革 - 丝绸,,皮革 - 天鹅绒,,leather,20393,silk,12138,velvet,6258,leather - silk,178,leather - velvet,52,da thuộc,,lụa,,nhung,,da thuộc - lụa,0,da thuộc - nhung,0
+glasses,眼镜,,双筒望远镜,,单筒望远镜,,眼镜 - 双筒望远镜,,眼镜 - 单筒望远镜,,glasses,23475,binoculars,4076,telescope,19572,glasses - binoculars,36,glasses - telescope,11,mắt kính,,ống nhòm,,kính viễn vọng,,mắt kính - ống nhòm,0,mắt kính - kính viễn vọng,0
+pipe,管道,,下水道,,泵,,管道 - 下水道,,管道 - 泵,,pipe,21413,sewer,5652,pump,16418,pipe - sewer,153,pipe - pump,61,ống nước,,cống,,máy bơm,,ống nước - cống,0,ống nước - máy bơm,0
+corridor,走廊,,入口,,出口,,走廊 - 入口,,走廊 - 出口,,corridor,14779,entrance,22111,exit,17065,corridor - entrance,53,corridor - exit,36,hành lang,,lối vào,,lối ra,,hành lang - lối vào,0,hành lang - lối ra,0
+medicine,药,,体温计,,听诊器,,药 - 体温计,,药 - 听诊器,,medicine,56814,thermometer,3355,stethoscope,830,medicine - thermometer,2,medicine - stethoscope,4,thuốc,,nhiệt kế,,ống nghe,,thuốc - nhiệt kế,0,thuốc - ống nghe,0
+middle,中间,,上面,,下面,,中间 - 上面,,中间 - 下面,,middle,72563,top,136658,bottom,54701,middle - top,1106,middle - bottom,555,giữa,,trên,,dưới,,giữa - trên,1032,giữa - dưới,0
+employee,雇员,,经理,,执行总监,,雇员 - 经理,,雇员 - 执行总监,,employee,101818,manager,91527,executive,91696,employee - manager,281,employee - executive,121,nhân viên,,quản lý,,giám đốc,,nhân viên - quản lý,200,nhân viên - giám đốc,45
+letter,信件,,便条,,文章,,信件 - 便条,,信件 - 文章,,letter,132828,note,114251,article,173819,letter - note,456,letter - article,396,thư,,ghi chú,,bài báo,,thư - ghi chú,0,thư - bài báo,0
+rough,粗糙,,坚硬,,尖锐,,粗糙 - 坚硬,,粗糙 - 尖锐,,rough,27778,hard,228234,sharp,34272,rough - hard,259,rough - sharp,35,thô,,cứng,,nhọn,,thô - cứng,10,thô - nhọn,0
+smooth,光滑,,柔软,,轻便,,光滑 - 柔软,,光滑 - 轻便,,smooth,27095,soft,51824,light,62687,smooth - soft,340,smooth - light,274,trơn,,mềm,,nhẹ,,trơn - mềm,4,trơn - nhẹ,3
+loud,响,,热,,亮,,响 - 热,,响 - 亮,,loud,22276,hot,128310,bright,59449,loud - hot,81,loud - bright,121,to tiếng,,nóng,,sáng,,to tiếng - nóng,0,to tiếng - sáng,0
+trap,陷阱,,诡计,,谎言,,陷阱 - 诡计,,陷阱 - 谎言,,trap,20197,trick,7927,lie,135712,trap - trick,34,trap - lie,16,bẫy,,lừa gạt,,nói dối,,bẫy - lừa gạt,0,bẫy - nói dối,0
+muzzle,动物的口鼻部,,爪子,,尾巴,,动物的口鼻部 - 爪子,,动物的口鼻部 - 尾巴,,muzzle,1925,claw,6363,tail,23344,muzzle - claw,0,muzzle - tail,19,mõm,,móng,,đuôi,,mõm - móng,0,mõm - đuôi,0
+during,在……期间,,在……之前,,在……之后,,在……期间 - 在……之前,,在……期间 - 在……之后,,during,423624,before,402959,after,745154,during - before,7162,during - after,12699,trong lúc,,trước,,sau,,trong lúc - trước,0,trong lúc - sau,0
+hundred,百,,十,,千,,百 - 十,,百 - 千,,hundred,66002,ten,103677,thousand,62833,hundred - ten,987,hundred - thousand,7629,trăm,,mười,,ngàn,,trăm - mười,15,trăm - ngàn,277
+June,六月,,二月,,十月,,六月 - 二月,,六月 - 十月,,June,89249,February,46425,October,80123,June - February,322,June - October,519,tháng sáu,,tháng hai,,tháng mười,,tháng sáu - tháng hai,0,tháng sáu - tháng mười,0
+vertebra,椎骨,,头骨,,肋骨,,椎骨 - 头骨,,椎骨 - 肋骨,,vertebra,1600,skull,14911,rib,11741,vertebra - skull,10,vertebra - rib,2,đốt sống,,sọ,,xương sườn,,đốt sống - sọ,0,đốt sống - xương sườn,0
+audience,听众,,病人,,顾客,,听众 - 病人,,听众 - 顾客,,audience,83493,patient,154125,customer,91563,audience - patient,34,audience - customer,37,khán giả,,bệnh nhân,,khách hàng,,khán giả - bệnh nhân,0,khán giả - khách hàng,0
+skyscraper,摩天大楼,,体育场,,公寓,,摩天大楼 - 体育场,,摩天大楼 - 公寓,,skyscraper,2719,stadium,27233,apartment,65884,skyscraper - stadium,4,skyscraper - apartment,9,nhà chọc trời,,sân vận động,,căn hộ,,nhà chọc trời - sân vận động,0,nhà chọc trời - căn hộ,0
+black,黑色,,白色,,蓝色,,黑色 - 白色,,黑色 - 蓝色,,black,293101,white,251664,blue,102172,black - white,49965,black - blue,3506,đen,,trắng,,xanh dương,,đen - trắng,516,đen - xanh dương,0
+morning,早晨 ,,傍晚,,下午,,早晨  - 傍晚,,早晨  - 下午,,morning,259129,evening,83312,afternoon,67378,morning - evening,2290,morning - afternoon,2608,buổi sáng,,buổi tối,,buổi chiều,,buổi sáng - buổi tối,32,buổi sáng - buổi chiều,52
+wind,风,,雨,,雪,,风 - 雨,,风 - 雪,,wind,78623,rain,50093,sleet,888,wind - rain,1989,wind - sleet,60,gió,,mưa,,mưa đá,,gió - mưa,,gió - mưa đá,
+sunset,日落,,白天,,夜晚,,日落 - 白天,,日落 - 夜晚,,sunset,12247,day,1068902,night,452094,sunset - day,370,sunset - night,283,hoàng hôn,,ngày,,đêm,,hoàng hôn - ngày,13,hoàng hôn - đêm,5
+triangle,三角形,,圆圈,,星形,,三角形 - 圆圈,,三角形 - 星形,,triangle,8988,circle,50510,star,167036,triangle - circle,139,triangle - star,56,hình tam giác,,hình tròn,,ngôi sao,,hình tam giác - hình tròn,0,hình tam giác - ngôi sao,0
+sad,伤心,,害怕,,生气,,伤心 - 害怕,,伤心 - 生气,,sad,54041,afraid,78979,angry,52980,sad - afraid,123,sad - angry,701,buồn,,sợ hãi,,giận dữ,,buồn - sợ hãi,0,buồn - giận dữ,0
+sidewalk,人行道,,十字路口,,马路,,人行道 - 十字路口,,人行道 - 马路,,sidewalk,15203,intersection,9354,road,173413,sidewalk - intersection,19,sidewalk - road,125,vỉa hè,,ngã tư,,con đường,,vỉa hè - ngã tư,0,vỉa hè - con đường,6
+smoke,烟,,雾,,蒸汽,,烟 - 雾,,烟 - 蒸汽,,smoke,29483,fog,9800,steam,14454,smoke - fog,148,smoke - steam,129,khói,,sương mù,,hơi nước,,khói - sương mù,3,khói - hơi nước,0
+silver,银,,金,,铁,,银 - 金,,银 - 铁,,silver,28244,gold,69903,iron,32359,silver - gold,4671,silver - iron,114,bạc,,vàng,,sắt,,bạc - vàng,210,bạc - sắt,5
+rainbow,彩虹,,云,,太阳,,彩虹 - 云,,彩虹 - 太阳,,rainbow,9422,cloud,47140,sun,102043,rainbow - cloud,24,rainbow - sun,84,cầu vồng,,mây,,mặt trời,,cầu vồng - mây,0,cầu vồng - mặt trời,6
+month,月,,星期,,年,,月 - 星期,,月 - 年,,month,381833,week,484834,year,1729962,month - week,3111,month - year,5169,tháng,,tuần,,năm,,tháng - tuần,473,tháng - năm,324
+height,高度,,宽度,,深度,,高度 - 宽度,,高度 - 深度,,height,37131,width,7373,depth,30176,height - width,7011,height - depth,455,chiều cao,,chiều rộng,,chiều sâu,,chiều cao - chiều rộng,16,chiều cao - chiều sâu,0
+wednesday,周三,,周六,,周日,,周三 - 周六,,周三 - 周日,,wednesday,53716,saturday,77304,sunday,90767,wednesday - saturday,624,wednesday - sunday,710,thứ tư,,thứ bảy,,chủ nhật,,thứ tư - thứ bảy,5,thứ tư - chủ nhật,4
+minute,分钟,,小时,,秒,,分钟 - 小时,,分钟 - 秒,,minute,306541,hour,323999,second,243485,minute - hour,850,minute - second,913,phút,,giờ,,giây,,phút - giờ,607,phút - giây,134
+today,今天,,明天,,昨天,,今天 - 明天,,今天 - 昨天,,today,431562,tomorrow,92490,yesterday,65635,today - tomorrow,5852,today - yesterday,3510,hôm nay,,ngày mai,,hôm qua,,hôm nay - ngày mai,64,hôm nay - hôm qua,52

@@ -1,0 +1,135 @@
+
+```{r setup, echo = FALSE, include = FALSE}
+library("papaja")
+library("knitr") # for knitting things
+library("tidyverse") # for all things tidyverse
+library("car")
+library("lme4")
+library("patchwork")
+library("effsize")
+
+# these options here change the formatting of how comments are rendered
+opts_chunk$set(
+  comment = "",
+  results = "hold",
+  fig.show = "hold")
+
+# set the default ggplot theme 
+theme_set(theme_classic())
+
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r loading data E, warning=FALSE, include=F}
+df.resp_E <- read.csv("../../data/responding/data_US.csv") %>%
+  select(-X)
+
+# check for participants who completed the entire experiment. Because the experiment is
+# quite long, some participants decide to come back afterwards, so there are a few files
+# that are recorded as incomplete. 
+df.ppts_finished_E <- df.resp_E %>% 
+  group_by(subject) %>%
+  summarize(finished = ifelse("demo-final" %in% unique(variable_type), "yes", "no")) %>%
+  filter(finished == "yes")
+
+df.resp_E <- df.resp_E %>%
+  filter(subject %in% df.ppts_finished_E$subject) 
+
+df.ppts_att_E <- df.resp_E %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Choose ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarize(pass_att_check_percent = mean(pass_att_check)) %>%
+  filter(pass_att_check_percent >= 0.8)
+
+df.resp_E <- df.resp_E %>%
+  filter(subject %in% df.ppts_att_E$subject) 
+
+ppts_resp_E <- unique(df.resp_E$subject)
+```
+
+```{r}
+df.demog <- read.csv("../../data/responding/data_demog.csv") %>%
+  select(-X) %>%
+  filter(country == "US")
+```
+
+
+```{r exclusion E, include = F, warning = F}
+#non-native speaker
+df.ppts_non_native_lang_E <- df.demog %>%
+  filter(demog_question == "firstlanguage" & demog_response == "No")
+
+ppts_non_native_lang_E = unique(df.ppts_non_native_lang_E$subject)#20
+percent_dropped = length(intersect(ppts_non_native_lang_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.104166
+
+#fluent in Vietnamese & Mandarin
+df.lang_sp_vi_E <- df.demog %>%
+  filter(demog_question == "lang_sp_vi" & demog_response > 4)
+
+df.lang_ud_vi_E <- df.demog %>%
+  filter(demog_question == "lang_ud_vi" & demog_response > 4)
+
+df.lang_vi_E <- inner_join(df.lang_sp_vi_E, df.lang_ud_vi_E, by = 'subject')
+         
+ppts_vi_speaker_E = unique(df.lang_vi_E$subject) #2
+percent_dropped = length(intersect(ppts_vi_speaker_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.01041666
+
+df.lang_sp_zh_E <- df.demog %>%
+  filter(demog_question == "lang_sp_zh" & demog_response > 4)
+
+df.lang_ud_zh_E <- df.demog %>%
+  filter(demog_question == "lang_ud_zh" & demog_response > 4)
+
+df.lang_zh_E <- inner_join(df.lang_sp_zh_E, df.lang_ud_zh_E, by = 'subject')
+
+ppts_zh_speaker_E = unique(df.lang_zh_E$subject) #30
+percent_dropped = length(intersect(ppts_zh_speaker_E, ppts_resp_E)) / length(ppts_resp_E)
+percent_dropped #0.15104
+
+#have lived outside the sample country for more than 2 years
+df.lived_abroad_E <- df.demog %>%
+  filter(demog_question == "abroadexp" & demog_response == "Yes")
+
+ppts_lived_abroad_E = unique(df.lived_abroad_E$subject) #36
+percent_dropped = length(intersect(ppts_lived_abroad_E, ppts_resp_E)) / length(unique(df.resp_E$subject))
+percent_dropped #0.171875
+
+#have travelled extensively (more than 6 international experiences of 2 days or longer)
+df.oversea_exp_E <- df.demog %>%
+  filter(demog_question == "overseaexpnum" & demog_response == "Six or more experiences")
+
+ppts_oversea_exp_E = unique(df.oversea_exp_E$subject) #95
+percent_dropped = length(intersect(ppts_oversea_exp_E, ppts_resp_E)) / length(unique(df.resp_E$subject))
+percent_dropped #0.4739 # will not use this criterion
+
+df.resp_E <- df.resp_E %>%
+  filter(!(subject %in% ppts_non_native_lang_E),
+         !(subject %in% ppts_vi_speaker_E), 
+         !(subject %in% ppts_zh_speaker_E),
+         !(subject %in% ppts_lived_abroad_E))
+
+length(unique(df.resp_E$subject)) #124
+```
+
+```{r}
+df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_E$subject))),
+                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_E$subject))), 
+                      ppts_after_demog_excl = c(length(unique(df.resp_E$subject))))
+```
+
+
+```{r}
+write.csv(df.resp_E, "../../data/responding/dataUS_excl.csv")
+write.csv(df.demog_metadata, "../../data/responding/dataUS_excl_metadata.csv")
+```
+
