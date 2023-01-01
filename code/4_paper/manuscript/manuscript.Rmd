@@ -660,21 +660,6 @@ We observed some level of language specificity from this analysis. The English c
 
 However, we found that language specificity alone does not explain our results. We used an ANOVA to compare the model with only the corresponding corpus, and the model with all 3 corpora for each cultural context. We found that in all three cases (US, China, Vietnam), adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_freq_compare["fit.ENVIZH_US", "Df"]`) = `r round(fit.US_freq_compare["fit.ENVIZH_US", "Chisq"], 2)`, p `r ifelse( fit.US_freq_compare["fit.ENVIZH_US", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_freq_compare["fit.ENVIZH_US", "Pr(>Chisq)"], 3)), "< .001")`; Vietnam response: $\chi^2$(`r fit.VN_freq_compare["fit.ENVIZH_VN", "Df"]`) = `r round(fit.VN_freq_compare["fit.ENVIZH_VN", "Chisq"], 2)`, p `r ifelse( fit.VN_freq_compare["fit.ENVIZH_VN", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_freq_compare["fit.ENVIZH_VN", "Pr(>Chisq)"], 3)), "< .001")`; China response: $\chi^2$(`r fit.CN_freq_compare["fit.ENVIZH_CN", "Df"]`) = `r round(fit.CN_freq_compare["fit.ENVIZH_CN", "Chisq"], 2)`, p `r ifelse( fit.CN_freq_compare["fit.ENVIZH_CN", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_freq_compare["fit.ENVIZH_CN", "Pr(>Chisq)"], 3)), "< .001")`).  
 
-```{r add cosine linguistic model to Ji et al., include=FALSE, cache = T}
-fit.country = glmer(responses_theme ~ country + (1 | subject) + (1 | triad), 
-                           data = df %>% filter(country != "Vietnam"), 
-                           family = "binomial")
-
-fit.country_corpus = glmer(responses_theme ~ country + theme_cosine_prop_E + theme_cosine_prop_M + (1 | subject) + (1 | triad), 
-                           data = df %>% filter(country != "Vietnam"), 
-                           family = "binomial")
-
-fit.add_corpus <- anova(fit.country, fit.country_corpus, type = 3)
-                   
-```
-_TODO: should we take this out?__
-We carried out an ANOVA model comparison to compare our approach with previous studies that did not include corpus information. Because @Ji2004 only compared US and China participants, we filtered our data to only include responding data from these two countries. Our approach would be to compare a model that only includes country (US or China) as a fixed effect with one that also includes English and Chinese corpus data. Our previous model with an intercept per subject and one per triad, as well as by-triad random slopes for country to account for variation in the country effect across triads fails to converge with the more complex model, so we include a simpler random effect structure with an intercept per subject and one per triad in both the basic and more complex model. We compare this model with an identical model but including Chinese and English corpus cosine distance proportion prediction. We found that adding English and Chinese corpus data produces a significantly better fit than the identical model without English and Chinese corpus data as predictors ($\chi^2$(`r fit.add_corpus["fit.country_corpus", "Df"]`) = `r round(fit.add_corpus["fit.country_corpus", "Chisq"], 2)`, p = < .001. This suggests that including corpus data would better model the cross-cultural differences in similarity judgment in this study as well as similar studies.
-
 #### Cosine distances of fastText word vectors
 
 ```{r Eng-Vie-Mand cosine similarities predicting US-VN-CN, warning=FALSE, include=FALSE}
@@ -764,7 +749,8 @@ fit.CN_cos_compare = anova(fit.ENVIZH_CN_cos, fit.ZH_CN_cos, type = 3)
 
 However, we found that language specificity alone does not explain our results. We used an ANOVA to compare the model with only the corresponding corpus, and the model with all 3 corpora for each cultural context. We found that in all three cases (US, China, Vietnam), adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_cos_compare["fit.ENVIZH_US_cos", "Df"]`) = `r round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Chisq"], 2)`, p = `r ifelse( fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"], 3)), "< .001")`; Vietnam response: $\chi^2$(`r fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Df"]`) = `r round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Chisq"], 2)`, p = `r ifelse( fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"], 3)), "< .001")`; China response: $\chi^2$(`r fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Df"]`) = `r round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Chisq"], 2)`, p = `r ifelse( fit.CN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"], 3)), "< .001")`). 
 
-```{r add linguistic model to Ji et al., include=FALSE}
+```{r add linguistic model to Ji et al., include=FALSE, eval = F}
+# this is probably similar to Q3
 fit.country = glmer(responses_theme ~ country + (1 | subject) + (1 | triad), 
                            data = df %>% filter(country != "Vietnam"), 
                            family = "binomial")
@@ -815,14 +801,14 @@ fit.country_language_compare
 
 ```{r country language interaction in cosine prop, include = F}
 fit.language_cos = glmer(responses_theme ~ theme_cosine_prop_corr_lang + (1 | subject) + (1 | triad), 
-          data = df %>% filter(!(triad %in% triads_omit)),  
+          data = df,  
           family="binomial")
 summary(fit.language_cos)
 fit.language_cos.anova = Anova(fit.language_cos, type = 3)
 fit.language_cos.anova
 
 fit.country_language_cos= glmer(responses_theme ~ theme_cosine_prop_corr_lang * country + (1 | subject) + (1 | triad), 
-          data = df %>% filter(!(triad %in% triads_omit)),  
+          data = df,  
           family="binomial")
 summary(fit.country_language_cos)
 fit.country_language_cos.anova = Anova(fit.country_language_cos, type = 3)
