@@ -44,6 +44,7 @@ library("car")
 library("lme4")
 library("patchwork")
 library("effsize")
+library("irr")
 
 # # these options here change the formatting of how comments are rendered
 # opts_chunk$set(
@@ -1123,3 +1124,102 @@ the end of the paper.
 \setlength{\parindent}{-0.1in} 
 \setlength{\leftskip}{0.125in}
 \noindent
+
+# Appendix
+## 1. ICC of item variability and participant variability 
+```{r item variability, include = F}
+df.icc_item_full <- df_main_analysis %>% 
+  select(subject, triad, responses_theme) %>%
+  pivot_wider(names_from = subject, values_from = responses_theme)
+
+icc_item_full <- icc(df.icc_item_full %>% select(-triad), model = "twoway", type = "consistency", unit = "single")$value
+
+df.icc_item <- df_main_analysis %>% 
+  select(subject, triad, responses_theme, country) %>%
+  pivot_wider(names_from = subject, values_from = responses_theme)
+
+#unsure if type should be consistency or agreement
+df.icc_item_US <- df.icc_item %>% 
+  filter(country == "US") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-country, -triad)
+
+icc_item_US <- icc(df.icc_item_US, model = "twoway", type = "consistency", unit = "single")$value
+
+#unsure if type should be consistency or agreement
+df.icc_item_VN <- df.icc_item %>% 
+  filter(country == "Vietnam") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-country, -triad)
+
+icc_item_VN <- icc(df.icc_item_VN, model = "twoway", type = "consistency", unit = "single")$value
+
+#unsure if type should be consistency or agreement
+df.icc_item_CN <- df.icc_item %>% 
+  filter(country == "China") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-country, -triad)
+
+icc_item_CN <- icc(df.icc_item_CN, model = "twoway", type = "consistency", unit = "single")$value
+```
+
+```{r participant variability, include = F}
+df.icc_ppt_full <- df_main_analysis %>% 
+  select(subject, triad, responses_theme) %>%
+  pivot_wider(names_from = triad, values_from = responses_theme)
+
+icc_ppt_full <- icc(df.icc_ppt_full %>% select(-subject), model = "twoway", type = "consistency", unit = "single")$value
+
+df.icc_ppt <- df_main_analysis %>% 
+  select(subject, triad, responses_theme, country) %>%
+  pivot_wider(names_from = triad, values_from = responses_theme)
+
+#unsure if type should be consistency or agreement
+df.icc_ppt_US <- df.icc_ppt %>% 
+  filter(country == "US") %>%
+  select(-country, -subject)
+
+icc_ppt_US <- icc(df.icc_ppt_US, model = "twoway", type = "consistency", unit = "single")$value
+
+#unsure if type should be consistency or agreement
+df.icc_ppt_VN <- df.icc_ppt %>% 
+  filter(country == "Vietnam") %>%
+  select(-country, -subject)
+
+icc_ppt_VN <- icc(df.icc_ppt_VN, model = "twoway", type = "consistency", unit = "single")$value
+
+#unsure if type should be consistency or agreement
+df.icc_ppt_CN <- df.icc_ppt %>% 
+  filter(country == "China") %>%
+  select(-country, -subject)
+
+icc_ppt_CN <- icc(df.icc_ppt_CN, model = "twoway", type = "consistency", unit = "single")$value
+```
+
+```{r}
+icc_tbl <- data.frame(
+  Country = c("US", "China", "Vietnam", "All"),
+  Item_Variability_ICC = c(icc_item_US, icc_item_CN, icc_item_VN, icc_item_full), 
+  Ppt_Variabiity_ICC = c(icc_ppt_US, icc_ppt_CN, icc_ppt_VN, icc_ppt_full)
+)
+kable(icc_tbl)
+```
+
+## 2. CCRR agreement
+```{r load CCRR data}
+df.ccrr <- read.csv("../../../data/replication/ccrr.csv") %>%
+  filter(task_name == "TD") %>%
+  select(subject, trial_info, resp) %>%
+  rename(triad = trial_info) %>%
+  mutate(response_theme = ifelse(resp == "FALSE", 1, 0)) %>%
+  select(subject, triad, response_theme) %>%
+  pivot_wider(names_from = subject, values_from = response_theme) %>%
+  select(-triad)
+
+df.ccrr %>%
+    dplyr::group_by(triad, subject) %>%
+    dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+    dplyr::filter(n > 1L)
+
+icc(df.ccrr, model = "twoway", type = "consistency", unit = "single")
+```
