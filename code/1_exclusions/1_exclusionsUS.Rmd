@@ -122,9 +122,18 @@ length(unique(df.resp_E$subject)) #124
 ```
 
 ```{r}
+
 df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_E$subject))),
-                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_E$subject))), 
+                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_E$subject))),
+                      ppts_non_native_speaker = c(length(ppts_non_native_lang_E)), 
+                      ppts_vi_speaker_E = c(length(ppts_vi_speaker_E)), 
+                      ppts_zh_speaker_E = c(length(ppts_zh_speaker_E)), 
+                      ppts_lived_abroad_E = c(length(ppts_lived_abroad_E)), 
+                      ppts_oversea_exp_E = c(length(ppts_oversea_exp_E)),
+                        
                       ppts_after_demog_excl = c(length(unique(df.resp_E$subject))))
+colnames(df.demog_metadata) <- c("Participants Finished", 
+                                 "Participants ")
 ```
 
 
