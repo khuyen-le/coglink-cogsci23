@@ -45,6 +45,7 @@ library("lme4")
 library("patchwork")
 library("effsize")
 library("irr")
+require(agreement)
 
 # # these options here change the formatting of how comments are rendered
 # opts_chunk$set(
@@ -1136,6 +1137,44 @@ the end of the paper.
 
 # Appendix
 ## 1. ICC of item variability and participant variability 
+
+```{r}
+US_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "US"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+CN_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "China"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+VN_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "Vietnam"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+iccs <- tibble(Sample = c("US","China", "Vietnam"),
+               `Intra-rater ICC` = c(US_agr$Intra_ICC,
+                                     CN_agr$Intra_ICC,
+                                     VN_agr$Intra_ICC),
+               `Inter-rater ICC` = c(US_agr$Inter_ICC,
+                                     CN_agr$Inter_ICC,
+                                     VN_agr$Inter_ICC))
+```
+
 ```{r item variability, include = F}
 df.icc_item_full <- df_main_analysis %>% 
   select(subject, triad, responses_theme) %>%
@@ -1153,7 +1192,7 @@ df.icc_item_US <- df.icc_item %>%
   select_if(~ !any(is.na(.))) %>%
   select(-country, -triad)
 
-icc_item_US <- icc(df.icc_item_US, model = "twoway", type = "consistency", unit = "single")$value
+icc_item_US <- icc(df.icc_item_US, model = "twoway", type = "agreement", unit = "average")$value
 
 #unsure if type should be consistency or agreement
 df.icc_item_VN <- df.icc_item %>% 
