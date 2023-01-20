@@ -46,12 +46,12 @@ df.ppts_att_V <- df.resp_V %>%
   mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
   group_by(subject) %>%
   summarize(pass_att_check_percent = mean(pass_att_check)) %>%
-  filter(pass_att_check_percent >= 0.8)
+  filter(pass_att_check_percent == 1.0)
 
-df.resp_V <- df.resp_V %>%
+df.resp_V_aft_attn <- df.resp_V %>%
   filter(subject %in% df.ppts_att_V$subject) #73
 
-ppts_resp_V <- unique(df.resp_V$subject) #137
+ppts_resp_V_aft_attn <- unique(df.resp_V$subject) #137
 ```
 
 
@@ -68,40 +68,40 @@ df.ppts_non_native_lang_V <- df.demog %>%
   filter(demog_question == "firstlanguage" & demog_response == "Không")
 
 ppts_non_native_lang_V = unique(df.ppts_non_native_lang_V$subject)#2
-percent_dropped = length(intersect(ppts_non_native_lang_V, ppts_resp_V)) / length(ppts_resp_V)
-percent_dropped #0
+percent_dropped = length(intersect(ppts_non_native_lang_V, ppts_resp_V_aft_attn)) / length(ppts_resp_V_aft_attn)
+percent_dropped #0.01
 
 #fluent in Vietnamese & Mandarin
 df.lang_sp_en_V <- df.demog %>%
-  filter(demog_question == "lang_sp_en" & demog_response > 4)
+  filter(demog_question == "lang_sp_en" & as.numeric(demog_response) > 4)
 
 df.lang_ud_en_V <- df.demog %>%
-  filter(demog_question == "lang_ud_en" & demog_response > 4)
+  filter(demog_question == "lang_ud_en" & as.numeric(demog_response) > 4)
 
 df.lang_en_V <- inner_join(df.lang_sp_en_V, df.lang_ud_en_V, by = 'subject')
          
-ppts_en_speaker_V = unique(df.lang_en_V$subject) #119
-percent_dropped = length(intersect(ppts_en_speaker_V, ppts_resp_V)) / length(ppts_resp_V)
+ppts_en_speaker_V = unique(df.lang_en_V$subject) #127
+percent_dropped = length(intersect(ppts_en_speaker_V, ppts_resp_V_aft_attn)) / length(ppts_resp_V_aft_attn)
 percent_dropped #0.6277 # do not use this criterion
 
 df.lang_sp_zh_V <- df.demog %>%
-  filter(demog_question == "lang_sp_zh" & demog_response > 4)
+  filter(demog_question == "lang_sp_zh" & as.numeric(demog_response) > 4)
 
 df.lang_ud_zh_V <- df.demog %>%
-  filter(demog_question == "lang_ud_zh" & demog_response > 4)
+  filter(demog_question == "lang_ud_zh" & as.numeric(demog_response) > 4)
 
 df.lang_zh_V <- inner_join(df.lang_sp_zh_V, df.lang_ud_zh_V, by = 'subject')
 
 ppts_zh_speaker_V = unique(df.lang_zh_V$subject) #9
-percent_dropped = length(intersect(ppts_zh_speaker_V, ppts_resp_V)) / length(ppts_resp_V)
-percent_dropped #0.05839416
+percent_dropped = length(intersect(ppts_zh_speaker_V, ppts_resp_V_aft_attn)) / length(ppts_resp_V_aft_attn)
+percent_dropped #0.04522613
 
 #have lived outside the sample country for more than 2 years
 df.lived_abroad_V <- df.demog %>%
   filter(demog_question == "abroadexp" & demog_response == "Có")
 
 ppts_lived_abroad_V = unique(df.lived_abroad_V$subject) #18
-percent_dropped = length(intersect(ppts_lived_abroad_V, ppts_resp_V)) / length(unique(df.resp_V$subject))
+percent_dropped = length(intersect(ppts_lived_abroad_V, ppts_resp_V_aft_attn)) / length(ppts_resp_V_aft_attn)
 percent_dropped #0.05839416
 
 #have travelled extensively (more than 6 international experiences of 2 days or longer)
@@ -109,26 +109,35 @@ df.oversea_exp_V <- df.demog %>%
   filter(demog_question == "overseaexpnum" & demog_response == "6 lần trở lên")
 
 ppts_oversea_exp_V = unique(df.oversea_exp_V$subject) #20
-percent_dropped = length(intersect(ppts_oversea_exp_V, ppts_resp_V)) / length(unique(df.resp_V$subject))
+percent_dropped = length(intersect(ppts_oversea_exp_V, ppts_resp_V_aft_attn)) / length(ppts_resp_V_aft_attn)
 percent_dropped #0.109 
 
-df.resp_V <- df.resp_V %>%
+df.resp_V_aft_demog <- df.resp_V_aft_attn %>%
   filter(!(subject %in% ppts_non_native_lang_V),
          !(subject %in% ppts_zh_speaker_V),
          !(subject %in% ppts_lived_abroad_V), 
          !(subject %in% ppts_oversea_exp_V))
 
-length(unique(df.resp_V$subject)) #110
+length(unique(df.resp_V_aft_demog$subject)) #110
 ```
 
 ```{r}
-df.demog_metadata <- data.frame(ppts_finished = c(length(unique(df.ppts_finished_V$subject))),
-                      ppts_after_att_check_excl = c(length(unique(df.ppts_att_V$subject))), 
-                      ppts_after_demog_excl = c(length(unique(df.resp_V$subject))))
+df.demog_metadata <- data.frame(
+  country = c("Vietnam"),
+  ppts_finished = c(length(unique(df.ppts_finished_V$subject))),
+  ppts_att_check_excl = c(length(unique(df.ppts_finished_V$subject)) - length(unique(df.ppts_att_V$subject))), 
+  ppts_after_att_check_excl = c(length(unique(df.ppts_att_V$subject))),
+  ppts_non_native_speaker = c(paste(length(ppts_non_native_lang_V),"*")), 
+  ppts_en_speaker = c(paste(length(ppts_en_speaker_V))), 
+  ppts_vi_speaker = c("N/A"),
+  ppts_zh_speaker = c(paste(length(ppts_zh_speaker_V),"*")), 
+  ppts_lived_abroad = c(paste(length(ppts_lived_abroad_V),"*")), 
+  ppts_oversea_exp = c(paste(length(ppts_oversea_exp_V), "*")),
+  ppts_after_demog_excl = c(length(unique(df.resp_V_aft_demog$subject))))
 ```
 
 
 ```{r}
-write.csv(df.resp_V, "../../data/responding/dataVN_excl.csv")
+write.csv(df.resp_V_aft_demog, "../../data/responding/dataVN_excl.csv")
 write.csv(df.demog_metadata, "../../data/responding/dataVN_excl_metadata.csv")
 ```

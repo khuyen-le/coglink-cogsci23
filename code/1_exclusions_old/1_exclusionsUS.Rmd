@@ -192,6 +192,7 @@ df.resp_E <- df.resp_E %>%
          !(subject %in% ppts_lived_abroad_E))
 
 length(unique(df.resp_E$subject)) #132
+test2 <- unique(df.resp_E$subject)
 ```
 
 ```{r}

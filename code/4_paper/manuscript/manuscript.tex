@@ -56,7 +56,22 @@
 co-occurrence}
 
 \usepackage[utf8]{inputenc}
-\usepackage[T1, T5]{fontenc}
+\usepackage[T1, T2A, T5]{fontenc}
+\usepackage{kotex}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 \author{{\large \bf Morton Ann Gernsbacher (MAG@Macc.Wisc.Edu)} \\ Department of Psychology, 1202 W. Johnson Street \\ Madison, WI 53706 USA \AND {\large \bf Sharon J.~Derry (SDJ@Macc.Wisc.Edu)} \\ Department of Educational Psychology, 1025 W. Johnson Street \\ Madison, WI 53706 USA}
 
@@ -74,18 +89,18 @@ co-occurrence}
 Is ``cow'' more closely related to ``grass'' or ``chicken''? Speakers of
 different languages judge similarity in this context differently, but
 why? One possibility is that cultures co-varying with these languages
-induce variation in conceptualizations of similarity. Specifically, East
-Asian cultures may promote reasoning about thematic similarity, by which
-cow and grass are more related whereas Western cultures may bias
-similarity judgements toward taxonomic relations, like cow-chicken. This
-difference in notions of similarity is the consensus interpretation for
+induce differences in conceptualizations of similarity. Specifically,
+East Asian cultures may promote reasoning about thematic similarity, by
+which cow and grass are more related, whereas Western cultures may bias
+judgements toward taxonomic relations, like cow-chicken. This difference
+in notions of similarity is the consensus interpretation for
 cross-cultural variation in this paradigm. We consider, and provide
 evidence for, an alternative possibility, by which notions of similarity
-are equivalent across contexts, but the statistics of the environment
-vary. On this account, similarity judgements are guided by co-occurrence
-in experience, and observing or hearing about cows and grass or cows and
-chickens more often could induce preferences for the relevant grouping,
-and account for apparent differences in notions of similarity across
+are similar across contexts, but the statistics of the environment vary.
+On this account, similarity judgements are guided by co-occurrence in
+experience, and observing or hearing about cows and grass or cows and
+chickens more often could induce preferences for these groupings, and
+account in part for apparent differences in notions of similarity across
 contexts.
 
 \textbf{Keywords:}
@@ -110,94 +125,64 @@ notions of similarity. Taxonomic categorization is based on the
 similarity of attributes, for example, similar perceptual properties,
 like shared color or shape, among objects. In contrast, thematic
 categorization is based on causal, spatial, and temporal relationships
-among objects (Markman \& Hutchinson, 1984). To illustrate this point,
-if a participant is given the words ``chicken'' and ``grass'', and asked
-which of those words are more closely related to the word ``cow'', the
-pairing ``chicken'' - ``cow'' indicates a taxonomic match, whereas
-``grass'' - ``cow'' indicates a thematic match.
-
-Ji, Zhang, \& Nisbett (2004) found that preferences for taxonomic and
-thematic matches differ across cultures, even when controlling for
-testing language and fluency. Specifically, Chinese participants made
-more thematic matches than taxonomic, while the converse was true for
-European Americans. This difference held even for Chinese participants
-tested in English (rather than Mandarin), suggesting that culture has an
-effect on the categorization strategy independent of the test language.
-However, the study also found an effect of language within Chinese
-participants from mainland China (when tested both in China and in the
-US): their preference for thematic categorization was significantly
-lower when tested in English compared to Mandarin Chinese. This suggests
-that test language also influences categorization strategies. Ji et
-al.~characterize these results as demonstrating that culture
-(independent of language) leads to different styles of reasoning about
-similarity, whereas language serves as a ``tuning'' mechanism operating
-within a culturally-specific style, by activating representations
-corresponding to the language being used.
+among objects (Markman \& Hutchinson, 1984).
 
 \hypertarget{cross-cultural-variation-in-similarity}{%
 \subsection{Cross-cultural variation in
 similarity}\label{cross-cultural-variation-in-similarity}}
 
-The view that culture drives differences in categorization style has
-been one favored by other non-linguistic studies that use taxonomic vs
-thematic categorization to probe similarity judgment. When shown
-pictorial triads that represent words (i.e.~pictures of an ant, a bee,
-and honey), Chinese children (9-10 years old) scored higher on thematic
-categorization compared to American children of the same age range, and
-vice versa for taxonomic categorization (Chiu, 1972). These
-cross-cultural differences in similarity judgment persist in novel
-object categorization, with Chinese participants preferring to group by
-family resemblance across multiple features and Americans preferring a
-single-feature rule (Norenzayan, Smith, Kim, \& Nisbett, 2002). Since
-differences in categorization style persist with novel stimuli (as
-opposed to previously seen words or pictures of concepts), this suggests
-that participants from different cultural backgrounds are utilizing
-different reasoning strategies when making similarity judgments. The
-authors attribute these differences to tendencies toward analytic
-processing in Western cultures, which emphasizes objects and their
-properties and holistic processing in East Asian cultures, which
-emphasizes relationships between objects and their context. According to
-this framework, East Asians attend more to relationships between objects
-and context and reason more holistically, whereas Westerners attend more
-to objects and their properties, and reason analytically (ibid, see also
-Nisbett (2003)). In related work, East Asian participants show a higher
-level of sensitivity to context than their Western counterparts when
-reproducing drawings from memory (Ji, Peng, \& Nisbett, 2000); visually
-exploring naturalistic scenes (Chua, Boland, \& Nisbett, 2005);
-describing scenes (Masuda \& Nisbett, 2001); and in explaining the
-causes of ambiguous behaviors (Choi, Nisbett, \& Norenzayan, 1999).
-These cross-cultural differences in attention and analytic vs holistic
-processing are seen to map onto the cross-cultural differences in
-similarity judgment: because East Asian participants attend more to the
-context between objects and reason more holistically, it stands to
-reason that they would consider words that appear in the same context
-(i.e.~thematically similar) to be more similar than
-taxonomically-similar words.
+Preferences for taxonomic and thematic similarity vary across cultures.
+Chiu (1972) found that Chinese children (9-10 years old) are more likely
+to choose thematic matches in a picture triad task (shown, e.g., images
+of an ant, a bee, and honey) than their American counterparts. These
+cross-cultural differences are also observed in novel object
+categorization, with Chinese participants preferring to group by family
+resemblance across multiple features and Americans preferring a
+single-feature rule (Norenzayan, Smith, Kim, \& Nisbett, 2002). The
+authors link these differences to tendencies toward analytic processing
+in Western cultures, which emphasizes objects and their properties, and
+holistic processing in East Asian cultures, which emphasizes
+relationships between objects and their context (see also Nisbett
+(2003)). In related work, East Asian participants show a higher level of
+sensitivity to context than their Western counterparts when reproducing
+drawings from memory (Ji, Peng, \& Nisbett, 2000); visually exploring
+naturalistic scenes (Chua, Boland, \& Nisbett, 2005); describing scenes
+(Masuda \& Nisbett, 2001); and in explaining the causes of ambiguous
+behaviors (Choi, Nisbett, \& Norenzayan, 1999).
 
-This view ascribes cross-cultural differences in similarity judgment
-tasks to variation in the conceptualization of similarity itself.
-Alternatively, these judgments could be shaped by cross-cultural
-differences in the statistics of the environment, and accordingly the
-content of everyday experiences. Perhaps when confronted with the triad
-task, participants from all cultures follow the same process for
-reasoning about similarity, but rely on language or culture-specific
-inputs to this process. For example, it may be that Vietnamese
-participants are more likely to have knowledge of farming practices than
-Americans, and may associate cows and grass more strongly (as grass is
-the typical feed for cows in the small-scale family farming contexts
-common in Vietnam). Americans, on the other hand, may have strong
-associations between cows and chickens as a result of encountering them
-together in children's books or petting zoo contexts. If we observe a
-difference in categorization between, say Vietnamese and US
-participants, it could be that members of both groups use the same
-procedure (considering similarity that is influenced by both taxonomic
-and thematic relations), but the inputs to this procedure differ between
-cultures, with Vietnamese participants exposed to more instances of
-``cow'' and ``grass'' occurring together, compared to US participants.
+Ji, Zhang, \& Nisbett (2004) asked whether differences in analytic and
+holistic processing are driven by language, culture, or a combination of
+these. They presented Chinese and European American adults with a word
+triad task, and found a preference for thematic matching among Chinese
+participants compared to European Americans. They found that test
+language contributed to this difference, but did not fully explain it:
+Chinese participants showed a stronger thematic preference when tested
+in Mandarin, but still showed a thematic preference when tested in
+English. Ji et al.~conclude that culture (independent of language) leads
+to different styles of reasoning about similarity, whereas language
+serves as a ``tuning'' mechanism operating within a culturally-specific
+style, by activating representations corresponding to the language being
+used.\footnote{But note that this work did not include a manipulation to
+  prevent participants from engaging in e.g., covert naming in a
+  language other than the test language.}
 
-\hypertarget{language-as-a-proxy-of-variation-in-experience}{%
-\subsection{Language as a proxy of variation in
-experience}\label{language-as-a-proxy-of-variation-in-experience}}
+This view ascribes cross-cultural differences in similarity judgment to
+variation in the conceptualization of similarity itself. Alternatively,
+these judgments could be shaped by cross-cultural differences in the
+statistics of the environment, and accordingly the content of everyday
+experiences. Perhaps when confronted with the triad task, participants
+from all cultures follow the same process for reasoning about
+similarity, but rely on language or culture-specific inputs to this
+process. If we observe a difference in categorization between East Asian
+and Western participants, it could be that members of both groups use
+the same procedure (considering similarity that is influenced by both
+taxonomic and thematic relations), but the inputs to this procedure
+differ between cultures, with East Asian participants exposed to more
+instances of thematic similarity than their Western counterparts.
+
+\hypertarget{estimating-variation-in-experience}{%
+\subsection{Estimating variation in
+experience}\label{estimating-variation-in-experience}}
 
 While co-occurrences in experience are difficult to measure,
 co-occurrence in language can provide a rough proxy--and indeed,
@@ -214,56 +199,27 @@ similarity task without building differences in the decision process
 into the model -- it is relatively strong evidence that language alone
 (perhaps as a more easily observed source of information on broader
 cultural and ecological variation) may account for these cross-cultural
-differences in reasoning.\footnote{While we discuss cross-cultural
-  variability at the level of countries or larger world areas, these are
-  not cultural monoliths. For convenience, we operationalize culture at
-  the level of country, based on where participants were raised. It is
-  an open question whether performance in our participant populations
-  (of relatively young and well-educated adults) is representative of
-  the broader country. This is especially true for societies with
-  substantial ethnic and cultural variation such as the US. We expect
-  that our data is likely to underestimate variation both within and
-  between the countries we sample from.}
+differences in reasoning.
 
 Indeed, previous work suggests that using lexical co-occurrence as a
-proxy can be useful in thinking about similarity judgments. Natural
+proxy can be useful in thinking about similarity reasoning. Natural
 language processing tasks have found that lexical co-occurrence is a
-good predictor for performance in similarity judgment tasks. Griffiths,
+good predictor for performance in similarity judgment. Griffiths,
 Steyvers, \& Tenenbaum (2007) showed that a model that takes
 word-document co-occurrence as input can be used to predict word
 association and the effects of semantic association on a variety of
 linguistic tasks. Additionally, lexical semantic models that are
 constructed using lexical co-occurrence (as opposed to annotated
 relations) have been shown to perform well on predicting human judgments
-about similarity between word pairs that are either thematically or
+about similarity between word pairs that are thematically or
 taxonomically related (Rohde, Gonnerman, \& Plaut, 2006).
 
-Our current study will be using 2 measures of lexical co-occurrence: 1)
-raw lexical co-occurrences and 2) cosined distances of fastText word
-vectors. fastText is a system that uses lexical co-occurrence
-information to generate a vector representing each word in its lexicon
-(Mikolov, Grave, Bojanowski, Puhrsch, \& Joulin, 2018). fastText uses a
-continuous bag-of-words model, which takes into account a symmetric
-window of words surrounding the word in question and maximizes the
-log-likelihood of the probability of the word given its context.
-Calculating the cosine-similarity between word vectors from fastText
-gives us a score of how similar the contexts of these words are.
-Therefore, words that occur in the same context (high lexical
-co-occurrence) would have a larger cosine-similarity score.
-
-It must be noted that fastText supplements the lexical co-occurrence
-information by simultaneously training weight vectors for each position
-relative to the word in question, as well as adding sub-word information
-(bag-of-character n-gram vectors for each character forming the words).
-The similarity judgment prediction given by fastText may be more higher
-than a model using purely lexical co-occurrence information. However,
-models that use only lexical co-occurrence information (with or without
-a simple position weight system that gives more weight to words that are
-closer to the word in question) also perform well in similarity
-prediction tasks. For this study, due to the lack of large cleaned
-corpora for Mandarin and Vietnamese, we are leveraging fastText
-pre-trained models on the languages we are interested in Grave,
-Bojanowski, Gupta, Joulin, \& Mikolov (2018).
+Our study uses cosine distances of fastText word vectors as a measure of
+lexical co-occurrence\footnote{We also carried out our analysis using
+  raw lexical co-occurrences and obtained similar results.}. fastText is
+a system that uses lexical co-occurrence information to generate a
+vector representing each word in its lexicon (Mikolov, Grave,
+Bojanowski, Puhrsch, \& Joulin, 2018).
 
 Systems like fastText and word2vec have been demonstrated to be good
 predictors for similarity judgments. Liu, Feng, Wu, Chan, \& Fulton
@@ -287,12 +243,12 @@ relatedness.
 \subsection{The present study}\label{the-present-study}}
 
 Ji et al. (2004) suggest that the notion of similarity is what varies
-across cultural groups, but it is quite possible that similarity is
-regarded in the same way and it is actually the input to this similarity
-judgment that varies across culture contexts. It might be possible to
-gain traction on possible mechanisms by examining whether variation in
-similarity judgments co-varies with environmental statistics that differ
-across the cultural and linguistic contexts.
+across cultural groups, but it is possible that similarity is regarded
+in the same way and it is actually the input to this similarity judgment
+that varies across cultural contexts. It may be possible to gain
+traction on potential mechanisms by examining whether variation in
+similarity judgments co-vary with environmental statistics that differ
+across cultural and linguistic contexts.
 
 In this study, we ask whether variation in lexical co-occurrence can
 account for the cross-context (culture and language) differences
@@ -317,8 +273,9 @@ Meanwhile, if we do see variation in responding trial-to-trial that
 tracks with lexical co-occurrence statistics (as a rough proxy combining
 both linguistic and cultural context), this suggests that cross-cultural
 notions of similarity might be similar, and it is environmental
-statistics that guide the differences in similarity judgments. To
-preview our results, we find that, while we do not see overall group
+statistics that guide the differences in similarity judgments.
+
+To preview our results, we find that, while we do not see overall group
 differences (between the East Asian contexts and the US) in similarity,
 we do find language-specific co-occurrence can indeed explain
 cross-context differences in similarity judgments. In contrast to
@@ -327,6 +284,29 @@ similarity (varying between taxonomic and thematic), these findings
 provide an alternative, and more specific, account by which language may
 explain these cross-cultural differences without invoking variation in
 notions of similarity.
+
+There are several important limitations of our approach. While we
+discuss cross-cultural variability at the level of countries or larger
+world areas, these are not cultural monoliths. For convenience, we
+operationalize culture at the level of country, based on where
+participants were raised. It is an open question whether performance in
+our participant populations (of relatively young and well-educated
+adults) is representative of the broader country. This is especially
+true for societies with substantial ethnic and cultural variation such
+as the US. We expect that our data is likely to underestimate variation
+both within and between the countries we sample from.
+
+Language, culture, cognition, and individual experiences are intertwined
+in complex causal relationships: cultural features (farming) can lead to
+differences in individuals' experiences (seeing cows and grass) and in
+turn these can influence language (talking more about cows and grass).
+But cultural features (a thematic orientation) could also more directly
+cause individuals to talk differently about the same experiences
+(mentioning what cows eat rather than what other animals cows are like).
+In this study, we measure language and its relation to cross-cultural
+differences in categorization, but these relations test only the
+plausibility of a language-based account; they cannot establish the
+direction of causality.
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -345,7 +325,7 @@ certificates (USD), VN participants received 50,000₫ (VND) in phone
 credit, and mainland China participants received 25CNY through WeChat
 credit transfer.
 
-We excluded 8 US participants, 62 Vietnam participants, and 34 China
+We excluded 26 US participants, 123 Vietnam participants, and 34 China
 participants who did not answer all attention checks correctly. We
 followed 4 exclusion criteria that aim to retain only participants who
 are influenced by one culture: (1) non-native speakers of English and
@@ -356,23 +336,26 @@ test country (US, Vietnam, or China) for more than two years, and (4)
 have significant international experience (more than 6 international
 experiences of 2 days or longer.) We did not use a particular criterion
 for a language if it would exclude 25\% or more of any one sample. In
-this round of exclusion, we excluded 68 US, 27 Vietnam participants, and
+this round of exclusion, we excluded 65 US, 19 Vietnam participants, and
 34 China participants. After these exclusions, the US sample included
-124 participants (30M, 89F, 3 non-binary, 2 other), with mean age =
-22.18 (SD = 8) and median age = 20. The Vietnam sample included 110
-participants (34M, 71F, 5 other), with mean age = 22.21 (SD = 5.81) and
+109 participants (27M, 78F, 3 non-binary, 1 other), with mean age = 22.4
+(SD = 8.49) and median age = 20. The Vietnam sample included 57
+participants (17M, 40F, other), with mean age = 22.21 (SD = 6.12) and
 median age = 21. The China sample included 132 participants (51M, 81F,
-other), with mean age = 23.27 (SD = 3.75) and median age = 23.
+other), with mean age = 23.27 (SD = 3.75) and median age =
+23.\footnote{A table summarizing number of participants lost at each
+  round of exclusions is included in the Appendix.}
 
 Notably, we lost a majority of our Vietnam participants (more than 60\%)
 in the attention check exclusion. One reason we suspect why this might
 have happened is because our Vietnam participants are less familiar with
 research surveys and attention check questions, and thus might have
-thought too much about the attention check questions. We carried out an
-exploratory analysis where we used a less stringent attention check
-exclusion (covered in the final part of the Results \& Analysis
-section). To preview our findings for this analysis, we did not find any
-difference in significant results when compared with the main analysis.
+thought too much about the attention check questions.\footnote{We
+  carried out an exploratory analysis where we used a less stringent
+  attention check exclusion (covered in the final part of the Results \&
+  Analysis section). To preview our findings for this analysis, we did
+  not find any difference in significant results when compared with the
+  main analysis.}
 
 \hypertarget{stimuli}{%
 \subsection{Stimuli}\label{stimuli}}
@@ -383,14 +366,13 @@ For example, ``cow,'' ``grass,'' and ``chicken,'' where ``cow'' is the
 cue, ``grass'' is the thematic match, and ``chicken'' the taxonomic
 match. We included 105 such triads, a superset including triads pulled
 from supplemental information and in-text examples across the
-literature, and others that we adapted or created (see SI for the full
-list of stimuli and sources). We selected triads on the basis of
-cultural familiarity in the US, Vietnam, and China. The triads were
-originally in English; they were translated to Vietnamese and Mandarin
-by a fluent bilingual speaker in each language. The translations were
-then checked for accuracy after backtranslation to English by another
-fluent bilingual in each language who was naive to the original English
-versions.
+literature, and others that we adapted or created . We selected triads
+on the basis of cultural familiarity in the US, Vietnam, and China. The
+triads were originally in English; they were translated to Vietnamese
+and Mandarin by a fluent bilingual speaker in each language. The
+translations were then checked for accuracy after backtranslation to
+English by another fluent bilingual in each language who was naive to
+the original English versions. --\textgreater{}
 
 Each participant completed all 105 triads in sets of 21 trials at a time
 (10 test triads, 10 filler triads, and 1 attention check per page), by
@@ -413,85 +395,6 @@ that varied between subjects.
 \hypertarget{corpus-model}{%
 \subsection{Corpus model}\label{corpus-model}}
 
-Our general approach is to build a model of similarity that is based on
-collocation counts in each language.
-
-\hypertarget{raw-lexical-co-occurrences}{%
-\subsubsection{Raw lexical
-co-occurrences}\label{raw-lexical-co-occurrences}}
-
-To give an intuition for our model, consider the cow-grass-chicken
-triad: we counted how many times ``cow'' and ``grass'' co-occur within a
-window of text in each corpus, and compare this to how many times
-``cow'' and ``chicken'' co-occur. Our similarity prediction is then
-proportional to the relative frequency of these pairs. For example, if
-the thematic cow-grass match accounts for 30\% of collocations for this
-triad (with cow-chicken making up the other 70\%), then our model
-predicts, correspondingly, that 30\% of responses to the triad will be
-grass, and the other 70\% chicken. We then use a mixed-effects
-regression to evaluate how well each corpus collocate model predicts
-participants' similarity judgments, across triads and languages.
-
-\hypertarget{collocate-retrieval-and-coding}{%
-\paragraph{Collocate retrieval and
-coding}\label{collocate-retrieval-and-coding}}
-
-For our English co-occurrence metric, we used the online interface of
-the Corpus of Contemporary American English (Davies, 2008-) to retrieve
-collocation counts. We recorded the raw count of times that any
-cue-match pair (e.g., cow-grass or cow-chicken) co-occur in a window of
-19 words, which is the maximum window size in the online interface, and
-closest to the sentence co-occurrence metric in our VI corpus
-collocation counts.
-
-To determine Vietnamese co-occurrence, we used the raw frequency of
-sentence co-occurrences from a subset of the Vietnamese corpus in the
-Leipzig Corpora Collection (Goldhahn, Eckart, \& Quasthoff, 2012); this
-corpus includes 70 million Vietnamese sentences, but our corpus data
-comes from a 1 million sentence subset for which co-occurrence counts
-are available for download. Vietnamese makes very frequent use of
-compositional morphology but the written language uses spacing to
-delineate syllable boundaries rather than word boundaries. Accordingly,
-collocate searches returned instances of both target terms and many
-morphologically related, but distinct, words. We included in our counts
-any instances of the target term or close semantic neighbors containing
-the same morpheme(s) as long as they entailed a likely literal reference
-to the target term. For example, our search for collocates of the term
-``gà'' (chicken) also returned ``gà mái,'' a distinct word for female
-chickens. Despite being a different word, ``gà mái'' both includes the
-morpheme for ``chicken'' and entails reference to a chicken.
-Accordingly, instances of both ``gà'' and ``gà mái'' were included in
-our collocate count for ``chicken.'' Some compounds do not meet this
-criteria, and were excluded from collocate counts. For example ``trái
-cây'' (tree.fruits) includes the same syllable as the word ``cây''
-(tree), but refers to fruit that comes from trees, not the trees
-themselves, and was therefore excluded from our collocate counts for
-``tree.''
-
-TODO; ADD INFO ABOUT MANDARIN CORPUS
-
-\hypertarget{collocate-similarity-model}{%
-\paragraph{Collocate similarity
-model}\label{collocate-similarity-model}}
-
-From the raw co-occurrence counts of each triad, we calculated the
-thematic co-occurrence ratio as the number of thematic co-occurrences
-over the sum of thematic and taxonomic co-occurrences. We did this for
-both the English and Vietnamese corpus co-occurrence counts. In this
-way, we obtained predictions for 73 of 105 triads from the Vietnamese
-corpus and 104 of 105 triads from English. We therefore limited all
-analyses reported here to the subset of triads for which our
-corpus-based model can make meaningful predictions, meaning triads that
-have at least one non-zero collocate count (either thematic or taxonomic
-match). We replaced any remaining zero collocate counts with
-\(\epsilon\) to account for sparsity in the corpus data. We then tested
-whether these simple relative frequency models predict US and VN
-responding.
-
-\hypertarget{cosine-distance-of-word-vectors}{%
-\subsubsection{Cosine distance of word
-vectors}\label{cosine-distance-of-word-vectors}}
-
 To give an intuition for our model, consider again the cow-grass-chicken
 triad: we retrieved word vectors for ``cow'' and ``grass'', and
 calculate the cosine distance between these vectors. Similarly, we
@@ -507,22 +410,21 @@ then use a mixed-effects regression to evaluate how well each corpus
 model predicts participants' similarity judgments, across triads and
 languages.
 
-\hypertarget{collocate-retrieval}{%
-\paragraph{Collocate retrieval}\label{collocate-retrieval}}
+\hypertarget{word-vector-retrieval}{%
+\paragraph{Word vector retrieval}\label{word-vector-retrieval}}
 
 We use the fastText pre-trained models of English, Mandarin, and
-Vietnamese in Grave et al. (2018). These models are trained on Common
-Crawl and Wikipedia using We distribute pre-trained word vectors for 157
-languages, trained on Common Crawl and Wikipedia using fastText. These
-models were trained using a Continuous Bag of Words (CBOW) with
-position-weights and a window of size 5. The models use character
-n-grams of length 5 and 10 negative examples.From the aforementioned
-models, we retrieve the word vectors (dimension 300) for each word we
-are interested in.
+Vietnamese in Grave, Bojanowski, Gupta, Joulin, \& Mikolov (2018). These
+models are trained on Common Crawl and Wikipedia using We distribute
+pre-trained word vectors for 157 languages, trained on Common Crawl and
+Wikipedia using fastText. These models were trained using a Continuous
+Bag of Words (CBOW) with position-weights and a window of size 5. The
+models use character n-grams of length 5 and 10 negative examples.From
+the aforementioned models, we retrieve the word vectors (dimension 300)
+for each word we are interested in.
 
-\hypertarget{collocate-similarity-model-1}{%
-\paragraph{Collocate similarity
-model}\label{collocate-similarity-model-1}}
+\hypertarget{similarity-model}{%
+\paragraph{Similarity model}\label{similarity-model}}
 
 From the word vectors, we calculated the cosine distance between each
 cue-thematic match (thematic cosine distance) and cue-taxonomic match
@@ -543,12 +445,17 @@ Asia?}\label{do-we-extend-previous-work-reporting-a-preference-for-taxonomic-mat
 
 The group means of proportion of thematic response in mainland China is
 the highest (M = 0.65, SD = 0.12), followed by the groups means in
-Vietnam (M = 0.6, SD = 0.11), which is slightly higher than that of the
-US (M = 0.57, SD = 0.16).
+Vietnam (M = 0.6, SD = 0.13), which is slightly higher than that of the
+US (M = 0.56, SD = 0.17) (Figure 1).
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/unnamed-chunk-2-1} \caption[Proportion of thematic responses by country]{Proportion of thematic responses by country. Only US-China responding comparison shows a siginficant difference. We could not extend this to US-Vietnam responding comparison.}\label{fig:unnamed-chunk-2}
+
+{\centering \includegraphics{figs/unnamed-chunk-1-1} 
+
+}
+
+\caption[Proportion of thematic responses by country]{Proportion of thematic responses by country.}\label{fig:unnamed-chunk-1}
 \end{figure}
 \end{CodeChunk}
 
@@ -562,12 +469,12 @@ R syntax, the model is: response \textasciitilde{} country + (1
 \textbar{} subject) + (country \textbar{} triad).
 
 Overall, there is a significant effect of country on proportion of
-thematic responses (\(\chi^2\)(2) = 15.75, p \textless{} .001). However,
+thematic responses (\(\chi^2\)(2) = 15.22, p \textless{} .001). However,
 this effect is driven by the difference between US and China responding
-(\(\beta\) = -0.5, p \textless{} .001). There is no statistical
+(\(\beta\) = -0.53, p \textless{} .001). There is no statistical
 difference between the Vietnam and China responding (\(\beta\) = -0.25,
-p = 0.066), and the US and Vietnam responding (\(\beta\) = 0.25, p =
-0.095).
+p = 0.137), and the US and Vietnam responding (\(\beta\) = 0.28, p =
+0.142).
 
 On this analysis, we do not find support that the US-China tendencies
 toward taxonomic and thematic responding (respectively) extend to the
@@ -584,80 +491,31 @@ English, Mandarin and Vietnamese speakers be explained by variation in
 lexical
 statistics?}\label{can-the-differences-in-similarity-judgments-between-english-mandarin-and-vietnamese-speakers-be-explained-by-variation-in-lexical-statistics}}
 
-\hypertarget{is-responding-in-each-cultural-context-predicted-by-the-corresponding-lexical-statistics-raw-co-occurrences}{%
-\subsubsection{Is responding in each cultural context predicted by the
-corresponding lexical statistics (raw
-co-occurrences)?}\label{is-responding-in-each-cultural-context-predicted-by-the-corresponding-lexical-statistics-raw-co-occurrences}}
+\hypertarget{is-responding-in-each-cultural-context-predicted-by-lexical-statistics}{%
+\subsubsection{Is responding in each cultural context predicted by
+lexical
+statistics?}\label{is-responding-in-each-cultural-context-predicted-by-lexical-statistics}}
 
-\hypertarget{raw-lexical-co-occurrences-1}{%
-\paragraph{Raw lexical
-co-occurrences}\label{raw-lexical-co-occurrences-1}}
-
-To test whether variation in lexical co-occurrence can explain
-differences in similarity judgments between US and Vietnam participants,
-we compare logistic mixed-effects regression models fit to the thematic
-responding data from each country separately. We first ask how well each
-corpus model (English, Vietnamese, or Mandarin) predicts similarity
-judgments by speakers of the corresponding language (US, Vietnam, or
-China). To do this, we use a mixed-effects logistic regression to
-predict triad responses (0=taxonomic or 1=thematic) with corpus
-prediction (proportion thematic co-occurrence or cosine distance) as a
-fixed effect and participant and triad as random effects.
+To test whether variation in lexical statistics can explain differences
+in similarity judgments between US and Vietnam participants, we compare
+logistic mixed-effects regression models fit to the thematic responding
+data from each country separately. We first ask how well each corpus
+model (English, Vietnamese, or Mandarin) predicts similarity judgments
+by speakers of the corresponding language (US, Vietnam, or China). To do
+this, we use a mixed-effects logistic regression to predict triad
+responses (0=taxonomic or 1=thematic) with corpus prediction (proportion
+of cosine distance) as a fixed effect and participant and triad as
+random effects.
 
 We found that all corpora are significant predictors of all cultural
-context responding.
+context responding, with p\textless0.05 and \(\beta\) from -9.05 to
+-2.44. (For a full report, see Appendix.)
 
-For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are all significant predictors. EN corpus: \(\beta\) = 2.01,
-\(\chi^2\)(1) = 17.42, p \textless{} .001. VI corpus: \(\beta\) = 1.21,
-\(\chi^2\)(1) = 11.1, p \textless{} .001. ZH corpus: \(\beta\) = 1.15,
-\(\chi^2\)(1) = 6.38, p = 0.012.
-
-For Vietnam responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are all significant predictors. EN corpus: \(\beta\) = 1.73,
-\(\chi^2\)(1) = 12.35, p \textless{} .001. VI corpus: \(\beta\) = 1.27,
-\(\chi^2\)(1) = 12.83, p \textless{} .001. ZH corpus: \(\beta\) = 1.8,
-\(\chi^2\)(1) = 18, p \textless{} .001.
-
-For China responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are all significant predictors. EN corpus: \(\beta\) = 1.21,
-\(\chi^2\)(1) = 9.83, p = 0.002. VI corpus: \(\beta\) = 0.77,
-\(\chi^2\)(1) = 7.44, p = 0.006. ZH corpus: \(\beta\) = 1.15,
-\(\chi^2\)(1) = 13.28, p \textless{} .001.
-
-This suggests a strong shared similarity signal across the languages.
-
-\hypertarget{cosine-distances-of-fasttext-word-vectors}{%
-\paragraph{Cosine distances of fastText word
-vectors}\label{cosine-distances-of-fasttext-word-vectors}}
-
-Similar to the results from the analysis with raw lexical
-co-occurrences, we found that all corpora are significant predictors of
-all cultural context responding.
-
-For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are significant predictors of US responding (EN-US model:
-\(\beta\) = -8.64, \(\chi^2\)(1) = 30.44, p \textless{} .001; VI-US
-model: \(\beta\) = -2.97, \(\chi^2\)(1) = 5.23, p = = 0.022; ZH-US
-model: \(\beta\) = -6.96, \(\chi^2\)(1) = 18.08, p \textless{} .001).
-
-For Vietnam (VN) responding: English (EN), Vietnamese (VI), and Mandarin
-(ZH) corpus are significant predictors of VN responding (EN-VN model:
-\(\beta\) = -5.33, \(\chi^2\)(1) = 9.39, p = 0.002; VI-VN model:
-\(\beta\) = -3.46, \(\chi^2\)(1) = 6.64, p = = 0.01; ZH-VN model:
-\(\beta\) = -6.37, \(\chi^2\)(1) = 13.93, p \textless{} .001).
-
-For China (CN) responding: English (EN), Vietnamese (VI), and Mandarin
-(ZH) corpus are significant predictors of CN responding (EN-CN model:
-\(\beta\) = -6.18, \(\chi^2\)(1) = 25.34, p \textless{} .001; VI-CN
-model: \(\beta\) = -2.44, \(\chi^2\)(1) = 5.83, p = = 0.016; ZH-CN
-model: \(\beta\) = -7.36, \(\chi^2\)(1) = 37.45, p \textless{} .001).
-
-\hypertarget{is-responding-in-each-cultural-context-best-predicted-by-the-corresponding-corpuss-lexical-statistics-raw-co-occurrences-as-opposed-to-the-other-two-corpora}{%
-\subsubsection{\texorpdfstring{Is responding in each cultural context
-\textbf{best} predicted by the corresponding corpus's lexical statistics
-(raw co-occurrences), as opposed to the other two
-corpora?}{Is responding in each cultural context best predicted by the corresponding corpus's lexical statistics (raw co-occurrences), as opposed to the other two corpora?}}\label{is-responding-in-each-cultural-context-best-predicted-by-the-corresponding-corpuss-lexical-statistics-raw-co-occurrences-as-opposed-to-the-other-two-corpora}}
+\hypertarget{is-responding-in-each-cultural-context-best-predicted-by-the-corresponding-corpuss-lexical-statistics-as-opposed-to-the-other-two-corpora}{%
+\subsubsection{Is responding in each cultural context best predicted by
+the corresponding corpus's lexical statistics, as opposed to the other
+two
+corpora?}\label{is-responding-in-each-cultural-context-best-predicted-by-the-corresponding-corpuss-lexical-statistics-as-opposed-to-the-other-two-corpora}}
 
 Next, we directly compare the corpus models by including both as fixed
 effects in three mixed-effect regressions (predicting US, Vietnam and
@@ -666,107 +524,39 @@ the model is: response \textasciitilde{} corpus\_English +
 corpus\_Vietnamese + corpus\_Mandarin + (1\textbar triad) +
 (1\textbar subject).
 
-\hypertarget{raw-co-occurrences}{%
-\paragraph{Raw co-occurrences}\label{raw-co-occurrences}}
-
-When we included all corpora thematic cosine distance proportion as
-predictors, all corpora are significant in predicting all cultural
-context's responding.
-
-For US responding: only English (EN) corpus is a significant predictor.
-EN corpus: \(\beta\) = 1.62, \(\chi^2\)(1) = 4.59, p = 0.032. VI corpus:
-\(\beta\) = 0.46, \(\chi^2\)(1) = 1.04, p = 0.307. ZH corpus: \(\beta\)
-= -0.03, \(\chi^2\)(1) = 0, p = 0.962.
-
-For Vietnam responding: only English (EN) and Mandarin (ZH) corpora are
-significant predictors. EN corpus: \(\beta\) = -0.02, \(\chi^2\)(1) = 0,
-p = 0.979. ZH corpus: \(\beta\) = 1.39, \(\chi^2\)(1) = 6.5, p =
-0.011.VI corpus: \(\beta\) = 0.79, \(\chi^2\)(1) = 3.3, p = 0.069.
-
-For China responding: only Mandarin (ZH) corpus is a significant
-predictor. ZH corpus: \(\beta\) = 0.9, \(\chi^2\)(1) = 4.31, p = 0.038.
-EN corpus: \(\beta\) = 0.21, \(\chi^2\)(1) = 0.13, p = 0.72. VI corpus:
-\(\beta\) = 0.35, \(\chi^2\)(1) = 1.02, p = 0.312.
-
-\begin{CodeChunk}
-\begin{figure}[tb]
-\includegraphics{figs/unnamed-chunk-4-1} \caption[Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively]{Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response.}\label{fig:unnamed-chunk-4}
-\end{figure}
-\end{CodeChunk}
-
-We observed some level of language specificity from this analysis. The
-English corpus is the best predictor for US responding, and the Mandarin
-corpus is the best predictor for China response. While this is not the
-case with the Vietnamese corpus and the Vietnam responding, the
-Vietnamese corpus is still a significant predictor for the Vietnam
-responding.
-
-However, we found that language specificity alone does not explain our
-results. We used an ANOVA to compare the model with only the
-corresponding corpus, and the model with all 3 corpora for each cultural
-context. We found that in all three cases (US, China, Vietnam), adding
-the other two corpora produces a significantly better fit than the
-identical model without the additional corpora, and only the
-corresponding corpus included as a predictor (US response: \(\chi^2\)(2)
-= 1.04, p = 0.595; Vietnam response: \(\chi^2\)(2) = 8.84, p = 0.012;
-China response: \(\chi^2\)(2) = 2.13, p = 0.345).
-
-\_TODO: should we take this out?\_\_ We carried out an ANOVA model
-comparison to compare our approach with previous studies that did not
-include corpus information. Because Ji et al. (2004) only compared US
-and China participants, we filtered our data to only include responding
-data from these two countries. Our approach would be to compare a model
-that only includes country (US or China) as a fixed effect with one that
-also includes English and Chinese corpus data. Our previous model with
-an intercept per subject and one per triad, as well as by-triad random
-slopes for country to account for variation in the country effect across
-triads fails to converge with the more complex model, so we include a
-simpler random effect structure with an intercept per subject and one
-per triad in both the basic and more complex model. We compare this
-model with an identical model but including Chinese and English corpus
-cosine distance proportion prediction. We found that adding English and
-Chinese corpus data produces a significantly better fit than the
-identical model without English and Chinese corpus data as predictors
-(\(\chi^2\)(2) = 42.57, p = \textless{} .001. This suggests that
-including corpus data would better model the cross-cultural differences
-in similarity judgment in this study as well as similar studies.
-
-\hypertarget{cosine-distances-of-fasttext-word-vectors-1}{%
-\paragraph{Cosine distances of fastText word
-vectors}\label{cosine-distances-of-fasttext-word-vectors-1}}
-
-When we included all corpora thematic cosine distance proportion as
-predictors, all corpora are significant in predicting all cultural
-context's responding.
-
 For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are all significant predictors. EN corpus: \(\beta\) = -6.9,
-\(\chi^2\)(1) = 17.06, p \textless{} .001. VI corpus: \(\beta\) = -2.18,
-\(\chi^2\)(1) = 3.72, p = = 0.054. ZH corpus: \(\beta\) = -3.2,
-\(\chi^2\)(1) = 3.59, p = = 0.058.
+corpus are all significant predictors. EN corpus: \(\beta\) = -7.14,
+\(\chi^2\)(1) = 16.78, p \textless{} .001. VI corpus: \(\beta\) = -2.28,
+\(\chi^2\)(1) = 3.74, p = 0.053. ZH corpus: \(\beta\) = -3.53,
+\(\chi^2\)(1) = 3.99, p = 0.046.
 
 For Vietnam responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
-corpus are all significant predictors. EN corpus: \(\beta\) = -2.98,
-\(\chi^2\)(1) = 2.58, p = = 0.108. VI corpus: \(\beta\) = -2.75,
-\(\chi^2\)(1) = 4.84, p = = 0.028. ZH corpus: \(\beta\) = -4.39,
-\(\chi^2\)(1) = 5.43, p = = 0.02.
+corpus are all significant predictors. EN corpus: \(\beta\) = -4.25,
+\(\chi^2\)(1) = 3.87, p = 0.049. VI corpus: \(\beta\) = -2.98,
+\(\chi^2\)(1) = 4.17, p = 0.041. ZH corpus: \(\beta\) = -4.86,
+\(\chi^2\)(1) = 4.94, p = 0.026.
 
 For China responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
 corpus are all significant predictors. EN corpus: \(\beta\) = -3.52,
-\(\chi^2\)(1) = 7.81, p = = 0.005. VI corpus: \(\beta\) = -1.62,
-\(\chi^2\)(1) = 3.59, p = = 0.058. ZH corpus: \(\beta\) = -5.35,
-\(\chi^2\)(1) = 17.28, p = \textless{} .001.
+\(\chi^2\)(1) = 7.85, p = 0.005. VI corpus: \(\beta\) = -1.62,
+\(\chi^2\)(1) = 3.57, p = 0.059. ZH corpus: \(\beta\) = -5.35,
+\(\chi^2\)(1) = 17.19, p \textless{} .001.
 
 We observed some level of language specificity from this analysis. The
 English corpus is the best predictor for US responding, and the Mandarin
 corpus is the best predictor for China response. While this is not the
 case with the Vietnamese corpus and the Vietnam responding, the
 Vietnamese corpus is still a significant predictor for the Vietnam
-responding.
+responding (Figure 2).
 
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/unnamed-chunk-5-1} \caption[Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively]{Fixed effect sizes of each corpus when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response.}\label{fig:unnamed-chunk-5}
+
+{\centering \includegraphics{figs/unnamed-chunk-3-1} 
+
+}
+
+\caption[Fixed effect sizes of each corpus lexical statistics (cosine distance proportion) when included as a predictor for China, US, and Vietnam responding, respectively]{Fixed effect sizes of each corpus lexical statistics (cosine distance proportion) when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response.}\label{fig:unnamed-chunk-3}
 \end{figure}
 \end{CodeChunk}
 
@@ -777,72 +567,98 @@ context. We found that in all three cases (US, China, Vietnam), adding
 the other two corpora produces a significantly better fit than the
 identical model without the additional corpora, and only the
 corresponding corpus included as a predictor (US response: \(\chi^2\)(2)
-= 7.95, p = = 0.019; Vietnam response: \(\chi^2\)(2) = 13.72, p = =
-0.001; China response: \(\chi^2\)(2) = 10.83, p = NA).
-
-\_TODO: should we take this out?\_\_ We carried out an ANOVA model
-comparison to compare our approach with previous studies that did not
-include corpus information. Because Ji et al. (2004) only compared US
-and China participants, we filtered our data to only include responding
-data from these two countries. Our approach would be to compare a model
-that only includes country (US or China) as a fixed effect with one that
-also includes English and Chinese corpus data. Our previous model with
-an intercept per subject and one per triad, as well as by-triad random
-slopes for country to account for variation in the country effect across
-triads fails to converge with the more complex model, so we include a
-simpler random effect structure with an intercept per subject and one
-per triad in both the basic and more complex model. We compare this
-model with an identical model but including Chinese and English corpus
-cosine distance proportion prediction. We found that adding English and
-Chinese corpus data produces a significantly better fit than the
-identical model without English and Chinese corpus data as predictors
-(\(\chi^2\)(2) = 42.57, p = \textless{} .001. This suggests that
-including corpus data would better model the cross-cultural differences
-in similarity judgment in this study as well as similar studies.
+= 8.42, p = 0.015; Vietnam response: \(\chi^2\)(2) = 15.21, p
+\textless{} .001; China response: \(\chi^2\)(2) = 10.83, p NA).
 
 \hypertarget{does-similarity-reasoning-differ-across-cultures-only-the-input-to-it-or-both}{%
 \subsection{3. Does similarity reasoning differ across cultures, only
 the input to it, or
 both?}\label{does-similarity-reasoning-differ-across-cultures-only-the-input-to-it-or-both}}
 
-Does adding country and interaction term with the corresponding corpus
-improves the model?
+Our analysis shows that lexical statistics of each corpus is a
+significant predictor for similarity judgement in the corresponding
+cultural context, even without the addition of the other two corpora.
+Assuming that lexical statistics is a good proxy for environmental
+statistics, we take the above result as evidence that cross-cultural
+differences in input to the process of similarity judgement at least
+partially drives cross-cultural similarity judgement differences.
+However, it is still an open question whether the nature of similarity
+judgement (for e.g., the notion of similarity) itself differs across
+cultures and contributes to cross-cultural differences in similarity
+judgement responding. In an alternative hypothesis, the cross-cultural
+differences in similarity judgement observed is driven by not only the
+input, but also an interaction between cultural-specific nature of
+similarity judgement and input. To test this hypothesis, we
+operationalize cultural-specific nature of similarity judgement as
+country context, and input to similarity judgement as the corresponding
+corpus statistics. We then compare a model that includes country,
+corresponding corpus statistics and their interaction as fixed effects
+(R syntax: responses \textasciitilde{} corresponding\_corpus * country +
+(1\textbar triad) + (1\textbar subject)) to a model with only the
+corresponding corpus statistics as the fixed effect (R syntax: responses
+\textasciitilde{} corresponding\_corpus + (1\textbar triad) +
+(1\textbar subject))
 
-Adding country improves the model. Only country and interaction between
-country and corresponding corpus's lexical co-occurrence are significant
-predictors. Corresponding corpus's lexical co-occurrence is no longer a
-significant predictor.
+In the model containing only the corresponding corpus statistics, the
+corpus statistics is a significant predictor (\(\beta\) = -1.75,
+\(\chi^2\)(1) = 48.9, p \textless{} .001). When adding country and
+interaction between country and corpus, both the corpus statistics
+(\(\beta\) = -1.51, \(\chi^2\)(1) = 13.96, p \textless{} .001) and
+interaction between country and corpus (\(\beta\) = NA, \(\chi^2\)(2) =
+9.1, p = 0.011) are significant predictors. This suggests that there are
+cross-cultural differences in both input and nature of similarity
+judgement that drive differences in similarity judgement responding.
 
 \hypertarget{how-general-are-the-cross-language-differences-in-similarity-judgments-we-observe-are-they-limited-to-taxonomic-thematic-contrasts-or-do-they-extend-to-other-cases}{%
-\subsection{5. How general are the cross-language differences in
+\subsection{4. How general are the cross-language differences in
 similarity judgments we observe? Are they limited to taxonomic-thematic
 contrasts or do they extend to other
 cases?}\label{how-general-are-the-cross-language-differences-in-similarity-judgments-we-observe-are-they-limited-to-taxonomic-thematic-contrasts-or-do-they-extend-to-other-cases}}
 
+Previous work using the triad task such as Ji et al. (2004) has focused
+on contrasting taxonomic-thematic match preferences, driven by a theory
+of cross-cultural differences in notions of similarity. Meanwhile, our
+approach has shown that notions of similarity only has an effect on
+cross-cultural differences in similarity judgement when modulated by
+input, and that input as proxied by lexical statistics of the
+corresponding corpus by itself is a significant predictor for similarity
+judgement responding. Our approach using lexical statistics do not
+assume a taxonomic/thematic structure in the triads. Therefore, it
+should be possible to predict similarity judgements to triads that do
+not follow a taxonomic/thematic structure, such as our filler triads. If
+our approach is tractable, we should be able to repeat the above
+analyses to the filler triads, and find that lexical statistics of each
+corpus is a significant predictor for similarity judgements in filler
+triads of the corresponding cultural context.
+
 \begin{CodeChunk}
 \begin{figure}[tb]
-\includegraphics{figs/unnamed-chunk-8-1} \caption[Proportion of thematic responses by country]{Proportion of thematic responses by country. Only US-China responding comparison shows a siginficant difference. We could not extend this to US-Vietnam responding comparison.}\label{fig:unnamed-chunk-8}
+
+{\centering \includegraphics{figs/unnamed-chunk-4-1} 
+
+}
+
+\caption[Proportion of thematic responses by country]{Proportion of thematic responses by country.}\label{fig:unnamed-chunk-4}
 \end{figure}
 \end{CodeChunk}
 
-No effect of country on filler responding.
+For each filler triad, we randomly assigned one of the responding
+optiosn as `Word1'. Running a mixed-effects logistic regression predict
+responding (Word1 or Word2) with structure equivalent to Analysis 1, we
+found no effect of country on filler responding (Figure 3).
 
 \hypertarget{does-lexical-statistics-for-fillers-predict-responding-in-the-corresponding-cultural-context}{%
 \subsubsection{Does lexical statistics for fillers predict responding in
 the corresponding cultural
 context?}\label{does-lexical-statistics-for-fillers-predict-responding-in-the-corresponding-cultural-context}}
 
-\hypertarget{raw-co-occurrences-1}{%
-\paragraph{Raw co-occurrences}\label{raw-co-occurrences-1}}
-
-Yes, corpus raw co-occurrences predicts responding for both US and
-Vietnamese. \emph{need to discuss with Shan to incorporate Mandarin due
-to a lot of empty counts}
-
-\hypertarget{cosine-distance}{%
-\paragraph{Cosine distance}\label{cosine-distance}}
-
-Corpus cosine similarities also predict responding for all cultures.
+Using the same mixed-effects logistic regression structure as Analysis
+2, we predict responses (1=word1 or 0=word2) with corpus prediction
+(proportion of cosine distance) as a fixed effect and participant and
+triad as random effects. We found that in all cultural contexts, the
+correpsonding corpora is a significant predictor of responding, with
+p\textless0.05 and \(\beta\) from -9.59 to -3.05. (For a full report,
+see Appendix.)
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
@@ -874,14 +690,6 @@ substantive overlapping predictions across the corpus models, highly
 similar responding across the experiments, and a correspondingly high
 fit in cross-language comparisons between models and data.
 
-There are some suggestions that the current approach can predict
-triad-specific cross-cultural effects. First of all, an ANOVA model
-comparison showed that adding a random effect term for varying slope by
-country and varying intercept by triad to the model produces a
-significant better fit than the identical model without this random
-effect term included as a predictor (\(\chi^2\)(6) = 7481.6, p
-\textless{} .001)
-
 Our findings raise additional questions for future work: if not
 differences in taxonomic vs.~thematic responding, then what differences
 drive the relativity effects previous studies have observed? To what
@@ -909,93 +717,102 @@ variation in similarity reasoning across cultural and linguistic
 contexts. We hope this work provides a foundation for further research
 probing this question.
 
-\newpage
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
 
-\hypertarget{two-column-images}{%
-\subsection{Two-column images}\label{two-column-images}}
+\hypertarget{icc-of-item-variability-and-participant-variability}{%
+\subsection{1. ICC of item variability and participant
+variability}\label{icc-of-item-variability-and-participant-variability}}
 
-You can read local images using png package for example and plot it like
-a regular plot using grid.raster from the grid package. With this method
-you have full control of the size of your image. \textbf{Note: Image
-must be in .png file format for the readPNG function to work.}
-
-You might want to display a wide figure across both columns. To do this,
-you change the \texttt{fig.env} chunk option to \texttt{figure*}. To
-align the image in the center of the page, set \texttt{fig.align} option
-to \texttt{center}. To format the width of your caption text, you set
-the \texttt{num.cols.cap} option to \texttt{2}.
-
-\begin{CodeChunk}
-\begin{figure*}[h]
-
-{\centering \includegraphics{figs/2-col-image-1} 
-
-}
-
-\caption[This image spans both columns]{This image spans both columns. And the caption text is limited to 0.8 of the width of the document.}\label{fig:2-col-image}
-\end{figure*}
-\end{CodeChunk}
-
-\hypertarget{one-column-images}{%
-\subsection{One-column images}\label{one-column-images}}
-
-Single column is the default option, but if you want set it explicitly,
-set \texttt{fig.env} to \texttt{figure}. Notice that the
-\texttt{num.cols} option for the caption width is set to \texttt{1}.
-
-\begin{CodeChunk}
-\begin{figure}[H]
-
-{\centering \includegraphics{figs/image-1} 
-
-}
-
-\caption[One column image]{One column image.}\label{fig:image}
-\end{figure}
-\end{CodeChunk}
-
-\hypertarget{r-plots}{%
-\subsection{R Plots}\label{r-plots}}
-
-You can use R chunks directly to plot graphs. And you can use latex
-floats in the fig.pos chunk option to have more control over the
-location of your plot on the page. For more information on latex
-placement specifiers see
-\textbf{\href{https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}{here}}
-
-\begin{CodeChunk}
-\begin{figure}[H]
-
-{\centering \includegraphics{figs/plot-1} 
-
-}
-
-\caption[R plot]{R plot}\label{fig:plot}
-\end{figure}
-\end{CodeChunk}
-
-\hypertarget{tables}{%
-\subsection{Tables}\label{tables}}
-
-Number tables consecutively; place the table number and title (in 10
-point) above the table with one line space above the caption and one
-line space below it, as in Table 1. You may float tables to the top or
-bottom of a column, set wide tables across both columns.
-
-You can use the xtable function in the xtable package.
-
-\begin{table}[H]
+\begin{table}[ht]
 \centering
-\begin{tabular}{rrrrr}
+\begin{tabular}{lrr}
   \hline
- & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+Sample & Intra-rater ICC & Inter-rater ICC \\ 
   \hline
-(Intercept) & 0.02 & 0.10 & 0.2 & 0.86 \\ 
-  x & 2.04 & 0.11 & 19.1 & 0.00 \\ 
+US & 0.32 & 0.97 \\ 
+  China & 0.20 & 0.96 \\ 
+  Vietnam & 0.32 & 0.95 \\ 
    \hline
 \end{tabular}
-\caption{This table prints across one column.} 
+\caption{ICCs for reliability within participants (intra-rater) and stimuli (inter-rater) for all cultural contexts.} 
 \end{table}
+
+\hypertarget{supplemental-for-whether-each-corpus-predicts-similarity-judgement-in-each-cultural-context}{%
+\subsection{2. Supplemental for whether each corpus predicts similarity
+judgement in each cultural
+context}\label{supplemental-for-whether-each-corpus-predicts-similarity-judgement-in-each-cultural-context}}
+
+\hypertarget{triads}{%
+\subsubsection{Triads}\label{triads}}
+
+For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH)
+corpus are significant predictors of US responding (EN-US model:
+\(\beta\) = -9.05, \(\chi^2\)(1) = 31.28, p \textless{} .001; VI-US
+model: \(\beta\) = -3.13, \(\chi^2\)(1) = 5.1, p = 0.024; ZH-US model:
+\(\beta\) = -7.42, \(\chi^2\)(1) = 18.48, p \textless{} .001).
+
+For Vietnam (VN) responding: English (EN), Vietnamese (VI), and Mandarin
+(ZH) corpus are significant predictors of VN responding (EN-VN model:
+\(\beta\) = -6.86, \(\chi^2\)(1) = 11.71, p \textless{} .001; VI-VN
+model: \(\beta\) = -3.83, \(\chi^2\)(1) = 6.02, p = 0.014; ZH-VN model:
+\(\beta\) = -7.49, \(\chi^2\)(1) = 13.84, p \textless{} .001).
+
+For China (CN) responding: English (EN), Vietnamese (VI), and Mandarin
+(ZH) corpus are significant predictors of CN responding (EN-CN model:
+\(\beta\) = -6.18, \(\chi^2\)(1) = 25.39, p \textless{} .001; VI-CN
+model: \(\beta\) = -2.44, \(\chi^2\)(1) = 5.75, p = 0.017; ZH-CN model:
+\(\beta\) = -7.36, \(\chi^2\)(1) = 37.72, p \textless{} .001).
+
+\hypertarget{fillers}{%
+\subsubsection{Fillers}\label{fillers}}
+
+English (EN) is a significant predictors of US responding (\(\beta\) =
+-7.93, \(\chi^2\)(1) = 35.87, p \textless{} .001).
+
+Vietnamese (VI) is a significant predictors of Vietnam responding
+(\(\beta\) = -3.05, \(\chi^2\)(1) = 5.88, p = 0.015).
+
+Mandarin (ZH) is a significant predictors of China responding (\(\beta\)
+= -9.59, \(\chi^2\)(1) = 36.65, p \textless{} .001).
+
+\hypertarget{demographic-exclusion-statistics}{%
+\subsection{3. Demographic Exclusion
+Statistics}\label{demographic-exclusion-statistics}}
+
+\begin{tabular}[t]{l|c|c|c}
+\hline
+\multicolumn{1}{c|}{ } & \multicolumn{3}{c}{Country} \\
+\cline{2-4}
+  & US & China & Vietnam\\
+\hline
+Ppts Finished & 200 & 200 & 199\\
+\hline
+\multicolumn{4}{l}{\textbf{Attention Check Exclusions}}\\
+\hline
+\hspace{1em}Excluded & 26 & 34 & 123\\
+\hline
+\hspace{1em}After Exclusion & 174 & 166 & 76\\
+\hline
+\multicolumn{4}{l}{\textbf{Demographics Exclusions}}\\
+\hline
+\hspace{1em}Non-Native Speakers & 18 * & 3 * & 2 *\\
+\hline
+\hspace{1em}EN Speakers & N/A & 79 & 127\\
+\hline
+\hspace{1em}VI Speakers & 4 * & 1 * & N/A\\
+\hline
+\hspace{1em}ZH Speakers & 30 * & N/A & 9 *\\
+\hline
+\hspace{1em}Lived Abroad & 29 * & 40 * & 18 *\\
+\hline
+\hspace{1em}Overseas Experience & 77 & 12 * & 20 *\\
+\hline
+\hspace{1em}After Exclusions & 109 & 132 & 57\\
+\hline
+\end{tabular}
+
+\newpage
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
@@ -1010,6 +827,8 @@ the end of the paper.
 \setlength{\leftskip}{0.125in}
 
 \noindent
+
+\newpage
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
@@ -1031,19 +850,9 @@ in eye movements during scene perception. \emph{Proceedings of the
 National Academy of Sciences}, \emph{102}(35), 12629--12633.
 http://doi.org/\href{https://doi.org/10.1073/pnas.0506162102}{10.1073/pnas.0506162102}
 
-\leavevmode\vadjust pre{\hypertarget{ref-COCA}{}}%
-Davies, M. (2008-2008-). The corpus of contemporary american english
-(COCA). Retrieved from \url{https://www.english-corpora.org/coca/}
-
 \leavevmode\vadjust pre{\hypertarget{ref-Francis2005}{}}%
 Francis, W. S. (2005). \emph{Bilingual semantic and conceptual
 representation}. Oxford University Press.
-
-\leavevmode\vadjust pre{\hypertarget{ref-VICorpus}{}}%
-Goldhahn, D., Eckart, T., \& Quasthoff, U. (2012). Building large
-monolingual dictionaries at the leipzig corpora collection: From 100 to
-200 languages. Retrieved from
-\url{https://wortschatz.uni-leipzig.de/en/download/vietnamese}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Grave2018}{}}%
 Grave, E., Bojanowski, P., Gupta, P., Joulin, A., \& Mikolov, T. (2018).
