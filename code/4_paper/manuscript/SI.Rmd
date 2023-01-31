@@ -1,0 +1,120 @@
+---
+title: "SI"
+output: html_document
+date: "2023-01-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Appendix
+
+## 1. ICC of item variability and participant variability
+
+```{r xtable, results ="asis", fig.pos="H"}
+US_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "US"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+CN_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "China"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+VN_agr <- agreement::dim_icc(df_main_analysis %>% filter(country == "Vietnam"),
+                             model = "2A",
+                             type = "agreement",
+                             unit = "average",
+                             object = triad,
+                             rater = subject,
+                             score = responses_theme,
+                             bootstrap = 0)
+
+iccs <- tibble(Sample = c("US","China", "Vietnam"),
+               `Intra-rater ICC` = c(US_agr$Intra_ICC,
+                                     CN_agr$Intra_ICC,
+                                     VN_agr$Intra_ICC),
+               `Inter-rater ICC` = c(US_agr$Inter_ICC,
+                                     CN_agr$Inter_ICC,
+                                     VN_agr$Inter_ICC))
+
+tab1 <- xtable::xtable(iccs, digits=2,
+                       caption = "ICCs for reliability within participants (intra-rater) and stimuli (inter-rater) for all cultural contexts.")
+
+print(tab1, type="latex", comment = F, include.rownames = FALSE)
+```
+
+An intraclass correlation coefficients (ICCs) analysis with a two-way, non-interactive model (following the standard taxonomy for ICCs from @McGraw1996) showed that, per cultural context, participants' judgments were variable across triads, while inter-rater agreement about specific triads was quite high (Table 1).
+This result suggests that each triad prompts taxonomic / thematic matching reliably within culture.
+
+## 2. Supplemental for whether each corpus predicts similarity judgment in each cultural context
+
+### Triads
+
+For US responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of US responding (EN-US model: $\beta$ = `r round(fixef(fit.EN_US_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_US_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_US_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_US_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_US_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`; VI-US model: $\beta$ = `r round(fixef(fit.VI_US_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_US_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_US_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`; ZH-US model: $\beta$ = `r round(fixef(fit.ZH_US_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_US_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_US_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_US_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_US_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`).
+
+For Vietnam (VN) responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of VN responding (EN-VN model: $\beta$ = `r round(fixef(fit.EN_VN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_VN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_VN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_VN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_VN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`; VI-VN model: $\beta$ = `r round(fixef(fit.VI_VN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_VN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_VN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`; ZH-VN model: $\beta$ = `r round(fixef(fit.ZH_VN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_VN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`).
+
+For China (CN) responding: English (EN), Vietnamese (VI), and Mandarin (ZH) corpus are significant predictors of CN responding (EN-CN model: $\beta$ = `r round(fixef(fit.EN_CN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_CN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.EN_CN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_CN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_CN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`; VI-CN model: $\beta$ = `r round(fixef(fit.VI_CN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_CN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.VI_CN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_CN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_CN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`; ZH-CN model: $\beta$ = `r round(fixef(fit.ZH_CN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_CN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`).
+
+### Fillers
+
+English (EN) is a significant predictors of US responding ($\beta$ = `r round(fixef(fit.EN_US_filler_cos)["word1_match_cosine_prop_E"], 2)`, $\chi^2$(`r fit.EN_US_filler_cos.anova["word1_match_cosine_prop_E", "Df"]`) = `r round(fit.EN_US_filler_cos.anova["word1_match_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.EN_US_filler_cos.anova["word1_match_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.EN_US_filler_cos.anova["word1_match_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`).
+
+Vietnamese (VI) is a significant predictors of Vietnam responding ($\beta$ = `r round(fixef(fit.VI_VN_filler_cos)["word1_match_cosine_prop_V"], 2)`, $\chi^2$(`r fit.VI_VN_filler_cos.anova["word1_match_cosine_prop_V", "Df"]`) = `r round(fit.VI_VN_filler_cos.anova["word1_match_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.VI_VN_filler_cos.anova["word1_match_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VI_VN_filler_cos.anova["word1_match_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`).
+
+Mandarin (ZH) is a significant predictors of China responding ($\beta$ = `r round(fixef(fit.ZH_CN_filler_cos)["word1_match_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ZH_CN_filler_cos.anova["word1_match_cosine_prop_M", "Df"]`) = `r round(fit.ZH_CN_filler_cos.anova["word1_match_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ZH_CN_filler_cos.anova["word1_match_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ZH_CN_filler_cos.anova["word1_match_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`).
+
+## 3. Exclusion Statistics
+
+```{r results = "asis", fig.cap="Testing"}
+df.demog_excl <- cbind(t(df.excl_US), t(df.excl_CN))
+df.demog_excl <- cbind(df.demog_excl, t(df.excl_VN))
+
+rownames(df.demog_excl) <-
+  c("Country", "Ppts Finished", 
+    "Excluded", 
+    "After Exclusion", 
+    "Non-Native Speakers", "EN Speakers", 
+    "VI Speakers", "ZH Speakers", 
+    "Lived Abroad", "Overseas Experience", 
+    "After Exclusions")
+
+colnames(df.demog_excl) <- df.demog_excl[1,]
+df.demog_excl <- df.demog_excl[-1, ] 
+
+kbl(df.demog_excl, align = "c") %>%
+  add_header_above(c(" " = 1, "Country" = 3)) %>%
+  pack_rows(index = c(" " = 1, "Attention Check Exclusions" = 2, "Demographics Exclusions" = 7))
+```
+
+\newpage
