@@ -3,25 +3,25 @@ title: "Re-examining cross-cultural similarity judgments using lexical co-occurr
 bibliography: library.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
-
 header-includes:
   - \usepackage[utf8]{inputenc}
   - \usepackage[T1, T2A, T5]{fontenc}
   - \usepackage{kotex}
-  
 author-information: > 
     \author{{\large \bf Khuyen N. Le (knl005@ucsd.edu)}$^{1\star}$, {\large \bf Alexandra Carstensen (abc@ucsd.edu)}$^{1\star}$, \\ {\large \bf Shan Gao (shangaocog@gmail.com)$^2$} {\large \bf Michael C. Frank (mcfrank@stanford.edu)$^3$},  \AND
     $^1$Department of Psychology, UC San Diego, $^2$Department of Psychology, University of Chicago, \\ $^3$Department of Psychology, Stanford University
     }
-
 abstract: >
- Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce differences in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related, whereas Western cultures may bias judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are similar across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and observing or hearing about cows and grass or cows and chickens more often could induce preferences for these groupings, and account in part for apparent differences in notions of similarity across contexts.
+ Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce differences in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related, whereas Western cultures may bias judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are similar across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and hearing about cows and grass or cows and chickens more often could induce preferences for these groupings, and account in part for apparent differences in notions of similarity across contexts.
     
 keywords: >
     similarity; culture; language; semantics; lexical co-occurrence; variation
     
 output: cogsci2016::cogsci_paper
 #final-submission: \cogscifinalcopy
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r global_options, include=FALSE}
@@ -50,6 +50,7 @@ library("effsize")
 library("kableExtra")
 library("irr")
 require(agreement)
+library("report")
 
 # # these options here change the formatting of how comments are rendered
 # opts_chunk$set(
@@ -83,9 +84,7 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 <!-- In contrast, thematic categorization is based on causal, spatial, and temporal relationships among objects [@Markman1984]. -->
 
-## Cross-cultural variation in similarity
-
-The way we partition our continuous experiences of the world into categories, and which kind of similarity relationships we privilege to organize such partitions, vary across cultures.
+We constantly partition our continuous experience of the world into categories, but the way we organize these partitions can vary across cultures.
 One way this cross-cultural difference has been observed is with a task comparing preference for taxonomic and thematic similarity between East Asian and Western participants.[^1]
 @Ji2004 found that in a word triad task (choose two out of three words that are more related to one another), Chinese participants preferred thematic matching more compared to European Americans.
 In a pictorial version of this task, @Chiu1972 found that Chinese children (9-10 years old) are also more likely to choose thematic matches compared to their American counterparts.
@@ -93,13 +92,14 @@ This cross-cultural difference is also observed in novel object categorization, 
 
 [^1]: Taxonomic categorization is based on the similarity of attributes, for example, similar perceptual properties, like shared color or shape, among objects.In contrast, thematic categorization is based on causal, spatial, and temporal relationships among objects [@Markman1984].
 
-Previous research has linked the observed difference in similarity judgment to related work showing tendencies toward analytic processing (emphasizing objects and their properties) in Western cultures and holistic processing in East Asian cultures (emphasizing relationships between objects and their context) (see also @Nisbett2003).
-Cross-cultural difference in similarity judgment is thus connected to well-documented work showing East Asian participants exhibiting a higher level of sensitivity to context than their Western counterparts when reproducing drawings from memory [@Ji2000]; visually exploring naturalistic scenes [@Chua2005]; describing scenes [@Masuda2001]; and in explaining the causes of ambiguous behaviors [@Choi1999].
-This view ascribes cross-cultural differences in similarity judgment to variation in how each culture (or group of culture, i.e. East Asian vs Western) **conceptualize** similarity -- with East Asians preferring thematic relations more than Westerners.
+One hypothesis is that differences in similarity judgment is linked to the tendency to see more analytic processing in Western culture and more holistic processing in East Asian cultures [@Nisbett2003].
+On this hypothesis, since analytic processing emphasizes relationships between objects and their properties, it leads to taxonomic similarity judgments; in contrast, holistic processing emphasizes relations between objects and leads to thematic similarity judgments.
+Cross-cultural difference in similarity judgment is thus connected to work showing East Asian participants exhibiting a higher level of sensitivity to context than their Western counterparts when reproducing drawings from memory [@Ji2000]; visually exploring naturalistic scenes [@Chua2005]; describing scenes [@Masuda2001]; and in explaining the causes of ambiguous behaviors [@Choi1999].
+This view ascribes cross-cultural differences in similarity judgment to variation in how each culture (or group of culture, i.e. East Asian vs Western) *conceptualize* similarity -- with East Asians preferring thematic relations more than Westerners.
 
-Alternatively, these judgments could be shaped by cross-cultural differences in the **inputs** to similarity judgment, namely, the statistics of the environment, and accordingly the content of everyday experiences.
+Alternatively, these judgments could be shaped by cross-cultural differences in the *inputs* to similarity judgment, namely, the statistics of the environment, and accordingly the content of everyday experiences.
 Perhaps when faced with the triad task, participants from all cultures follow the same process for conceptualizing similarity, but rely on language or culture-specific inputs to this process.
-If we observe a difference in categorization between East Asian and Western participants, it could be that members of both groups use the same procedure (considering similarity that is influenced by both taxonomic and thematic relations), but the inputs to this procedure differ between cultures, with East Asian participants exposed to more instances of thematic similarity than their Western counterparts.
+If we observe a difference in categorization between East Asian and Western participants, it could be that members of both groups use the same procedure (considering similarity that is influenced by both taxonomic and thematic relations), but the inputs to this procedure differ between cultures, with East Asian participants exposed to more support for thematic similarity in the language they hear in comparison to their Western counterparts.
 We might also expect that both conceptualization and inputs of similarity play a role in driving cross-cultural differences -- East Asian participants may both be exposed to more instances of thematic similarity, and prefer to conceptualize similarity as thematic relations more so than Westerners.
 
 ## Estimating variation in experience
@@ -108,9 +108,9 @@ To test alternative hypotheses involving variation of inputs to similarity judgm
 While this metric is difficult to directly measure, language statistics can provide a rough proxy.
 Language statistics is useful in that it is part of the inputs to everyday experiences (through spoken and written language), may afford many of the 'experiences' that people have with infrequently encountered items, like cows or helicopters, and provides accessible measures.
 Previous work also suggests that using language statistics (such as lexical co-occurrence or cosine distance of word embeddings) as a proxy can be a good predictor for similarity reasoning.
-@Griffiths2007 showed that a model trained on word-document co-occurrence can predict word association and the effects of semantic association on a variety of linguistic tasks.
+A model trained on word-document co-occurrence can predict word association and the effects of semantic association on a variety of linguistic tasks [@Griffiths2007].
 Lexical semantic models that are constructed using lexical co-occurrence (in comparison to annotated relations) have been shown to perform well on predicting human judgments about similarity between word pairs that are thematically or taxonomically related [@Rohde2006].
-Word embeddings like fastText have been demonstrated to be good predictors for similarity judgments (@Liu2019, @Jatnika2019).
+Word embeddings like word2vec, gloVe, and fastText have been demonstrated to be good predictors for similarity judgments (@Liu2019, @Jatnika2019).
 
 Our study uses cosine distances of fastText word vectors as a measure of lexical co-occurrence[^2].
 fastText is a system that uses lexical co-occurrence information to generate a vector representing each word in its lexicon [@Mikolov2018].
@@ -137,23 +137,25 @@ Therefore, our approach looks at the extent to which language statistics can pre
 It may be possible to gain traction on potential mechanisms by examining whether variation in similarity judgments co-vary with environmental statistics that differ across cultural and linguistic contexts.--
 ```
 Our study tests the hypothesis that, rather than (or in addition to) the variation in conceptualization of similarity across cultural groups, variation in the input to similarity judgment (namely, environmental statistics as proxied by language statistics) can be used to predict cross-cultural differences observed in how people evaluate similarity.
+
+We measured taxonomic versus thematic categorization in a word triad task in three populations. Following @Ji2004, we conducted our study in the US and China. In addition, we collected data in Vietnam, Vietnam is a Southeast Asian country that borders China and is historically greatly influenced by Chinese culture [@Hui2002].
+Therefore, it serves as a suitable cultural context to investigate whether the claim made by @Ji2004 and previous studies, that Eastern and Western cultures have different notions of similarity, extends beyond mainland China. We then tested if fastText vectors from the corresponding corpus (English, Mandarin, and Vietnamese) are good predictors for similarity judgment in each cultural context.
+
 We note that our study is correlational and cannot make a causal claim about the relationship of environmental statistics to similarity judgment, but it may be possible to gain traction on potential mechanisms by examining whether variation in similarity judgments covary with environmental statistics that differ across cultural and linguistic contexts.
 Our specific research questions are as follows: 
 
-Q1: Do we replicate @Ji2004 and extend the results to another East Asian culture, namely Vietnam?
-Vietnam is a Southeast Asian country that borders China and is historically greatly influenced by Chinese culture [@Hui2002].
-Therefore, it serves as a suitable cultural context to investigate whether the claim made by @Ji2004 and previous studies, that Eastern and Western cultures have different notions of similarity, extends beyond mainland China.
+Q1: Do we replicate cross-cultural differences in thematic/taxonomic categorization between East Asian and Western cultures?
 
-Q2: To what extent do cross-context environmental statistics (as proxied by language) align with variation in similarity judgment?
+Q2: Are these cross-cultural differences related to differences in lexical co-occurrence?
 
 Q3: Is there evidence for a unique contribution from conceptualization of similarity?
 
-Q4: Is language statistics viable as a standalone predictor, or is it simply measuring conceptualization of similarity in a different way? 
+Q4: Is the relationship with co-occurrence specific to taxonomic/thematic items, or can co-occurrence structure predict other judgments? 
 
-To preview our results, we find that, while we do not find the predicted Eastern/Western contrast in conceptualization of similarity in our Vietnam extension, we do find that both language-specific statistics and cultural contexts are a good predictor for cross-cultural differences in similarity judgments.
+To preview our results, we replicate US-China differences and find that Vietnamese judgments are intermediate between these two. Further, language-specific statistics are a good predictor for cross-cultural differences in similarity judgments.
 Language statistics are also a good predictor for filler items with no taxonomic/thematic structure.
 Our findings are in contrast to previous accounts, by which culture induces differing conceptions of similarity (varying between taxonomic and thematic).
-these findings provide an alternative, and more specific, account by which language may explain these cross-cultural differences without invoking variation in notions of similarity.
+these findings provide an alternative account by which language may explain these cross-cultural differences without invoking variation in notions of similarity.
 
 # Methods
 
@@ -653,6 +655,7 @@ summary(fit.language_cos)
 fit.language_cos %>% joint_tests()
 fit.language_cos.anova = Anova(fit.language_cos, type = 3)
 fit.language_cos.anova
+#report(fit.language_cos)
 
 fit.country_language_cos= glmer(responses_theme ~ theme_cosine_prop_corr_lang * country + (1 | subject) + (1 | triad), 
           data = df,  
@@ -684,16 +687,6 @@ If language statistics is only driven by conceptualization of similarity, we sho
 df.filler <- read.csv("../../../data/data_filler_USCNVN_ENZHVI.csv")
 fillers_omit <- read.csv("../../../data/fillers_omit.csv") %>%
   pull(x)
-
-df.filler <- df.filler %>%
-  mutate(word1_match_freq_prop_corr_lang = case_when(
-    country == "US" ~ word1_match_frequency_prop_E,
-    country == "China" ~ word1_match_frequency_prop_M, 
-    country == "Vietnam" ~ word1_match_frequency_prop_V)) %>% 
-    mutate(word1_match_cosine_prop_corr_lang = case_when(
-    country == "US" ~ word1_match_cosine_prop_E,
-    country == "China" ~ word1_match_cosine_prop_M, 
-    country == "Vietnam" ~ word1_match_cosine_prop_V))
 
 df.filler <- df.filler %>%
   mutate(word1_match_freq_prop_corr_lang = ifelse(country == "US", 
@@ -731,7 +724,7 @@ df.country_sum_filler <- df.country_filler %>%
             sd_word1_resp_percent = sd(word1_resp_percent))
 ```
 
-```{r echo=FALSE, warning=FALSE, include = T, cache = TRUE, fig.env="figure", fig.align = "center", fig.cap="Proportion of Word1 responses by country."}
+```{r echo=FALSE, warning=FALSE, include = F, cache = TRUE, fig.env="figure", fig.align = "center", fig.cap="Proportion of Word1 responses by country."}
 #show violin plot
 ggplot(df.country_filler,
        mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
@@ -763,7 +756,7 @@ fit.country_filler.anova
 ```
 
 For each filler triad, we randomly assigned one of the responding options as 'Word1'.
-Running a mixed-effects logistic regression to predict responding (Word1 or Word2) with country as the fixed effect and a random effect structure equivalent to Q1, we found no effect of country on filler responding ($\chi^2$(`r fit.country_filler.anova["country", "Df"]`) = `r round(fit.country_filler.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_filler.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_filler.anova["country", "Pr(>Chisq)"], 3)), "< .001")`) (Figure 3).
+Running a mixed-effects logistic regression to predict responding (Word1 or Word2) with country as the fixed effect and a random effect structure equivalent to Q1, we found no effect of country on filler responding ($\chi^2$(`r fit.country_filler.anova["country", "Df"]`) = `r round(fit.country_filler.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_filler.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_filler.anova["country", "Pr(>Chisq)"], 3)), "< .001")`).
 
 <!-- #### Raw co-occurrences -->
 
@@ -856,7 +849,18 @@ Using the same mixed-effects logistic regression structure as Q2, we predict res
 We found that in all cultural contexts, the corresponding corpus is a significant predictor of responding, with p \< 0.05 and $\beta$ from `r min(beta.filler_single_corpus_cos)` to `r max(beta.filler_single_corpus_cos)`.
 (For a full report, see Supplementary Information.)
 
-```{r combined filler and stimulus}
+```{r filler corresponding cosine, warning = F, include = F}
+fit.filler = glmer(responses_word1 ~ word1_match_cosine_prop_corr_lang + (1 | subject) + (1 | cue_id), 
+          data = df.filler,
+          family="binomial")
+summary(fit.filler)
+fit.filler.anova = Anova(fit.filler, type = 3)
+
+fit.filler.anova
+#report(fit.filler)
+```
+
+```{r combined filler and stimulus, warning = F, include = F}
 df.triad_filler <- rbind(
   df %>% mutate(response = responses_theme, 
                 cosine_prop_corr_lang = theme_cosine_prop_corr_lang, 
@@ -880,15 +884,14 @@ fit.triad_filler.anova = Anova(fit.triad_filler, type = 3)
 fit.triad_filler.anova
 ```
 
-
 # Discussion
 
 In this paper, we consider whether statistics of the environment (as proxied by language statistics) can account for cross-cultural differences in a classic similarity judgment paradigm, as an alternative to the view that members of different cultures vary in their conceptualization of similarity.
-While we managed to replicate the previously documented contrast between English speakers in the US and Mandarin Chinese speakers from East Asia (mainland China, Taiwan, Hong Kong, and Singapore), we do not extend this contrast to our sample of Vietnamese speakers in Vietnam and English speakers in the US.
-This finding suggests some limitations on the generality of the cultural account.
+We replicated the previously documented contrast between English speakers in the US and Mandarin Chinese speakers from East Asia (mainland China, Taiwan, Hong Kong, and Singapore), with mainland China participants preferring thematic relations to a greater extent compared to US participants. Our sample of Vietnamese participants showed intermediate response but not significantly different from either Chinese or US participants.
+This finding suggests some limitations on the generality of the cultural account, which proposes that thematic/taxonomic similarity preference maps onto
 We found some support for the environmental statistics account: each corpus statistics is a good predictor for the corresponding country's similarity judgments, even when other corpus statistics are included, and even with triads without a taxonomic/thematic structure.
 However, we also found that culture-based conceptualization of similarity uniquely contributes to predicting similarity judgment when included in a model with corpus statistics.
-Overall, our results provide evidence that cross-cultural differences in similarity judgment might not be driven by cross-cultural differences in conception of similarity alone, but also by variation in inputs to similarity judgment.
+Overall, our results provide evidence that cross-cultural differences in similarity judgment are related to linguistic co-occurrence patterns (which also vary across cultures).
 
 There are some important limitations of our approach.
 While we discuss cross-cultural variability at the level of countries or larger world areas, these are not cultural monoliths.
@@ -912,8 +915,7 @@ Despite these caveats, our findings here demonstrate the plausibility of an alte
 We hope this work provides a foundation for further research probing this question.
 
 # Acknowledgements
-
-Place acknowledgments (including funding information) in a section at the end of the paper.
+BLINDED FOR PEER REVIEW.
 
 # References
 
