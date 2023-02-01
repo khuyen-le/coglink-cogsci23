@@ -8,8 +8,8 @@ header-includes:
   - \usepackage[T1, T2A, T5]{fontenc}
   - \usepackage{kotex}
 author-information: > 
-    \author{{\large \bf Khuyen N. Le (knl005@ucsd.edu)}$^{1\star}$, {\large \bf Alexandra Carstensen (abc@ucsd.edu)}$^{1\star}$, \\ {\large \bf Shan Gao (shangaocog@gmail.com)$^2$} {\large \bf Michael C. Frank (mcfrank@stanford.edu)$^3$},  \AND
-    $^1$Department of Psychology, UC San Diego, $^2$Department of Psychology, University of Chicago, \\ $^3$Department of Psychology, Stanford University
+    \author{{\large \bf Khuyen N. Le (knl005@ucsd.edu)}$^{1}$, {\large \bf Alexandra Carstensen (abc@ucsd.edu)}$^{1}$, \\ {\large \bf Shan Gao (shangaocog@gmail.com)$^2$}, {\large \bf Michael C. Frank (mcfrank@stanford.edu)$^3$},  \AND
+    $^1$Department of Psychology, University of California, San Diego, $^2$Department of Psychology, University of Chicago, \\ $^3$Department of Psychology, Stanford University
     }
 abstract: >
  Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce differences in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related, whereas Western cultures may bias judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are similar across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and hearing about cows and grass or cows and chickens more often could induce preferences for these groupings, and account in part for apparent differences in notions of similarity across contexts.
@@ -51,6 +51,7 @@ library("kableExtra")
 library("irr")
 require(agreement)
 library("report")
+library("MuMIn")
 
 # # these options here change the formatting of how comments are rendered
 # opts_chunk$set(
@@ -102,7 +103,7 @@ Perhaps when faced with the triad task, participants from all cultures follow th
 If we observe a difference in categorization between East Asian and Western participants, it could be that members of both groups use the same procedure (considering similarity that is influenced by both taxonomic and thematic relations), but the inputs to this procedure differ between cultures, with East Asian participants exposed to more support for thematic similarity in the language they hear in comparison to their Western counterparts.
 We might also expect that both conceptualization and inputs of similarity play a role in driving cross-cultural differences -- East Asian participants may both be exposed to more instances of thematic similarity, and prefer to conceptualize similarity as thematic relations more so than Westerners.
 
-## Estimating variation in experience
+## Estimating variation in experience via language statistics
 
 To test alternative hypotheses involving variation of inputs to similarity judgment, we need a way to operationalize variation in exposure to thematic vs taxonomic relations.
 While this metric is difficult to directly measure, language statistics can provide a rough proxy.
@@ -110,7 +111,7 @@ Language statistics is useful in that it is part of the inputs to everyday exper
 Previous work also suggests that using language statistics (such as lexical co-occurrence or cosine distance of word embeddings) as a proxy can be a good predictor for similarity reasoning.
 A model trained on word-document co-occurrence can predict word association and the effects of semantic association on a variety of linguistic tasks [@Griffiths2007].
 Lexical semantic models that are constructed using lexical co-occurrence (in comparison to annotated relations) have been shown to perform well on predicting human judgments about similarity between word pairs that are thematically or taxonomically related [@Rohde2006].
-Word embeddings like word2vec, gloVe, and fastText have been demonstrated to be good predictors for similarity judgments (@Liu2019, @Jatnika2019).
+Word embeddings like word2vec, gloVe, and fastText have been demonstrated to be good predictors for similarity judgments [@Liu2019; @Jatnika2019].
 
 Our study uses cosine distances of fastText word vectors as a measure of lexical co-occurrence[^2].
 fastText is a system that uses lexical co-occurrence information to generate a vector representing each word in its lexicon [@Mikolov2018].
@@ -119,7 +120,7 @@ This is a proof of concept for our use of fastText in different languages with v
 
 [^2]: We also carried out our analysis using raw lexical co-occurrences and obtained similar results.
 
-We note that language statistics can incorporate both cultural-specific environmental statistics (the inputs of similarity judgment) and taxonomic/thematic preferences (the conceptualization of similarity).
+We note that language statistics can incorporate both cultural-specific environmental statistics (the inputs of similarity judgment) and thematic/taxonomic preferences (the conceptualization of similarity).
 For example, cultural features (farming) can lead to differences in environmental statistics (seeing cows and grass) and in turn these can influence language (talking more about cows and grass).
 But cultural features (preferring thematic relations) could also more directly cause individuals to talk differently about the same experiences (mentioning what cows eat rather than what other animals cows are like).
 Therefore, our approach looks at the extent to which language statistics can predict cross-cultural differences in similarity judgment with the understanding that language statistics is a proxy for both inputs and conceptualization of similarity judgment[^3].
@@ -150,10 +151,10 @@ Q2: Are these cross-cultural differences related to differences in lexical co-oc
 
 Q3: Is there evidence for a unique contribution from conceptualization of similarity?
 
-Q4: Is the relationship with co-occurrence specific to taxonomic/thematic items, or can co-occurrence structure predict other judgments? 
+Q4: Is the relationship with co-occurrence specific to thematic/taxonomic items, or can co-occurrence structure predict other judgments? 
 
 To preview our results, we replicate US-China differences and find that Vietnamese judgments are intermediate between these two. Further, language-specific statistics are a good predictor for cross-cultural differences in similarity judgments.
-Language statistics are also a good predictor for filler items with no taxonomic/thematic structure.
+Language statistics are also a good predictor for filler items with no thematic/taxonomic structure.
 Our findings are in contrast to previous accounts, by which culture induces differing conceptions of similarity (varying between taxonomic and thematic).
 these findings provide an alternative account by which language may explain these cross-cultural differences without invoking variation in notions of similarity.
 
@@ -268,7 +269,7 @@ We included 105 such triads, a superset including triads pulled from supplementa
 We selected triads on the basis of cultural familiarity in the US, Vietnam, and China.
 The triads were originally in English; they were translated to Vietnamese and Mandarin by a fluent bilingual speaker in each language.
 The translations were then checked for accuracy after backtranslation to English by another fluent bilingual in each language who was naive to the original English versions.
-All materials are included in the Supplementary Information.
+All materials are available at [BLINDED FOR REVIEW].
 
 ## Procedure
 
@@ -321,8 +322,9 @@ We then calculated the thematic cosine distance proportion as thematic cosine di
 We did this for all three corpora.
 We were able to obtain predictions for all triads in all languages.
 We then use a mixed-effects regression to evaluate how well each corpus model predicts participants' similarity judgments, across triads and cultural contexts.
+All analyses are available at [BLINDED FOR REVIEW].
 
-# Results
+# Results & Discussion
 
 ## 1. Replication of previous work and extension to a Vietnamese sample
 
@@ -357,9 +359,9 @@ The group means of proportion of thematic response in mainland China is the high
 
 #show violin plot
 ggplot(df.country,
-       mapping = aes(x = factor(country, levels=c("China", "US", "Vietnam")), 
+       mapping = aes(x = factor(country, levels=c("China", "Vietnam", "US")), 
                      y = theme_resp_percent, 
-                     color = factor(country, levels=c("China", "US", "Vietnam")))) +
+                     color = factor(country, levels=c("China", "Vietnam", "US")))) +
   geom_violin() +
   geom_jitter(height = 0, 
               alpha = 0.3) +  
@@ -367,7 +369,7 @@ ggplot(df.country,
                geom = "pointrange") + 
   labs(y = "Proportion Thematic Chosen", 
        x = "Country") + 
-  scale_color_manual(values=c("#D63230", "#1C77C3", "#F39237")) + 
+  scale_color_manual(values=c("#D63230", "#F39237", "#1C77C3")) + 
   theme(legend.position = "none")
 ```
 
@@ -594,24 +596,24 @@ fit.CN_cos_compare = anova(fit.ENVIZH_CN_cos, fit.ZH_CN_cos, type = 3)
 
 However, in all cultural contexts, adding the other two corpora produces a significantly better fit than the identical model without the additional corpora, and only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_cos_compare["fit.ENVIZH_US_cos", "Df"]`) = `r round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Chisq"], 2)`, p `r ifelse( fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"], 3)), "< .001")`; Vietnam response: $\chi^2$(`r fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Df"]`) = `r round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Chisq"], 2)`, p `r ifelse( fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"], 3)), "< .001")`; China response: $\chi^2$(`r fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Df"]`) = `r round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Chisq"], 2)`, p `r ifelse( fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"], 3)), "< .001")`). This analysis suggests that culture-specific inputs to similarity judgment (as proxied by language statistics) do not fully explain cross-cultural differences in similarity judgment.
 
-## 3. Cultural context as a predictor for cross-cultural variation in similarity judgments
+<!-- ## 3. Cultural context as a predictor for cross-cultural variation in similarity judgments -->
 
-Our above models tested whether language statistics is a good predictor for similarity judgment.
-As we noted above, language statistics can be a proxy of both inputs and conceptualization of similarity.
-However, it is still an open question whether conceptualization of similarity itself has a unique contribution to similarity judgment (beyond its influence on language statistics).
-To test this hypothesis, we operationalize cultural-specific conceptualization of similarity as country.
-We then compare a model that includes country, corresponding corpus statistics and their interaction as fixed effects to a model with only the corresponding corpus statistics as the fixed effect.
-If conceptualization of similarity has a unique contribution to similarity judgment, we should see that terms including country to be a significant predictor of responding.
+<!-- Our above models tested whether language statistics is a good predictor for similarity judgment. -->
+<!-- As we noted above, language statistics can be a proxy of both inputs and conceptualization of similarity. -->
+<!-- However, it is still an open question whether conceptualization of similarity itself has a unique contribution to similarity judgment (beyond its influence on language statistics). -->
+<!-- To test this hypothesis, we operationalize cultural-specific conceptualization of similarity as country. -->
+<!-- We then compare a model that includes country, corresponding corpus statistics and their interaction as fixed effects to a model with only the corresponding corpus statistics as the fixed effect. -->
+<!-- If conceptualization of similarity has a unique contribution to similarity judgment, we should see that terms including country to be a significant predictor of responding. -->
 
 ```{r add corresponding language, include = F}
 df <- df %>%
   mutate(theme_freq_prop_corr_lang = case_when(
     country == "US" ~ theme_freq_prop_E,
-    country == "China" ~ theme_freq_prop_M, 
-    country == "Vietnam" ~ theme_freq_prop_V)) %>% 
+    country == "China" ~ theme_freq_prop_M,
+    country == "Vietnam" ~ theme_freq_prop_V)) %>%
     mutate(theme_cosine_prop_corr_lang = case_when(
     country == "US" ~ theme_cosine_prop_E,
-    country == "China" ~ theme_cosine_prop_M, 
+    country == "China" ~ theme_cosine_prop_M,
     country == "Vietnam" ~ theme_cosine_prop_V))
 ```
 
@@ -648,8 +650,8 @@ df <- df %>%
 <!-- ``` -->
 
 ```{r country language interaction in cosine prop, include = F}
-fit.language_cos = glmer(responses_theme ~ theme_cosine_prop_corr_lang + (1 | subject) + (1 | triad), 
-          data = df,  
+fit.language_cos = glmer(responses_theme ~ theme_cosine_prop_corr_lang + (1 | subject) + (1 | triad),
+          data = df,
           family="binomial")
 summary(fit.language_cos)
 fit.language_cos %>% joint_tests()
@@ -657,13 +659,13 @@ fit.language_cos.anova = Anova(fit.language_cos, type = 3)
 fit.language_cos.anova
 #report(fit.language_cos)
 
-fit.country_language_cos= glmer(responses_theme ~ theme_cosine_prop_corr_lang * country + (1 | subject) + (1 | triad), 
-          data = df,  
+fit.country_language_cos= glmer(responses_theme ~ theme_cosine_prop_corr_lang * country + (1 | subject) + (1 | triad),
+          data = df,
           family="binomial")
 summary(fit.country_language_cos)
-fit_joint.country_language_cos <- fit.country_language_cos %>% 
+fit_joint.country_language_cos <- fit.country_language_cos %>%
   joint_tests() %>%
-  remove_rownames() %>% 
+  remove_rownames() %>%
   column_to_rownames(var = "model term")
 fit.country_language_cos.anova = Anova(fit.country_language_cos, type = 3)
 fit.country_language_cos.anova
@@ -672,18 +674,15 @@ fit.country_language_cos_compare = anova(fit.language_cos, fit.country_language_
 fit.country_language_cos_compare
 ```
 
-In the model containing only the corresponding corpus statistics, the corpus statistics is a significant predictor ($\beta$ = `r round(fixef(fit.language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`). When adding country and interaction between country and corpus, corpus statistics ($\beta$ = `r round(fixef(fit.country_language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`), country (F(`r fit_joint.country_language_cos["country", "df1"]`, `r fit_joint.country_language_cos["country", "df2"]`) = `r round(fit_joint.country_language_cos["country", "F.ratio"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["country", "Df"]`) = `r round(fit.country_language_cos.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["country", "Pr(>Chisq)"], 3)), "< .001")`), and interaction between country and corpus (F(`r fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "df1"]`, `r fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "df2"]`) = `r round(fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "F.ratio"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Df"]`) = `r round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Pr(>Chisq)"], 3)), "< .001")`), are significant predictors[^7]. Including the country and country-corpus terms to the language-only model significantly its ability to explain variation in responding ($\chi^2$(`r fit.country_language_cos_compare["fit.country_language_cos", "Df"]`) = `r round(fit.country_language_cos_compare["fit.country_language_cos", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos_compare["fit.country_language_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos_compare["fit.country_language_cos", "Pr(>Chisq)"], 3)), "< .001")`). This result points to a unique contribution by culture-specific ways of conceptualizing similarity to similarity judgment that is not captured in language statistics.
+<!-- In the model containing only the corresponding corpus statistics, the corpus statistics is a significant predictor ($\beta$ = `r round(fixef(fit.language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`). When adding country and interaction between country and corpus, corpus statistics ($\beta$ = `r round(fixef(fit.country_language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`), country (F(`r fit_joint.country_language_cos["country", "df1"]`, `r fit_joint.country_language_cos["country", "df2"]`) = `r round(fit_joint.country_language_cos["country", "F.ratio"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["country", "Df"]`) = `r round(fit.country_language_cos.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["country", "Pr(>Chisq)"], 3)), "< .001")`), and interaction between country and corpus (F(`r fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "df1"]`, `r fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "df2"]`) = `r round(fit_joint.country_language_cos["theme_cosine_prop_corr_lang:country", "F.ratio"], 2)`, $\chi^2$(`r fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Df"]`) = `r round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos.anova["theme_cosine_prop_corr_lang:country", "Pr(>Chisq)"], 3)), "< .001")`), are significant predictors[^7]. Including the country and country-corpus terms to the language-only model significantly its ability to explain variation in responding ($\chi^2$(`r fit.country_language_cos_compare["fit.country_language_cos", "Df"]`) = `r round(fit.country_language_cos_compare["fit.country_language_cos", "Chisq"], 2)`, p `r ifelse( fit.country_language_cos_compare["fit.country_language_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_language_cos_compare["fit.country_language_cos", "Pr(>Chisq)"], 3)), "< .001")`). This result points to a unique contribution by culture-specific ways of conceptualizing similarity to similarity judgment that is not captured in language statistics. -->
 
-[^7]: With preregistered exclusion criterion: only corpus statistics and interaction between country and corpus are significant predictors.
+<!-- [^7]: With preregistered exclusion criterion: only corpus statistics and interaction between country and corpus are significant predictors. -->
 
-## 4. Language statistics as a predictor for non-structured triad items
+## 3. Language statistics as a predictor for non-structured filler items
 
-A possible concern with our approach is that variation in language statistics (which we claim to be a proxy of both inputs and conceptualization of similarity) can be fully explained by variation in conceptualization of similarity (i.e. the difference in similarity measures between 'cow' and 'grass' versus 'cow' and 'chicken' in one corpus is solely driven by the corresponding culture's preference of thematic versus taxonomic categorization).
-Alternatively, language statistics may be measuring slight but pervasive differences in similarity driven by participants' different cultural contexts, rather than merely the type of similarity they generally prefer (thematic vs taxonomic relations).
-We address this concern by testing whether language statistics covary with similarity judgment of items with no taxonomic/thematic structures (filler items).
-If language statistics is only driven by conceptualization of similarity, we should not see an effect with such items, which have no structured similarity relations by which to make any predictions. 
+A possible concern with our approach is that our models using language statistics in Q2 are only able to account for variation in thematic/taxonomic preference in similarity judgment because language statistics is picking up on differences in thematic/taxonomic preference in conceptualization of similarity. For example, perhaps "cow" and "grass" co-occurs more than "cow" and "chicken" in Mandarin because Chinese speakers prefer thematic relations, and thus talk about "cow" and "grass" together more often. Vice versa, English speakers preferring taxonomic relations would talk about "cow" and "chicken" together more often, hence driving higher lexical co-occurrence for "cow" and "chicken" in the English corpus. In other words, perhaps the language statistics models are merely measuring variation in thematic/taxonomic relation preference in conceptualization of similarity, only in a different way. If this is the case, language statistics should not be able to predict responding for filler items (such as whether "tomorrow" or "yesterday" is more related to "today") because these items do not have a thematic/taxonomic structure. Additionally, even when one option might be more related to the cue, such relationship is not systematic throughout the set of fillers. On the other hand, if language statistics capture similarity judgment in a more general sense (beyond thematic/taxonomic preference in conceptualization of similarity), it should also be a significant predictor for the non-structured filler items. 
 
-```{r incorporate base freq for fillers}
+```{r incorporate base freq for fillers, warning = F, include = F}
 df.filler <- read.csv("../../../data/data_filler_USCNVN_ENZHVI.csv")
 fillers_omit <- read.csv("../../../data/fillers_omit.csv") %>%
   pull(x)
@@ -845,9 +844,9 @@ beta.filler_single_corpus_cos <- c(
 )
 ```
 
-Using the same mixed-effects logistic regression structure as Q2, we predict responses (1=word1 or 0=word2) of each cultural context with the corresponding corpus statistics as a fixed effect, and participant and triad as random effects.
+Using the same mixed-effects logistic regression structure as the single corpus models in Q2, we predict responses (1=word1 or 0=word2) of each cultural context with the corresponding corpus statistics as a fixed effect, and participant and triad as random effects.
 We found that in all cultural contexts, the corresponding corpus is a significant predictor of responding, with p \< 0.05 and $\beta$ from `r min(beta.filler_single_corpus_cos)` to `r max(beta.filler_single_corpus_cos)`.
-(For a full report, see Supplementary Information.)
+(For a full report, see Supplementary Information.) These results show that the language statistics model is accounting for general similarity in addition to structured thematic/taxonomic similarity. 
 
 ```{r filler corresponding cosine, warning = F, include = F}
 fit.filler = glmer(responses_word1 ~ word1_match_cosine_prop_corr_lang + (1 | subject) + (1 | cue_id), 
@@ -884,13 +883,16 @@ fit.triad_filler.anova = Anova(fit.triad_filler, type = 3)
 fit.triad_filler.anova
 ```
 
-# Discussion
+To investigate whether language statistics predicts triads and filler items differently, we compare the variance in responding that can be accounted for by language statistics of the corresponding corpus in the two different types of items (structured triads versus non-structured filler items). Namely, we ran two mixed-effects logistic regression models that predict responding across cultural contexts (1=thematic or word1, 0=taxonomic or word2), with the corresponding corpus statistics (for e.g., cosine proportion from the English corpus for US responding) as a fixed effect and participant and item as random effects.
+Consistent with our results above, corresponding corpus is a significant predictor for responding to both triads and filler items (triads: $\beta$ = `r round(fixef(fit.language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`, fillers: $\beta$ = `r round(fixef(fit.filler)["word1_match_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.filler.anova["word1_match_cosine_prop_corr_lang", "Df"]`) = `r round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`). Importantly, we found comparable conditional $R^2$ when corresponding corpus is used to predict only triad items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.language_cos))["theoretical", "R2c"], 2)`) and only filler items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.filler))["theoretical", "R2c"], 2)`), suggesting that culture-corresponding corpus statistics is able to explain the same amount of variance in the responding data for either triads or filler items. This result provides evidence for our view that language statistics is measuring general tendencies in similarity judgment, beyond preference for thematic/taxonomic relations.
+
+# General Discussion
 
 In this paper, we consider whether statistics of the environment (as proxied by language statistics) can account for cross-cultural differences in a classic similarity judgment paradigm, as an alternative to the view that members of different cultures vary in their conceptualization of similarity.
 We replicated the previously documented contrast between English speakers in the US and Mandarin Chinese speakers from East Asia (mainland China, Taiwan, Hong Kong, and Singapore), with mainland China participants preferring thematic relations to a greater extent compared to US participants. Our sample of Vietnamese participants showed intermediate response but not significantly different from either Chinese or US participants.
-This finding suggests some limitations on the generality of the cultural account, which proposes that thematic/taxonomic similarity preference maps onto
-We found some support for the environmental statistics account: each corpus statistics is a good predictor for the corresponding country's similarity judgments, even when other corpus statistics are included, and even with triads without a taxonomic/thematic structure.
-However, we also found that culture-based conceptualization of similarity uniquely contributes to predicting similarity judgment when included in a model with corpus statistics.
+This finding suggests some limitations on the generality of the cultural account, which proposes that thematic/taxonomic similarity preference aligns with East Asian/Western tendency for holistic vs analytic processing.
+We found some support for the environmental statistics account: each corpus statistics is a good predictor for the corresponding country's similarity judgments, even when other corpus statistics are included, and even with triads without a thematic/taxonomic structure.
+<!-- However, we also found that culture-based conceptualization of similarity uniquely contributes to predicting similarity judgment when included in a model with corpus statistics. -->
 Overall, our results provide evidence that cross-cultural differences in similarity judgment are related to linguistic co-occurrence patterns (which also vary across cultures).
 
 There are some important limitations of our approach.
@@ -903,13 +905,7 @@ We expect that our data is likely to underestimate variation both within and bet
 Additionally, language, culture, cognition, and individual experiences are intertwined in complex causal relationships.
 In this study, we measure language and its relation to cross-cultural differences in categorization, but these relations test only the plausibility of a language-based account; they cannot establish the direction of causality.
 
-Our findings raise additional questions for future work: <!--If not differences in taxonomic vs. thematic responding, then what differences drive the relativity effects previous studies have observed?--> To what extent are the relativity effects driven by language, and to what extent by culture?
-@Ji2004 established that culture-aligned differences in this paradigm exist, even when the test language is held constant, concluding that "it is culture (independent of the testing language) that led to different grouping styles" in their study.
-Our data provide a cautionary note to this conclusion, suggesting that semantic representations in bilinguals (see @Francis2005 for a review) may have the potential to provide an offline account for cross-context differences in similarity judgments, independent of test language.
-However, there are still many open questions for this account.
-How do semantic associations guide categorization?
-Can they explain taxonomic-thematic differences of the type reported by @Ji2004 and others?
-Can we provide a more specific computational account than the simple proportion-of-similarity model tested here?
+@Ji2004 established that culture-aligned differences in this paradigm exist, even when the test language is held constant, concluding that "it is culture (independent of the testing language) that led to different grouping styles" in their study. Our data provide a cautionary note to this conclusion, suggesting that while cultural differences in similarity judgment exists, we might get better traction at modelling cross-cultural variation through environmental statistics such as lexical co-occurrences, rather than treating groups of cultures as monoliths (East Asian vs Western). However, there are still many open questions for this account. Our operationalization of environmental statistics with lexical co-occurrence is a proxy of both language inputs and culture-specific conceptualization of similarity. The extent to which cross-cultural differences in similarity judgment are driven by language versus culture is still an open question. Future work should also aim to provide a more specific computational account of how lexical co-occurrence might guide categorization preference beyond the simple proportion-of-similarity model tested here, and investigate other individual- or triad-specific factors that might influence how environmental statistics affect similarity judgment.
 
 Despite these caveats, our findings here demonstrate the plausibility of an alternative perspective on cross-cultural accounts of language, thought, and similarity in the case of taxonomic and thematic reasoning: that it may be the input to similarity judgments, rather than the evaluative process or the conceptualization of similarity that produces variation in similarity reasoning across cultural and linguistic contexts.
 We hope this work provides a foundation for further research probing this question.
