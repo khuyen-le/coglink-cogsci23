@@ -562,7 +562,8 @@ country_value <- c(rep("US", 3),
 corpus_value <- c(rep(c("EN", "VI", "ZH"), 3))
 
 df.USVNCN_coeffs_cos <- data.frame(country_value, corpus_value, coeff_value_cos, se_value_cos) %>%
-  mutate(corpus_value = factor(corpus_value, levels=c("ZH", "EN", "VI")))
+  mutate(corpus_value = factor(corpus_value, levels=c("ZH", "VI", "EN")), 
+         country_value = factor(country_value, levels=c("CN", "VN", "US")))
 
 plot.coeffs_cos <- ggplot(data = df.USVNCN_coeffs_cos, 
        mapping = aes(x = country_value, y = coeff_value_cos, fill = corpus_value)) +
@@ -571,11 +572,11 @@ plot.coeffs_cos <- ggplot(data = df.USVNCN_coeffs_cos,
                  position=position_dodge(.9)) +
   scale_y_reverse() + 
   labs(x = "Country", y = "Fixed effect size", fill = "Corpus") + 
-  scale_x_discrete(labels=c("CN" = "China", "US" = "US", "VN" = "Vietnam")) + 
-  scale_fill_manual(values=c("#D63230", "#1C77C3", "#F39237"))
+  scale_x_discrete(labels=c("CN" = "China", "VN" = "Vietnam", "US" = "US")) + 
+  scale_fill_manual(values=c("#D63230", "#F39237", "#1C77C3"))
 ```
 
-```{r echo=FALSE, warning=FALSE, cache = TRUE, fig.env = "figure", fig.align = "center", set.cap.width=T, num.cols.cap=1, fig.cap="Fixed effect sizes of each corpus lexical statistics (cosine distance proportion) when included as a predictor for China, US, and Vietnam responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response."}
+```{r coeffs_cos, echo=FALSE, warning=FALSE, cache = TRUE, fig.env = "figure", fig.align = "center", set.cap.width=T, num.cols.cap=1, fig.cap="Fixed effect sizes of each corpus lexical statistics (cosine distance proportion) when included as a predictor for China, Vietnam, and US responding, respectively. The English corpus is the best predictor for US response, and the Mandarin corpus is the best predictor for China response."}
 #plot.coeffs_freq + 
   plot.coeffs_cos
 ```
