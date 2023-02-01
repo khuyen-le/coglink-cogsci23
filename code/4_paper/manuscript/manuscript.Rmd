@@ -87,8 +87,7 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 <!-- We constantly partition our continuous experience of the world into categories, but the way we organize these partitions can vary across cultures.-->
 
-Many cognitive processes rely on similarity, from inference and generalization to analogy, mathematics, and science. There is substantial consistency in human similarity reasoning, but also systematic variation across cultural and linguistic contexts. In particular, there is considerable evidence showing that similarity reasoning in East Asian cultural contexts differs from that in Western cultures (e.g. @Nisbett2003b).
-<!-- Khuyen could you add this ref as Nisbett2003b?  https://www.pnas.org/doi/10.1073/pnas.1934527100-->
+Many cognitive processes rely on similarity, from inference and generalization to analogy, mathematics, and science. There is substantial consistency in human similarity reasoning, but also systematic variation across cultural and linguistic contexts. In particular, there is considerable evidence showing that similarity reasoning in East Asian cultural contexts differs from that in Western cultures [e.g. @Nisbett2003b].
 For example, in a triad task comparing preferences for taxonomic and thematic similarity (choose two out of three words that are most related to one another), @Ji2004 found that Chinese participants preferred thematic matching to a greater extent than European Americans.
 In an image version of this task, Chinese children (9-10 years old) are also more likely to choose thematic matches compared to their American counterparts [@Chiu1972].
 This cross-cultural difference is also observed in novel object categorization, with Chinese participants preferring to group by family resemblance across multiple features and Americans preferring a single-feature rule [@Norenzayan2002].
@@ -111,7 +110,7 @@ Language statistics are useful in that they are part of the input to everyday ex
 Previous work also suggests that language statistics, such as lexical co-occurrence or cosine distance of word embeddings, can be good predictors of similarity reasoning.
 Semantic models that are constructed using lexical co-occurrence (in comparison to annotated relations) have been shown to perform well on predicting human judgments about similarity between word pairs that are thematically or taxonomically related [@Rohde2006]. 
 Relatedly, a model trained on word-document co-occurrence can predict word association and the effects of semantic association on a variety of linguistic tasks [@Griffiths2007].
-Word embeddings like word2vec, gloVe, and fastText have also been shown to be good predictors for similarity judgments (@Liu2019, @Jatnika2019).
+Word embeddings like word2vec, gloVe, and fastText have also been shown to be good predictors for similarity judgments [@Liu2019, @Jatnika2019].
 
 Our study uses cosine distances of fastText word vectors as a measure of lexical co-occurrence[^2].
 fastText is a system that uses lexical co-occurrence information to generate a vector representing each word in its lexicon [@Mikolov2018].
