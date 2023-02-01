@@ -15,7 +15,7 @@ abstract: >
  Is “cow” more closely related to “grass” or “chicken”? Speakers of different languages judge similarity in this context differently, but why? One possibility is that cultures co-varying with these languages induce differences in conceptualizations of similarity. Specifically, East Asian cultures may promote reasoning about thematic similarity, by which cow and grass are more related, whereas Western cultures may bias judgments toward taxonomic relations, like cow-chicken. This difference in notions of similarity is the consensus interpretation for cross-cultural variation in this paradigm. We consider, and provide evidence for, an alternative possibility, by which notions of similarity are similar across contexts, but the statistics of the environment vary. On this account, similarity judgments are guided by co-occurrence in experience, and hearing about cows and grass or cows and chickens more often could induce preferences for these groupings, and account in part for apparent differences in notions of similarity across contexts.
     
 keywords: >
-    similarity; culture; language; semantics; lexical co-occurrence; variation
+    similarity; culture; language; semantics; lexical co-occurrence; variation; US; China; Vietnam
     
 output: cogsci2016::cogsci_paper
 #final-submission: \cogscifinalcopy
@@ -84,23 +84,23 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 <!-- In contrast, thematic categorization is based on causal, spatial, and temporal relationships among objects [@Markman1984]. -->
 
-We constantly partition our continuous experience of the world into categories, but the way we organize these partitions can vary across cultures.
-One way this cross-cultural difference has been observed is with a task comparing preference for taxonomic and thematic similarity between East Asian and Western participants.[^1]
-@Ji2004 found that in a word triad task (choose two out of three words that are more related to one another), Chinese participants preferred thematic matching more compared to European Americans.
-In a pictorial version of this task, @Chiu1972 found that Chinese children (9-10 years old) are also more likely to choose thematic matches compared to their American counterparts.
+<!-- We constantly partition our continuous experience of the world into categories, but the way we organize these partitions can vary across cultures.-->
+
+Many cognitive processes rely on similarity, from inference and generalization to analogy, mathematics, and science. There is substantial consistency in human similarity reasoning, but also systematic variation across cultural and linguistic contexts. In particular, there is considerable evidence showing that similarity reasoning in East Asian cultural contexts differs from that in Western cultures (e.g. @Nisbett2003b).
+<!-- Khuyen could you add this ref as Nisbett2003b?  https://www.pnas.org/doi/10.1073/pnas.1934527100-->
+For example, in a triad task comparing preferences for taxonomic and thematic similarity (choose two out of three words that are most related to one another), @Ji2004 found that Chinese participants preferred thematic matching to a greater extent than European Americans.
+In an image version of this task, Chinese children (9-10 years old) are also more likely to choose thematic matches compared to their American counterparts [@Chiu1972].
 This cross-cultural difference is also observed in novel object categorization, with Chinese participants preferring to group by family resemblance across multiple features and Americans preferring a single-feature rule [@Norenzayan2002].
+Across tasks, East Asian participants show a preference for thematic similarity based on causal, spatial, and temporal relationships while Western participants are more likely to make taxonomic matches based on the similarity of attributes, like shared color or shape, among objects [see @Markman1984 for a discussion of these types of similarity].
 
-[^1]: Taxonomic categorization is based on the similarity of attributes, for example, similar perceptual properties, like shared color or shape, among objects.In contrast, thematic categorization is based on causal, spatial, and temporal relationships among objects [@Markman1984].
+An influential perspective within cultural psychology links these differences in similarity judgment to tendencies toward analytic processing in Western cultures, and holistic processing in East Asian cultures [@Nisbett2003].
+Analytic processing emphasizes rule-like relationships predicated on objects and their properties and, correspondingly, taxonomic similarity, while holistic processing emphasizes relations between objects and their context and therefor, thematic similarity.
+In related work, East Asian participants show a higher level of sensitivity to context than their Western counterparts when reproducing drawings from memory [@Ji2000]; visually exploring naturalistic scenes [@Chua2005]; describing scenes [@Masuda2001]; and in explaining the causes of ambiguous behaviors [@Choi1999]. The consensus interpretation in this literature ascribes cross-cultural differences in similarity judgment to variation in the *conceptualization* of similarity -- with people from East Asian cultures relying on a more thematic notion of similarity than Westerners.
 
-One hypothesis is that differences in similarity judgment is linked to the tendency to see more analytic processing in Western culture and more holistic processing in East Asian cultures [@Nisbett2003].
-On this hypothesis, since analytic processing emphasizes relationships between objects and their properties, it leads to taxonomic similarity judgments; in contrast, holistic processing emphasizes relations between objects and leads to thematic similarity judgments.
-Cross-cultural difference in similarity judgment is thus connected to work showing East Asian participants exhibiting a higher level of sensitivity to context than their Western counterparts when reproducing drawings from memory [@Ji2000]; visually exploring naturalistic scenes [@Chua2005]; describing scenes [@Masuda2001]; and in explaining the causes of ambiguous behaviors [@Choi1999].
-This view ascribes cross-cultural differences in similarity judgment to variation in how each culture (or group of culture, i.e. East Asian vs Western) *conceptualize* similarity -- with East Asians preferring thematic relations more than Westerners.
-
-Alternatively, these judgments could be shaped by cross-cultural differences in the *inputs* to similarity judgment, namely, the statistics of the environment, and accordingly the content of everyday experiences.
+Alternatively, these judgments could be shaped by cross-cultural differences in the *inputs* to similarity judgment, that is, the statistics of the environment, and the content of everyday experiences.
 Perhaps when faced with the triad task, participants from all cultures follow the same process for conceptualizing similarity, but rely on language or culture-specific inputs to this process.
 If we observe a difference in categorization between East Asian and Western participants, it could be that members of both groups use the same procedure (considering similarity that is influenced by both taxonomic and thematic relations), but the inputs to this procedure differ between cultures, with East Asian participants exposed to more support for thematic similarity in the language they hear in comparison to their Western counterparts.
-We might also expect that both conceptualization and inputs of similarity play a role in driving cross-cultural differences -- East Asian participants may both be exposed to more instances of thematic similarity, and prefer to conceptualize similarity as thematic relations more so than Westerners.
+We might also expect that both conceptualization of similarity and inputs from experience play a role in driving cross-cultural differences -- East Asian participants may be exposed to more instances of thematic similarity, and prefer to conceptualize similarity as thematic to a greater extent than Westerners.
 
 ## Estimating variation in experience
 
