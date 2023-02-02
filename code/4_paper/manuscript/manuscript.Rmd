@@ -244,7 +244,7 @@ df.gender_V <- df.demog_V %>%
 
 ## Participants
 
-Data collection and analyses for this study were pre-registered, and the pre-registration is available at [blinded for peer review].
+Data collection and analyses for this study were pre-registered, and the pre-registration is available at [blinded for review].
 We recruited `r df.excl_US$ppts_finished` participants from the US, `r df.excl_CN$ppts_finished` from mainland China, and `r df.excl_VN$ppts_finished` from Vietnam.
 All participants were recruited through snowball sampling, which, in the US was seeded with student email lists at a large university, in China (CN) with student groups on WeChat, and in Vietnam (VN) with Vietnam-based student groups on Facebook.
 US participants were compensated with \$5 gift certificates (USD), CN participants received 25CNY through WeChat credit transfer, and VN participants received 50,000₫ (VND) in phone credit,
@@ -268,7 +268,7 @@ And the VN sample included `r df.excl_VN$ppts_after_demog_excl` participants (`r
 
 ## Materials
 
-All stimuli and scripts for the experiment and analysis are available at [BLINDED FOR REVIEW].
+All stimuli and scripts for the experiment and analysis are available at [blinded for review].
 We collected and adapted stimuli from previous studies to create test triads consisting of a cue with one thematic and one taxonomic match option.
 For example, "cow," "grass," and "chicken," where "cow" is the cue, "grass" is the thematic match, and "chicken" the taxonomic match.
 We included 105 such triads, a superset including triads pulled from supplemental information and in-text examples across the literature, and others that we adapted or created <!--(see SI for the full list of stimuli and sources)-->.
@@ -277,7 +277,7 @@ The triads were translated from English to Vietnamese and Mandarin by fluent bil
 
 ## Procedure
 \begin{CJK*}{UTF8}{gbsn}
-Each participant completed all 105 triads in blocks of 21 trials at a time (10 test triads, 10 filler triads, and 1 attention check per page), by selecting the match most related to the cue (following Ji et al., 2004): "Which thing is most closely related to the bolded item?" / "哪个事物与加粗项关联最紧密?" / "Thứ nào liên quan nhất với thứ được in đậm?".
+Each participant completed all 105 triads in blocks of 21 trials at a time (10 test triads, 10 filler triads, and 1 attention check per page), by selecting the match most related to the cue. We elicited similarity match responses by asking "Which thing is most closely related to the bolded [cue] item?" In Mandarin Chinese, we used the phrasing for "most closely related" reported by Ji et al. (2004): "哪个事物与加粗项关联最紧密?" And in Vietnamese, we translated this as "Thứ nào liên quan nhất với thứ được in đậm?".
 The test triads were presented with 105 filler triads mixed in, to obscure the taxonomic-thematic two-answer forced choice structure of the test stimuli and reduce the likelihood that participants would become aware of the design.
 The filler triads were groups of three semantically related words, but where the match options were not distinguished by thematic vs. taxonomic similarity, for example, the cue "bird" with match options "lizard" and "toad." Additionally, we included 11 attention check trials, which were formatted similarly to the test and filler triads but included an instruction instead of a cue item, e.g., "Choose wife" with match options "wife" and "husband." In total, each participant completed 210 similarity judgments (105 test triads and 105 fillers) and 11 attention check questions, with all items presented in randomized orders that varied between subjects.
 \end{CJK*}
@@ -381,13 +381,13 @@ As random effects, we included an intercept per subject and one per triad, as we
 
 We found a significant effect of country ($\chi^2$(`r fit.country.anova["country", "Df"]`) = `r round(fit.country.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country.anova["country", "Pr(>Chisq)"], 3)), "< .001")`), but this effect is driven by the difference between US and CN responding ($\beta$ = `r round(fixef(fit.country)["countryUS"], 2)`, p `r ifelse(as.data.frame(summary(fit.country)[["coefficients"]])["countryUS", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country)[["coefficients"]])["countryUS", "Pr(>|z|)"], 3)), "< .001")`). There was no statistical difference between matching in Vietnam and China ($\beta$ = `r round(fixef(fit.country)["countryVietnam"], 2)`, p `r ifelse(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)), "< .001")`), or the US and Vietnam ($\beta$ = `r round(fixef(fit.country_EN_VN)["countryVietnam"], 2)`, p `r ifelse(as.data.frame(summary(fit.country_EN_VN)[["coefficients"]])["countryVietnam", "Pr(>|z|)"] > 0.001, paste0("= ", round(as.data.frame(summary(fit.country_EN_VN)[["coefficients"]])["countryVietnam", "Pr(>|z|)"], 3)), "< .001")`).
 
-In sum, we replicated the differences documented by @Ji2004 between the US and China. We did not find that Vietnamese participants grouped particularly with Chinese participants, however. Instead they were intermediate between the two. 
-Accordingly, we did not find strong support for the hypothesis that there are overall biases toward thematic responding across Asian cultural contexts broadly.
+In sum, we replicated the differences documented by @Ji2004 between the US and China. However, we did not find that Vietnamese participants grouped particularly with Chinese participants. Instead they were intermediate between the two. 
+Accordingly, we did not find strong support for the hypothesis that there are overall biases toward thematic responding across Asian cultural contexts broadly. 
 <!-- However, in our corpus model comparison, we do find evidence for different, more fine-grained variation in similarity judgments between the US and Vietnam. -->
 
 ## 2. Language statistics as a predictor for cross-cultural variation in similarity judgments
 
-In our next analyses, we tested whether triad-level differences in judgments across countries could be predicted on the basis of language statistics. 
+In our next analysis, we tested whether triad-level differences in judgments across countries could be predicted from language statistics. 
 
 ### Single corpus model
 
@@ -395,8 +395,8 @@ First, to test whether variation in language statistics can explain differences 
 <!-- we compare logistic mixed-effects regression models fit to the thematic responding data from each country separately. -->
 <!-- We first ask how well each corpus model (English, Vietnamese, or Mandarin) predicts similarity judgments by speakers of the corresponding language (US, Vietnam, or China). -->
 <!-- To do this,  -->
-we use a mixed-effects logistic regressions fit individually for each country. Our models predicted responses by individual participants to particular triads (0=taxonomic or 1=thematic) with fastText predictions (proportion of cosine distance) as a fixed effect and participant and triad as random effects.
-If language statistics, contribute to the differences in similarity judgments, we would expect each language corpus to be a good predictor for similarity judgment responding in its corresponding context.
+we use a mixed-effects logistic regression fit individually for each country. Our models predicted responses by individual participants to particular triad (0=taxonomic or 1=thematic) with fastText predictions (proportion of cosine distance) as a fixed effect and participant and triad as random effects.
+If language statistics contribute to the differences in similarity judgments, we would expect each language corpus to be a good predictor for similarity judgments in the corresponding population.
 
 ```{r US responding predicted by each corpus model cosine differences, warning=FALSE, include=F}
 #English
@@ -498,7 +498,7 @@ All corpora were significant predictors of all cultural context responding, with
 ### Multi-corpus model
 
 If language statistics are able to predict meaningful culture-specific variation in similarity judgments (rather than just consistency across cultures), we would expect each corpus to be the best predictor of its corresponding culture compared to the other two corpora.
-We directly compared the corpus models by including all three corpus predictors as fixed effects in three mixed-effect regressions (predicting US, Vietnam and China responding) with the same random effects as above.
+We directly compared the corpus models by including all three corpus predictors as fixed effects in three mixed-effect regressions (predicting US, VN, and CN responding) with the same random effects as above.
 
 ```{r Eng-Vie-Mand cosine similarities predicting US-VN-CN, warning=FALSE, include=FALSE}
 
@@ -531,20 +531,20 @@ fit.ENVIZH_CN_cos.anova
 For US responding: only the English (EN) corpus was a significant predictor[^5].
 EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_US_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
 
-[^5]: With the preregistered exclusion criterion, only the English (EN) and Mandarin (ZH) corpus were significant predictors.
+[^5]: With the preregistered exclusion criteria, the English (EN) and Mandarin (ZH) corpora were significant predictors.
 
-For Vietnam responding, only the Vietnamese (VI) and Mandarin (ZH) corpus were significant predictors[^6].
+For Vietnamese participants' responses, only the Vietnamese (VI) and Mandarin (ZH) corpora were significant predictors[^6].
 EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_VN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_VN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
 
-[^6]: With the preregistered exclusion criterion, all three corpora were significant predictors.
+[^6]: With the preregistered exclusion criteria, all three corpora were significant predictors.
 
-For China responding, only the Mandarin (ZH) and English (EN) corpus were significant predictors.
+For responses by Chinese participants, only the Mandarin (ZH) and English (EN) corpus were significant predictors.
 EN corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_E"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_E", "Pr(>Chisq)"], 3)), "< .001")`. VI corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_V"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_V", "Pr(>Chisq)"], 3)), "< .001")`. ZH corpus: $\beta$ = `r round(fixef(fit.ENVIZH_CN_cos)["theme_cosine_prop_M"], 2)`, $\chi^2$(`r fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Df"]`) = `r round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Chisq"], 2)`, p `r ifelse( fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.ENVIZH_CN_cos.anova["theme_cosine_prop_M", "Pr(>Chisq)"], 3)), "< .001")`.
 
 We observed some language specificity in this analysis (Figure 2).
 The English corpus was the best predictor for US responding, and the Mandarin corpus was the best predictor for Chinese responding.
-While this is not the case with the Vietnamese corpus and the Vietnam responding, the Vietnamese corpus was still a significant predictor for the Vietnam responding.
-These results support our hypothesis that specific language statistics can predict cross-cultural variations of similarity judgment.
+While this is not the case with the Vietnamese corpus and Vietnamese participants' responding, the Vietnamese corpus was still a significant predictor for this responding.
+These results support our hypothesis that specific language statistics can predict cross-cultural variation in similarity judgment.
 
 ```{r echo=FALSE, warning = FALSE}
 coeff_value_cos <- c(fixef(fit.ENVIZH_US_cos)["theme_cosine_prop_E"],
@@ -599,7 +599,7 @@ fit.VN_cos_compare = anova(fit.ENVIZH_VN_cos, fit.VI_VN_cos, type = 3)
 fit.CN_cos_compare = anova(fit.ENVIZH_CN_cos, fit.ZH_CN_cos, type = 3)
 ```
 
-However, in all cultural contexts, adding the other two corpora produced a significantly better fit than the identical model with only the corresponding corpus included as a predictor (US response: $\chi^2$(`r fit.US_cos_compare["fit.ENVIZH_US_cos", "Df"]`) = `r round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Chisq"], 2)`, p `r ifelse( fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"], 3)), "< .001")`; Vietnam response: $\chi^2$(`r fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Df"]`) = `r round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Chisq"], 2)`, p `r ifelse( fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"], 3)), "< .001")`; China response: $\chi^2$(`r fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Df"]`) = `r round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Chisq"], 2)`, p `r ifelse( fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"], 3)), "< .001")`). This analysis suggests that culture-specific inputs to similarity judgment (as proxied by language statistics) do not fully explain cross-cultural differences in similarity judgment, whether due to noise in the estimates of language statistics or true additional variance picked up by embeddings from other corpora.
+However, in all cultural contexts, adding the other two corpora produced a significantly better fit than the identical model with only the corresponding corpus included as a predictor (US responses: $\chi^2$(`r fit.US_cos_compare["fit.ENVIZH_US_cos", "Df"]`) = `r round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Chisq"], 2)`, p `r ifelse( fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.US_cos_compare["fit.ENVIZH_US_cos", "Pr(>Chisq)"], 3)), "< .001")`; VN responses: $\chi^2$(`r fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Df"]`) = `r round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Chisq"], 2)`, p `r ifelse( fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.VN_cos_compare["fit.ENVIZH_VN_cos", "Pr(>Chisq)"], 3)), "< .001")`; CN responses: $\chi^2$(`r fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Df"]`) = `r round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Chisq"], 2)`, p `r ifelse( fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.CN_cos_compare["fit.ENVIZH_CN_cos", "Pr(>Chisq)"], 3)), "< .001")`). This analysis suggests that culture-specific input to similarity judgments (as proxied by language statistics) do not fully explain cross-cultural differences in similarity judgment, whether due to noise or sparsity in the estimates of language statistics or true additional variance picked up by embeddings from other corpora.
 
 <!-- ## 3. Cultural context as a predictor for cross-cultural variation in similarity judgments -->
 
@@ -690,9 +690,9 @@ fit.country_language_cos_compare
 
 ## 3. Language statistics as a predictor for non-structured filler items
 
-One possible concern with our approach is that our models are only able to account for variation in  similarity judgment because the word embedding models pick up on cross-cultural differences in the conceptualization of similarity. Perhaps some aspect of the geometry of the embedding space specifically reflects these differences rather than capturing more item-specific patterns of co-occurrence. 
+One possible concern with our approach is that our models are only able to account for variation in similarity judgments because the word embedding models pick up on cross-cultural differences in the conceptualization of similarity. Perhaps some aspect of the geometry of the embedding space specifically reflects these differences rather than capturing more item-specific patterns of co-occurrence. 
 
-If this is the case, the embedding models should be less accurate at predicting responding for filler items (such as whether "tomorrow" or "yesterday" is more related to "today") because these items do not have a thematic/taxonomic structure. Additionally, even when one option might be more related to the cue, that relationship is not systematic throughout the set of fillers. On the other hand, if the embedding models capture similarity judgments more generally (beyond thematic/taxonomic preferences), they should predict judgments for the unstructured filler items as well as they do for our experimental items. 
+If this is the case, the embedding models should be less accurate at predicting responding for filler items (such as whether "tomorrow" or "yesterday" is more related to "today") because these items do not have a thematic/taxonomic structure. Additionally, even when one option might be more related to the cue, that relationship is not systematic throughout the set of fillers. Alternatively, if the embedding models capture similarity judgments more generally (beyond thematic/taxonomic preferences), they should predict judgments for the unstructured filler items as well as they do for our experimental items. 
 
 ```{r incorporate base freq for fillers, warning = F, include = F}
 df.filler <- read.csv("../../../data/data_filler_USCNVN_ENZHVI.csv")
@@ -767,7 +767,7 @@ fit.country_filler.anova
 ```
 
 For each filler triad, we randomly assigned one of the responding options as 'Word1'.
-Running a mixed-effects logistic regression to predict responding (Word1 or Word2) with country as a fixed effect and a random effect structure as above Q1, we found no effect of country on filler responding ($\chi^2$(`r fit.country_filler.anova["country", "Df"]`) = `r round(fit.country_filler.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_filler.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_filler.anova["country", "Pr(>Chisq)"], 3)), "< .001")`).
+Running a mixed-effects logistic regression to predict responding (Word1 or Word2) with country as a fixed effect and a random effect structure as above in Question 1, we found no effect of country on filler responding ($\chi^2$(`r fit.country_filler.anova["country", "Df"]`) = `r round(fit.country_filler.anova["country", "Chisq"], 2)`, p `r ifelse( fit.country_filler.anova["country", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.country_filler.anova["country", "Pr(>Chisq)"], 3)), "< .001")`).
 
 <!-- #### Raw co-occurrences -->
 
@@ -856,7 +856,7 @@ beta.filler_single_corpus_cos <- c(
 )
 ```
 
-Using the same mixed-effects logistic regression structure as the single corpus models in Q2, we predicted responses (1=word1 or 0=word2) in each cultural context with the corresponding corpus predictor as a fixed effect, and participant and triad as random effects.
+Using the same mixed-effects logistic regression structure as the single corpus models in Question 2, we predicted responses (1=word1 or 0=word2) in each cultural context with the corresponding corpus predictor as a fixed effect, and participant and triad as random effects.
 In all cultural contexts, the corresponding corpus was a significant predictor of responding, with p \< 0.05 and $\beta$ from `r min(beta.filler_single_corpus_cos)` to `r max(beta.filler_single_corpus_cos)`.
 <!-- (For a full report, see Supplementary Information.)  -->
 These results show that the word embedding models predict general similarity in addition to structured thematic/taxonomic similarity. 
@@ -896,23 +896,23 @@ fit.triad_filler.anova = Anova(fit.triad_filler, type = 3)
 fit.triad_filler.anova
 ```
 
-To investigate whether language statistics predict taxonomic/thematic triads and filler items differently, we compared the variance accounted for by the models of  the two different types of items. We ran two mixed-effects logistic regression models that predict responding across cultural contexts (1=thematic or word1, 0=taxonomic or word2), with the corresponding corpus predictor as a fixed effect and participant and item as random effects.
-Consistent with our results above, corresponding corpus was a significant predictor for responding to both triads and filler items (triads: $\beta$ = `r round(fixef(fit.language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`, fillers: $\beta$ = `r round(fixef(fit.filler)["word1_match_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.filler.anova["word1_match_cosine_prop_corr_lang", "Df"]`) = `r round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`). Importantly, we found comparable conditional $R^2$ values when the corresponding corpus was used to predict only triad items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.language_cos))["theoretical", "R2c"], 2)`) and only filler items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.filler))["theoretical", "R2c"], 2)`). This result provides evidence for our view that word embeddings index general tendencies in similarity judgment, beyond a specific dimension of thematic/taxonomic relations.
+To investigate whether language statistics predict taxonomic/thematic triads and filler items differently, we compared the variance accounted for by the models of the two different types of items. We ran two mixed-effects logistic regression models that predict responding across cultural contexts (1=thematic or word1, 0=taxonomic or word2), with the corresponding corpus predictor as a fixed effect and participant and item as random effects.
+Consistent with our results above, the corresponding corpus was a significant predictor for responding to both triads and filler items (triads: $\beta$ = `r round(fixef(fit.language_cos)["theme_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.language_cos.anova["theme_cosine_prop_corr_lang", "Df"]`) = `r round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse( fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.language_cos.anova["theme_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`, fillers: $\beta$ = `r round(fixef(fit.filler)["word1_match_cosine_prop_corr_lang"], 2)`, $\chi^2$(`r fit.filler.anova["word1_match_cosine_prop_corr_lang", "Df"]`) = `r round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Chisq"], 2)`, p `r ifelse(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"] > 0.001, paste0("= ", round(fit.filler.anova["word1_match_cosine_prop_corr_lang", "Pr(>Chisq)"], 3)), "< .001")`). Importantly, we found comparable conditional $R^2$ values when the corresponding corpus was used to predict only triad items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.language_cos))["theoretical", "R2c"], 2)`) and only filler items ($R^2$ = `r round(as.data.frame(r.squaredGLMM(fit.filler))["theoretical", "R2c"], 2)`). This result provides evidence for our view that word embeddings index general tendencies in similarity judgment, beyond a specific dimension of thematic/taxonomic relations.
 
 # General Discussion
 
 Do members of different cultures vary in their conceptualization of similarity? Cross-cultural differences in similarity judgment would seem to suggest this conclusion.
 In this paper, we consider whether statistics of the environment (as indexed by language statistics) can account for cross-cultural differences in a classic similarity judgment paradigm.
 We replicated the previously documented contrast between English speakers in the US and Mandarin Chinese speakers from East Asia (mainland China, Taiwan, Hong Kong, and Singapore): Chinese participants preferred thematic relations to a greater extent compared to US participants. Our sample of Vietnamese participants showed an intermediate preference but were not significantly different from either Chinese or US participants.
-This finding suggests some limitations on the generality of the cultural account, which proposes that thematic/taxonomic similarity preference aligns with East Asian/Western tendency for holistic vs analytic processing.
+This finding suggests some limitations on the generality of the cultural account, which proposes that thematic/taxonomic similarity preferences align with East Asian and Western tendencies toward holistic and analytic processing, respectively.
 
-In contrast, we found some support for the environmental statistics account: word embeddings based on language specific corpora were a good predictor for the corresponding country's similarity judgments, even when other corpus statistics were included, and even with filler triads without a thematic/taxonomic structure.
+In contrast, we found some support for the environmental statistics account: word embeddings based on language-specific corpora were a good predictor for the corresponding country's similarity judgments, even when other corpus statistics were included, and even for filler triads without a thematic/taxonomic structure.
 <!-- However, we also found that culture-based conceptualization of similarity uniquely contributes to predicting similarity judgment when included in a model with corpus statistics. -->
-Overall, our results provide evidence that cross-cultural differences in similarity judgment are related to linguistic statistics patterns (which also vary across cultures).
+Overall, our results provide evidence that cross-cultural differences in similarity judgments are related to patterns in linguistic statistics (which also vary across cultures).
 
 There are some important limitations of our approach.
 While we discuss cross-cultural variability at the level of countries or larger world areas, these are not cultural monoliths.
-For convenience, we operationalize culture at the level of country, based on where participants were raised.
+For convenience, we operationalize culture at the level of country, based on where participants were raised and had lived for the large majority of their lives.
 It is an open question whether performance in our participant populations (of relatively young and well-educated adults) is representative of the broader country.
 This is especially true for societies with substantial ethnic and cultural variation such as the US.
 We expect that our data is likely to underestimate variation both within and between the countries we sample from.
@@ -930,7 +930,7 @@ We hope this work provides a foundation for further research probing this questi
 
 # Acknowledgements
 
-BLINDED FOR PEER REVIEW.
+Blinded for review.
 
 # References
 
