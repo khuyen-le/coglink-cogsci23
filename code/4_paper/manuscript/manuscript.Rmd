@@ -251,7 +251,7 @@ The China sample included `r df.excl_CN$ppts_after_demog_excl` participants (`r 
 We preregistered a more stringent exclusion criterion where participants were excluded if they missed any attention checks.
 However, this led to a small sample size, especially for Vietnam context (US = 109, China = 132, Vietnam = 57).
 Our reported results with the less stringent exclusion criterion (detailed above) is largely not different from the results with the preregistered criterion.
-Any differences are noted in the Analysis section.
+Any differences are noted in the Results & Discussion section.
 
 ## Stimuli Materials
 
