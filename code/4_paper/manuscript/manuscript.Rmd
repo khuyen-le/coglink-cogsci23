@@ -235,39 +235,36 @@ df.gender_V <- df.demog_V %>%
 
 ## Participants
 
-We recruited `r df.excl_US$ppts_finished` participants from the US, `r df.excl_VN$ppts_finished` participants from Vietnam, and `r df.excl_CN$ppts_finished` participants from mainland China.
-US participants were recruited through snowball sampling seeded with Stanford student email lists, Vietnam participants were recruited through snowball sampling seeded with Vietnam-based student groups on Facebook, and mainland China participants were recruited through snowball sampling seeded with group chats on WeChat.
-US participants were compensated with \$5 gift certificates (USD), VN participants received 50,000₫ (VND) in phone credit, and mainland China participants received 25CNY through WeChat credit transfer.
+Data collection and analyses for this study were pre-registered, and the pre-registration is available at [blinded for peer review]. We recruited `r df.excl_US$ppts_finished` participants from the US, `r df.excl_VN$ppts_finished` from Vietnam, and `r df.excl_CN$ppts_finished` from mainland China.
+All participants were recruited through snowball sampling, which, in the US was seeded with student email lists at a large university, in Vietnam (VN) with Vietnam-based student groups on Facebook, and in China (CN) with student groups on WeChat.
+US participants were compensated with \$5 gift certificates (USD), VN participants received 50,000₫ (VND) in phone credit, and CN participants received 25CNY through WeChat credit transfer.
 
-We excluded `r df.excl_US$ppts_finished - df.excl_US$ppts_after_att_check_excl` US participants, `r df.excl_VN$ppts_finished - df.excl_VN$ppts_after_att_check_excl` Vietnam participants, and `r df.excl_CN$ppts_finished - df.excl_CN$ppts_after_att_check_excl` China participants who missed 2 or more attention checks.
-We followed 4 exclusion criteria that aim to retain only participants who are influenced by one culture: (1) non-native speakers of English and Vietnamese, respectively, (2) fluent in at least one of the other two study languages (Vietnamese for US participants, English for Vietnamese participants and Chinese participants), (3) have lived outside of the test country (US, Vietnam, or China) for more than two years, and (4) have significant international experience (more than 6 international experiences of 2 days or longer.) We did not use a particular criterion for a language if it would exclude 25% or more of any one sample.
-In this round of exclusion, we excluded `r df.excl_US$ppts_after_att_check_excl - df.excl_US$ppts_after_demog_excl` US, `r df.excl_VN$ppts_after_att_check_excl - df.excl_VN$ppts_after_demog_excl` Vietnam participants, and `r df.excl_CN$ppts_after_att_check_excl - df.excl_CN$ppts_after_demog_excl` China participants.
-After these exclusions, the US sample included `r df.excl_US$ppts_after_demog_excl` participants (`r df.gender_E %>% filter(gender == "Male") %>% pull(n)`M, `r df.gender_E %>% filter(gender == "Female") %>% pull(n)`F, `r df.gender_E %>% filter(gender == "Non-binary") %>% pull(n)` non-binary, `r df.gender_E %>% filter(gender == "Decline to answer") %>% pull(n)` other), with mean age = `r round(df.age_E$mean_age, 2)` (SD = `r round(df.age_E$sd_age, 2)`) and median age = `r df.age_E$median_age`.
-The Vietnam sample included `r df.excl_VN$ppts_after_demog_excl` participants (`r df.gender_V %>% filter(gender == "Nam") %>% pull(n)`M, `r df.gender_V %>% filter(gender == "Nữ") %>% pull(n)`F, `r df.gender_V %>% filter(gender == "Từ chối trả lời") %>% pull(n)` other), with mean age = `r round(df.age_V$mean_age, 2)` (SD = `r round(df.age_V$sd_age, 2)`) and median age = `r df.age_V$median_age`.
-The China sample included `r df.excl_CN$ppts_after_demog_excl` participants (`r df.gender_M %>% filter(gender == "男性") %>% pull(n)`M, `r df.gender_M %>% filter(gender == "女性") %>% pull(n)`F, `r df.gender_M %>% filter(gender == "拒绝回答") %>% pull(n)` other), with mean age = `r round(df.age_M$mean_age, 2)` (SD = `r round(df.age_M$sd_age, 2)`) and median age = `r df.age_M$median_age`.[^4]
+We excluded `r df.excl_US$ppts_finished - df.excl_US$ppts_after_att_check_excl` US participants, `r df.excl_VN$ppts_finished - df.excl_VN$ppts_after_att_check_excl` VN participants, and `r df.excl_CN$ppts_finished - df.excl_CN$ppts_after_att_check_excl` CN participants who missed two or more of the 10 attention check questions.
 
-[^4]: A table summarizing number of participants lost at each round of exclusions is included in the Supplementary Information.
+In doing so, we deviated from our preregistered exclusion criterion, which used a more stringent policy, excluding participants who missed any of the 10 attention checks. This approach would have substantially reduced our sample size, disproportionately affecting the VN sample (resulting in a final sample of 109 US, 132 CN, and 57 VN participants).
+We report results with the less stringent exclusion criterion, but we performed analyses with both samples and found broadly similar results. Any differences are noted in the Analysis.
 
-We preregistered a more stringent exclusion criterion where participants were excluded if they missed any attention checks.
-However, this led to a small sample size, especially for Vietnam context (US = 109, China = 132, Vietnam = 57).
-Our reported results with the less stringent exclusion criterion (detailed above) is largely not different from the results with the preregistered criterion.
-Any differences are noted in the Results & Discussion section.
+We also applied four demographic exclusion criteria designed to reduce cross-cultural influences across our samples: we excluded participants who (1) were not native speakers of the test language (English, Vietnamese, or Mandarin Chinese), (2) were fluent in another one of the study languages, (3) had lived outside of the test country for more than two years, or (4) had significant international experience (more than 6 international experiences of 2 days or longer). Following our pre-registration, we dropped any exclusion criterion that would exclude 25% or more of any one population, but only for that population. Specifically, we did not exclude VN and CN participants who spoke English, or US participants with significant international experience.
+As a result of these demographic exclusions, we excluded `r df.excl_US$ppts_after_att_check_excl - df.excl_US$ppts_after_demog_excl` US, `r df.excl_VN$ppts_after_att_check_excl - df.excl_VN$ppts_after_demog_excl` VN, and `r df.excl_CN$ppts_after_att_check_excl - df.excl_CN$ppts_after_demog_excl` CN participants.
+The final US sample included `r df.excl_US$ppts_after_demog_excl` participants (`r df.gender_E %>% filter(gender == "Male") %>% pull(n)`M, `r df.gender_E %>% filter(gender == "Female") %>% pull(n)`F, `r df.gender_E %>% filter(gender == "Non-binary") %>% pull(n)` non-binary, `r df.gender_E %>% filter(gender == "Decline to answer") %>% pull(n)` other), with mean age = `r round(df.age_E$mean_age, 2)` (SD = `r round(df.age_E$sd_age, 2)`).
+Our VN sample included `r df.excl_VN$ppts_after_demog_excl` participants (`r df.gender_V %>% filter(gender == "Nam") %>% pull(n)`M, `r df.gender_V %>% filter(gender == "Nữ") %>% pull(n)`F, `r df.gender_V %>% filter(gender == "Từ chối trả lời") %>% pull(n)` other), with mean age = `r round(df.age_V$mean_age, 2)` (SD = `r round(df.age_V$sd_age, 2)`).
+And the CN sample included `r df.excl_CN$ppts_after_demog_excl` participants (`r df.gender_M %>% filter(gender == "男性") %>% pull(n)`M, `r df.gender_M %>% filter(gender == "女性") %>% pull(n)`F, `r df.gender_M %>% filter(gender == "拒绝回答") %>% pull(n)` other), with mean age = `r round(df.age_M$mean_age, 2)` (SD = `r round(df.age_M$sd_age, 2)`).[^4]
 
-## Stimuli Materials
+[^4]: A table summarizing the number of participants omitted for each criterion is included in the Supplementary Information.
 
-We adapted stimuli from previous studies to create a set of test triads consisting of a cue, with one thematic and one taxonomic match option.
+## Materials
+
+All stimuli and scripts for the experiment and analysis are available at [BLINDED FOR REVIEW]. We collected and adapted stimuli from previous studies to create test triads consisting of a cue with one thematic and one taxonomic match option.
 For example, "cow," "grass," and "chicken," where "cow" is the cue, "grass" is the thematic match, and "chicken" the taxonomic match.
 We included 105 such triads, a superset including triads pulled from supplemental information and in-text examples across the literature, and others that we adapted or created <!--(see SI for the full list of stimuli and sources)-->.
-We selected triads on the basis of cultural familiarity in the US, Vietnam, and China.
-The triads were originally in English; they were translated to Vietnamese and Mandarin by a fluent bilingual speaker in each language.
-The translations were then checked for accuracy after backtranslation to English by another fluent bilingual in each language who was naive to the original English versions.
-All materials are available at [BLINDED FOR REVIEW].
+We selected triads on the basis of cultural familiarity within the US, Vietnam, and China.
+The triads were translated from English to Vietnamese and Mandarin by fluent bilingual speakers of each language, and backtranslated to English by another fluent bilingual who was naive to the original English version. The backtranslations were checked against the original English to identify ambiguities in the translation, which were resolved through discussion and selection of alternative terms when relevant.
 
 ## Procedure
 
-Each participant completed all 105 triads in sets of 21 trials at a time (10 test triads, 10 filler triads, and 1 attention check per page), by selecting the match most related to the cue ("Which thing is most closely related to the bolded item?" and translated equivalents).
+Each participant completed all 105 triads in blocks of 21 trials at a time (10 test triads, 10 filler triads, and 1 attention check per page), by selecting the match most related to the cue ("Which thing is most closely related to the bolded item?" and translated equivalents).
 The test triads were presented with 105 filler triads mixed in, to obscure the taxonomic-thematic two-answer forced choice structure of the test stimuli and reduce the likelihood that participants would become aware of the design.
-The filler triads were groups of three semantically related words, but where the match options were not distinguished by thematic vs. taxonomic similarity, e.g., cue "bird" with match options "lizard" and "toad." Additionally, we included 10 attention check trials, which were formatted like the test and filler triads but included an instruction instead of a cue item, e.g., "Choose wife" with match options "wife" and "husband." In total, each participant completed 210 similarity judgments and 10 attention check questions, with triads presented in randomized orders that varied between subjects.
+The filler triads were groups of three semantically related words, but where the match options were not distinguished by thematic vs. taxonomic similarity, for example, the cue "bird" with match options "lizard" and "toad." Additionally, we included 10 attention check trials, which were formatted similarly to the test and filler triads but included an instruction instead of a cue item, e.g., "Choose wife" with match options "wife" and "husband." In total, each participant completed 210 similarity judgments (105 test triads and 105 fillers) and 10 attention check questions, with all items presented in randomized orders that varied between subjects.
 
 ## Corpus model
 
@@ -296,25 +293,21 @@ Our general approach is to predict behavioral preferences in similarity judgment
 #### Word vector retrieval
 
 We use the fastText pre-trained models of English, Mandarin, and Vietnamese in @Grave2018.
-These models are trained on Common Crawl and Wikipedia using We distribute pre-trained word vectors for 157 languages, trained on Common Crawl and Wikipedia using fastText.
-These models were trained using a Continuous Bag of Words (CBOW) with position-weights and a window of size 5.
-The models use character n-grams of length 5 and 10 negative examples.
-From the aforementioned models, we retrieve the word vectors (dimension 300) for each word we are interested in.
+These models were trained on Common Crawl and Wikipedia using fastText and use character n-grams of length 5, and 10 negative examples.
+The training used a Continuous Bag of Words with position-weights and a window of size 5.
+From these models, we retrieve the word vectors (dimension 300) for each word in our triad and filler stimuli.
 
 #### Similarity model
 
-To give an intuition for our model, consider again the cow-grass-chicken triad: we retrieved word vectors for "cow" and "grass", and calculate the cosine distance between these vectors.
-Similarly, we retrieved vectors for "cow" and "chicken" and calculate the cosine distance between them.
-Our similarity prediction is then inversely proportional to the ratio of cosine distance of these pairs.
+To give an intuition for our model, consider again the cow: grass/chicken triad. We retrieved word vectors for "cow" and "grass", and calculated the cosine distance between these vectors. We did the same for "cow" and "chicken."
+Our similarity prediction is inversely proportional to the ratio of cosine distance of these pairs.
 This is because a larger cosine distance means the word vectors are further apart, and thus the words are less similar.
-For example, if the cosine distance of thematic cow-grass is 0.7 and the cosine distance of taxonomic cow-chicken is 0.3, then our model predicts, correspondingly, that 30% of responses to the triad will be grass, and the other 70% chicken.
+For example, if the cosine distance of thematic cow-grass is 0.7 and the cosine distance of taxonomic cow-chicken is 0.3 (the more similar of the two), then our model predicts, correspondingly, that 30% of responses to the triad will be grass, and the other 70% chicken.
 
-In practice, we calculated the cosine distance between each cue-thematic match (thematic cosine distance) and cue-taxonomic match (taxonomic cosine distance), using the spatial.distance.cosine function from the SciPy package [@2020SciPy].
+We calculated the cosine distance between each cue-thematic match (thematic cosine distance) and cue-taxonomic match (taxonomic cosine distance), using the spatial.distance.cosine function from the SciPy package in R [@2020SciPy].
 We then calculated the thematic cosine distance proportion as thematic cosine distance over the sum of taxonomic cosine distance and thematic cosine distance.
-We did this for all three corpora.
-We were able to obtain predictions for all triads in all languages.
-We then use a mixed-effects regression to evaluate how well each corpus model predicts participants' similarity judgments, across triads and cultural contexts.
-All analyses are available at [BLINDED FOR REVIEW].
+We followed this process for all three corpora, and were able to obtain predictions for all triads in all languages.
+Then, we used a mixed-effects regression to evaluate how well each corpus model predicts participants' similarity judgments, across triads and cultural contexts.
 
 # Results & Discussion
 
