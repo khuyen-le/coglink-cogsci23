@@ -45,10 +45,34 @@ df.ppts_att_V <- df.resp_V %>%
   mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
   mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
   group_by(subject) %>%
+  summarise(n_att_check_correct_V = sum(pass_att_check)) 
+
+ggplot(data = df.ppts_att_V, 
+       mapping = aes(x = n_att_check_correct_V)) + 
+  geom_bar()+ 
+  scale_x_discrete(limits=0:10, labels = 0:10)
+
+df.ppts_att_V <- df.resp_V %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Chọn ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
   summarize(pass_att_check_percent = mean(pass_att_check)) %>%
   filter(pass_att_check_percent >= 0.8)
 
-df.resp_V_aft_attn <- df.resp_V %>%
+df.ppts_att_E <- df.resp_E %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Choose ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarise(n_att_check_correct = sum(pass_att_check)) 
+
+ggplot(data = df.ppts_att_E, 
+       mapping = aes(x = n_att_check_correct)) + 
+  geom_bar()+ 
+  scale_x_discrete(limits=0:10, labels = 0:10)df.resp_V_aft_attn <- df.resp_V %>%
   filter(subject %in% df.ppts_att_V$subject) #73
 
 ppts_resp_V_aft_attn <- unique(df.resp_V$subject) #137

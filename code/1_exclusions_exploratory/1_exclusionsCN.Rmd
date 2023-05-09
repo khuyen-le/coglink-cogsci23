@@ -44,6 +44,21 @@ df.ppts_not_finished_M <- df.resp_M %>% #3
 df.resp_M <- df.resp_M %>%
   filter(subject %in% df.ppts_finished_M$subject) 
 
+df.ppts_att_M <- df.resp_M %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "选择")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(correct_response = str_replace_all(correct_response, "“", "")) %>%
+  mutate(correct_response = str_replace_all(correct_response, "”", "")) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
+  summarise(n_att_check_correct_M = sum(pass_att_check)) 
+
+ggplot(data = df.ppts_att_M, 
+       mapping = aes(x = n_att_check_correct_M)) + 
+  geom_bar()+ 
+  scale_x_discrete(limits=0:10, labels = 0:10)
+
 df.ppts_att_M <- df.resp_M %>% #166
   filter(stim_type == "attention check") %>%
   mutate(correct_response = strsplit(cue, "选择")) %>%

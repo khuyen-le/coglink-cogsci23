@@ -45,6 +45,19 @@ df.ppts_att_E <- df.resp_E %>%
   mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
   mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
   group_by(subject) %>%
+  summarise(n_att_check_correct_E = sum(pass_att_check)) 
+
+ggplot(data = df.ppts_att_E, 
+       mapping = aes(x = n_att_check_correct_E)) + 
+  geom_bar()+ 
+  scale_x_discrete(limits=0:10, labels = 0:10)
+
+df.ppts_att_E <- df.resp_E %>%
+  filter(stim_type == "attention check") %>%
+  mutate(correct_response = strsplit(cue, "Choose ")) %>%
+  mutate(correct_response = sapply(correct_response, "[[", 2)) %>%
+  mutate(pass_att_check = ifelse(responses == correct_response, 1, 0)) %>%
+  group_by(subject) %>%
   summarize(pass_att_check_percent = mean(pass_att_check)) %>%
   filter(pass_att_check_percent >= 0.8)
 

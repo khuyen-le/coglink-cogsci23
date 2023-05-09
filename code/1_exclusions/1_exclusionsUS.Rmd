@@ -134,8 +134,7 @@ df.demog_metadata <- data.frame(
   ppts_lived_abroad = c(paste(length(ppts_lived_abroad_E),"*")), 
   ppts_oversea_exp = c(length(ppts_oversea_exp_E)),
   ppts_after_demog_excl = c(length(unique(df.resp_E_aft_demog$subject))))
-# colnames(df.demog_metadata) <- c("Participants Finished", 
-#                                  "Participants ")
+# colnames(df.demog_metadata) <- c("Participants Finished", "Participants ")
 ```
 
 ```{r}
